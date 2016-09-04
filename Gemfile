@@ -21,11 +21,22 @@ gem 'jbuilder', '~> 2.6.0'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'passenger', '~> 5.0.30'
+gem 'passenger', '~> 5.0.30', require: 'phusion_passenger/rack_handler'
+# Whenever (cron)
+gem 'whenever', '~> 0.9.4', require: false
+# Bugsnag (error catcher)
+gem 'bugsnag', '~> 5.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 9.0.5'
+
+  # Dotenv
+  gem 'dotenv-rails', '~> 2.1.1'
+
+  # RSpec
+  gem 'rspec-rails', '~> 3.5.2'
+  gem 'factory_girl_rails', '~> 4.7.0'
 end
 
 group :development do
@@ -36,4 +47,14 @@ group :development do
   gem 'spring', '~> 1.7.2'
   gem 'listen', '~> 3.1.5'
   gem 'spring-watcher-listen', '~> 2.0.0'
+
+  # Security enhancement: run bundle-audit
+  gem 'bundler-audit', '~> 0.5.0', require: false
+end
+
+group :test do
+  gem 'database_cleaner', '~> 1.5.3'
+  gem 'capybara', '~> 2.7.1'
+
+  gem 'selenium-webdriver', '~> 2.53.4'
 end

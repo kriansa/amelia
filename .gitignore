@@ -19,3 +19,9 @@
 
 # Ignore Byebug command history file.
 .byebug_history
+
+# RSpec examples
+spec/examples.txt
+
+# IDEs
+/.idea
