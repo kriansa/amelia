@@ -1,5 +1,8 @@
 class HomeController < ApplicationController
+  def healthcheck
+    head :ok, content_type: 'text/html', layout: false
+  end
+
   def index
-    #render text: '123'
   end
 end

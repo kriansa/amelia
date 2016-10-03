@@ -25,3 +25,10 @@ spec/examples.txt
 
 # IDEs
 /.idea
+
+# Frontend
+node_modules
+npm-debug.log
+
+# Assets
+public/assets
