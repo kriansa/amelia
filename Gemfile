@@ -11,19 +11,20 @@ gem 'bcrypt', '~> 3.1.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.6.0'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+# Web server
 gem 'passenger', '~> 5.0.30', require: 'phusion_passenger/rack_handler'
-# Whenever (cron)
-gem 'whenever', '~> 0.9.4', require: false
 # Bugsnag (error catcher)
 gem 'bugsnag', '~> 5.0.0'
+# Dotenv
+gem 'dotenv-rails', '~> 2.1.1'
 
 # Webpack integration
 gem 'rails_webpack', path: 'vendor/gems'
 
-# Dotenv
-gem 'dotenv-rails', '~> 2.1.1'
+# Use Capistrano for deployment
+# gem 'capistrano-rails', group: :development
+# Whenever (cron)
+gem 'whenever', '~> 0.9.7', require: false
 
 group :development, :test do
   # RSpec

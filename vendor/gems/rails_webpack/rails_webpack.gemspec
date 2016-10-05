@@ -8,15 +8,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Webpack integration for Rails'
   s.license     = 'Nonstandard'
 
-  # Gem files
-  # s.files       = %w(
-  #   lib/rails_webpack.rb
-  #   lib/rails_webpack/version.rb
-  # )
-
   # Runtime dependencies
   s.add_runtime_dependency "rails", "~> 5"
-
-  # Development dependencies
-  s.add_development_dependency "rspec", "~> 3.5"
+  s.add_runtime_dependency "listen", "~> 3"
 end

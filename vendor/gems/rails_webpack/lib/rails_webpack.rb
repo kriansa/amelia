@@ -1,4 +1,5 @@
 require 'rails_webpack/version'
 require 'rails_webpack/error'
-require 'rails_webpack/action_view/helpers/rails_webpack_helper'
+require 'rails_webpack/action_view/helpers/webpack_helper'
+require 'rails_webpack/webpack_watcher'
 require 'rails_webpack/railtie'

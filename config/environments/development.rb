@@ -43,4 +43,10 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Webpack
+  #
+
+  # Define which folders the webpack watcher should watch for changes
+  config.webpack.watch_paths = 'app/assets/javascripts/apps'
 end

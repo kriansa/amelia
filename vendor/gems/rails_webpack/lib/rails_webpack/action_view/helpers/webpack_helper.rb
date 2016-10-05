@@ -24,7 +24,7 @@ module RailsWebpack
         private
         def path_to_webpack_asset(source, extname)
 
-          raise ArgumentError, "nil is not a valid asset source" if source.nil?
+          raise ArgumentError, 'nil is not a valid asset source' if source.nil?
           raise AssetNotFound, "Asset '#{source}.#{extname}' not found!" unless webpack_asset_exists?(source, extname)
 
           "/assets/#{manifest["#{source}.#{extname}"]}"
@@ -36,6 +36,8 @@ module RailsWebpack
 
         def manifest
           JSON.parse(File.read(Rails.root.join('public/assets/manifest.json')))
+        rescue Errno::ENOENT
+          raise AssetManifestNotFound, 'Asset manifest file was not found. Please, run the asset build job!'
         end
 
       end
