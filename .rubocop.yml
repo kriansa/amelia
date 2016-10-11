@@ -1,8 +1,7 @@
 AllCops:
-  Include:
+  Exclude:
     - '**/Rakefile'
     - '**/config.ru'
-  Exclude:
     - 'db/**/*'
     - 'bin/**/*'
     - 'config/**/*'
