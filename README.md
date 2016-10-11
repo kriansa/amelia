@@ -22,3 +22,13 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+# Untracked gems
+
+* passenger (5.0.30)
+* foreman (0.82.0)
+* mailcatcher (0.6.5)
+* rubocop (0.43.0)
+* whenever (0.9.7)
+* capistrano (3.6.1)
+* capistrano-rails (1.1.8)
