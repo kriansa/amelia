@@ -5,18 +5,4 @@ namespace :webpack do
 
     `npm run-script build`
   end
-
-  task watch: :environment do
-    # Setup logger
-    logger           = Logger.new(STDOUT)
-    logger.level     = Logger::INFO
-    Rails.logger     = logger
-
-    # Start watcher
-    RailsWebpack::WebpackWatcher.watch
-    at_exit { RailsWebpack::WebpackWatcher.unwatch }
-
-    # take a nap
-    sleep
-  end
 end

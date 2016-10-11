@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'factory_girl'
 require 'database_cleaner'
 
@@ -10,7 +12,7 @@ RSpec.configure do |config|
     # Also, runs the asset compilation before running the suite
     # so that Capybara can fetch these assets when a JS driver
     # is required
-    %x[bundle exec rake assets:precompile]
+    `bundle exec rake assets:precompile`
   end
 
   # Use FactoryGirl helper methods
@@ -19,7 +21,7 @@ RSpec.configure do |config|
 
   # Capybara settings
   #
-  Capybara.asset_host = "http://localhost:3000"
+  Capybara.asset_host = 'http://localhost:3000'
 
   # TODO: In a near future, start working with Capybara-Webkit
   # Configure Capybara-Webkit
@@ -44,7 +46,7 @@ RSpec.configure do |config|
     # with the specs, so continue to use transaction strategy for speed.
     driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
 
-    if !driver_shares_db_connection_with_specs
+    unless driver_shares_db_connection_with_specs
       # Driver is probably for an external browser with an app
       # under test that does *not* share a database connection with the
       # specs, so use truncation strategy.

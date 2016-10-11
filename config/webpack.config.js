@@ -1,22 +1,21 @@
-"use strict";
+let webpack = require('webpack');
+let path = require('path');
+let fs = require('fs');
+let glob = require('glob');
+let ManifestPlugin = require('webpack-manifest-plugin');
+let ExtractTextPlugin = require('extract-text-webpack-plugin');
+let WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 
-var webpack = require('webpack');
-var path = require('path');
-var fs = require('fs');
-var glob = require('glob');
-var ManifestPlugin = require('webpack-manifest-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-
-// Path configs
-let entryPointPath = path.resolve(__dirname, '../app/assets/javascripts/apps');
+// Path settings
+let appPath = path.resolve(__dirname, '..');
+let entryPointPath = `${appPath}/app/assets/javascripts/actions`;
 
 if (!process.env.NODE_ENV) {
   console.error('NODE_ENV variable is not set!');
   process.exit(1);
 }
 
-var plugins = [
+let plugins = [
   // Clear output path
   new WebpackCleanupPlugin({ quiet: true }),
 
@@ -43,12 +42,13 @@ var plugins = [
 
 try {
   // Adds environment-specific plugins
-  fs.statSync(path.resolve(__dirname, `./webpack.${process.env.NODE_ENV}.plugins.js`)).isFile();
-  plugins = plugins.concat(require(`./webpack.${process.env.NODE_ENV}.plugins.js`));
+  fs.statSync(`${appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`).isFile();
+  plugins = plugins.concat(require(`${appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`));
 } catch (e) {}
 
-
-module.exports = {
+// Exporting time!
+module.exports.entryPointPath = entryPointPath;
+module.exports.webpack = {
   // Entry points.
   // We should notice that new added files matching the glob won't be automatically
   // added while --watch is running. It must be restarted.
@@ -66,7 +66,7 @@ module.exports = {
   output: {
     // This option prefixes all assets sources
     // publicPath: '/assets/',
-    path: path.resolve(__dirname, "../public/assets"),
+    path: `${appPath}/public/assets`,
     filename: '[name]-[chunkhash].js',
     hashFunction: 'sha256',
     hashDigestLength: 64
@@ -85,7 +85,8 @@ module.exports = {
   vue: {
     loaders: {
       css: ExtractTextPlugin.extract("css"),
-      sass: ExtractTextPlugin.extract("css!sass")
+      sass: ExtractTextPlugin.extract("css!sass"),
+      scss: ExtractTextPlugin.extract("css!sass")
     }
   },
 

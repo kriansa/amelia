@@ -3,7 +3,16 @@ module RailsWebpack
     module Helpers
       module WebpackHelper
 
-        def application_link_tags(app_name)
+        # Adds the Vue application compiled assets (JS and CSS) to this page
+        #
+        # The pattern in which webpack is already setup for is:
+        #
+        # * {app_name}.js
+        # * {app_name}.css
+        #
+        # @param [String] app_name The name of Vue application
+        #
+        def frontend_app_asset_tags(app_name)
           assets = []
 
           assets = assets.push(content_tag(:script, '', {
@@ -34,9 +43,21 @@ module RailsWebpack
           manifest["#{source}.#{extname}"].present?
         end
 
+        # Fetch the manifest file in a Hash
+        #
         def manifest
-          JSON.parse(File.read(Rails.root.join('public/assets/manifest.json')))
+          if Rails.configuration.webpack.cache_manifest_file
+            @cached_webpack_manifest ||= JSON.parse(File.read(Rails.root.join('public/assets/manifest.json')))
+          else
+            JSON.parse(File.read(Rails.root.join('public/assets/manifest.json')))
+          end
+
         rescue Errno::ENOENT
+          # Checks whether there was an error during the assets building
+          if File.exists?(Rails.root.join('tmp/webpack-error.txt'))
+            raise AssetCompilationFailure, 'Error while trying to compile the assets, please check webpack build logs!'
+          end
+
           raise AssetManifestNotFound, 'Asset manifest file was not found. Please, run the asset build job!'
         end
 

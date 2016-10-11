@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -48,5 +50,5 @@ Rails.application.configure do
   #
 
   # Define which folders the webpack watcher should watch for changes
-  config.webpack.watch_paths = 'app/assets/javascripts/apps'
+  config.webpack.cache_manifest_file = false
 end

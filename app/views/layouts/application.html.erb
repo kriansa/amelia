@@ -3,8 +3,7 @@
   <head>
     <title>Amelia</title>
     <%= csrf_meta_tags %>
-
-    <%= application_link_tags "#{params[:controller]}/#{params[:action]}" %>
+    <%= frontend_app_asset_tags "#{params[:controller]}/#{params[:action]}" %>
   </head>
 
   <body>

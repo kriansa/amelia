@@ -12,8 +12,8 @@ module RailsWebpack
 
     config.webpack = ActiveSupport::OrderedOptions.new
 
-    # Define which folders the webpack watcher should watch for changes
-    config.webpack.watch_paths = []
+    # Define whether we should cache the manifest file (useful in production)
+    config.webpack.cache_manifest_file = true
 
     rake_tasks do
       load "tasks/webpack.rake"

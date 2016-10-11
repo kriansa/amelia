@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+export NODE_ENV=${RAILS_ENV:-${RACK_ENV:-development}}
+node config/webpack.watcher.js

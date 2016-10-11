@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomeController < ApplicationController
   def healthcheck
     head :ok, content_type: 'text/html', layout: false
