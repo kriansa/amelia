@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails'
 require 'rails/railtie'
 
@@ -16,7 +18,7 @@ module RailsWebpack
     config.webpack.cache_manifest_file = true
 
     rake_tasks do
-      load "tasks/webpack.rake"
+      load 'tasks/webpack.rake'
     end
   end
 end

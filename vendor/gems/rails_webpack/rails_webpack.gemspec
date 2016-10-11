@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.expand_path('../lib/rails_webpack/version', __FILE__)
 
 Gem::Specification.new do |s|
@@ -9,6 +11,6 @@ Gem::Specification.new do |s|
   s.license     = 'Nonstandard'
 
   # Runtime dependencies
-  s.add_runtime_dependency "rails", "~> 5"
-  s.add_runtime_dependency "listen", "~> 3"
+  s.add_runtime_dependency 'rails', '~> 5'
+  s.add_runtime_dependency 'listen', '~> 3'
 end

@@ -15,5 +15,11 @@ Metrics/LineLength:
 Documentation:
   Enabled: false
 
+EmptyLinesAroundModuleBody:
+  Enabled: false
+
+EmptyLinesAroundClassBody:
+  Enabled: false
+
 Rails:
   Enabled: true

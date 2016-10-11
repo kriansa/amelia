@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :webpack do
   desc 'Compile webpack bundles'
   task :compile do

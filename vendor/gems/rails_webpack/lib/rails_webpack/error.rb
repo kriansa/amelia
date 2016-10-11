@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsWebpack
   class Error < ::StandardError; end
 
@@ -9,7 +11,4 @@ module RailsWebpack
 
   # Error when trying to fetch assets with compilation failure
   class AssetCompilationFailure < Error; end
-
-  # Raised when your watcher is already running
-  class WebpackWatcherAlreadyRunning < Error; end
 end
