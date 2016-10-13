@@ -32,3 +32,4 @@ Things you may want to cover:
 * whenever (0.9.7)
 * capistrano (3.6.1)
 * capistrano-rails (1.1.8)
+* brakeman (3.4.0)

@@ -97,6 +97,11 @@ module.exports.webpack = {
     failOnHint: true,
   },
 
+  // options for sass-loader
+  sassLoader: {
+    includePaths: [require("bourbon-neat").includePaths, require("bourbon").includePaths]
+  },
+
   module: {
     preLoaders: [
       {
