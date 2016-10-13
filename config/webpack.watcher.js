@@ -3,6 +3,7 @@ var chokidar = require('chokidar');
 var decache = require('decache');
 var path = require('path');
 var fs = require('fs');
+var colors = require('colors/safe');
 
 let appPath = path.resolve(__dirname, '..');
 let configFile = `${appPath}/config/webpack.config.js`;
@@ -52,7 +53,7 @@ var Webpack = {
       });
 
       fs.writeFile(`${appPath}/tmp/webpack-error.txt`, errorMessage);
-      console.error(errorMessage);
+      console.error("\033c", errorMessage);
     }
 
     else {
@@ -60,7 +61,7 @@ var Webpack = {
         if (!err) { fs.unlink(`${appPath}/tmp/webpack-error.txt`) }
       });
 
-      console.log('Assets compiled:', stats.toJson({
+      console.log("\033c", colors.bold.green('✓ Assets compiled:'), stats.toJson({
         context: appPath,
         hash: false,
         version: false,

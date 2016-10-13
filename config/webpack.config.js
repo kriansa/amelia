@@ -90,7 +90,21 @@ module.exports.webpack = {
     }
   },
 
+  // more options in the optional jshint object
+  // Add any jshint option (http://www.jshint.com/docs/options) to .jshintrc
+  jshint: {
+    // jshint interrupt the compilation
+    failOnHint: true,
+  },
+
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/, // include .js files
+        exclude: /node_modules/, // exclude any and all files in the node_modules folder
+        loader: "jshint-loader"
+      }
+    ],
     loaders: [
       {
         test: /\.vue$/,
