@@ -47,8 +47,10 @@ try {
 } catch (e) {}
 
 // Exporting time!
-module.exports.entryPointPath = entryPointPath;
-module.exports.webpack = {
+module.exports = {
+  // Entry point (non-webpack setting)
+  entryPointPath: entryPointPath,
+
   // Entry points.
   // We should notice that new added files matching the glob won't be automatically
   // added while --watch is running. It must be restarted.

@@ -1,27 +1,8 @@
-# README
+# Amelia
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[![Code Climate](https://codeclimate.com/github/kriansa/amelia/badges/gpa.svg)](https://codeclimate.com/github/kriansa/amelia)
+[![Codeship](https://codeship.com/projects/38ae9630-7331-0134-360b-1ae66e72c451/status?branch=master)
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
 
 # Untracked gems
 

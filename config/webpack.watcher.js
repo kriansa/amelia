@@ -16,7 +16,7 @@ var Webpack = {
   _compiler: function() {
     decache(configFile);
     let config = require(configFile);
-    return webpack(config.webpack);
+    return webpack(config);
   },
 
   start: function() {
