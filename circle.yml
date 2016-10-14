@@ -1,0 +1,42 @@
+general:
+  branches:
+    only:
+      - master
+      - /(feature|hotfix|release)\/.*/
+
+machine:
+  timezone:
+    America/Sao_Paulo
+  ruby:
+    version: 2.3.1
+  node:
+    version: 6.7.0
+  environment:
+    RACK_ENV: test
+    NODE_ENV: production
+
+dependencies:
+  bundler:
+    without: [development]
+  override:
+    - gem install bundler brakeman bundler-audit rubocop
+    - bundle install
+    - npm install
+
+test:
+  override:
+    - npm run-script build
+    - brakeman
+    - bundle-audit
+    - rubocop
+    - rspec
+
+# deployment:
+#   production:
+#     branch: master
+#     commands:
+#       - ./deploy_prod.sh
+#   staging:
+#     tag: /release\/.*/
+#     commands:
+#       - ./deploy_staging.sh
