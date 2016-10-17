@@ -1,15 +1,8 @@
-"use strict";
-
-var webpack = require('webpack');
-var path = require('path');
-var CompressionPlugin = require("compression-webpack-plugin");
-var CleanWebpackPlugin = require('clean-webpack-plugin');
+let webpack = require('webpack');
+let path = require('path');
+let CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = [
-  new CleanWebpackPlugin(['public/assets'], {
-    root: path.resolve(__dirname, '..'),
-    verbose: true,
-  }),
   new CompressionPlugin({
     asset: "[path].gz[query]",
     algorithm: "gzip",

@@ -57,11 +57,21 @@ var Webpack = {
     }
 
     else {
+      // Delete the webpack-error file if it exist
       fs.access(`${appPath}/tmp/webpack-error.txt`, fs.constants.F_OK, function (err) {
         if (!err) { fs.unlink(`${appPath}/tmp/webpack-error.txt`) }
       });
+    }
 
-      console.log("\033c", colors.bold.green('✓ Assets compiled:'), stats.toJson({
+    if (stats.hasWarnings()) {
+      console.warn(stats.toString('minimal'));
+    }
+
+    if (!stats.hasErrors() && !stats.hasWarnings()) {
+      console.log("\033c");
+    }
+
+    console.log(colors.bold.white('->'), colors.bold.green('Completed in'), stats.toJson({
         context: appPath,
         hash: false,
         version: false,
@@ -77,11 +87,6 @@ var Webpack = {
         errorDetails: false,
         chunkOrigins: false,
       })['time'] + 'ms')
-    }
-
-    if (stats.hasWarnings()) {
-      console.warn(stats.toString('minimal'));
-    }
   },
 
   restart: function() {

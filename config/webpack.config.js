@@ -4,11 +4,14 @@ let fs = require('fs');
 let glob = require('glob');
 let ManifestPlugin = require('webpack-manifest-plugin');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+let CleanWebpackPlugin = require('clean-webpack-plugin');
+var StyleLintPlugin = require('stylelint-webpack-plugin');
 
 // Path settings
 let appPath = path.resolve(__dirname, '..');
-let entryPointPath = `${appPath}/app/assets/javascripts/actions`;
+let assetsRelativePath = 'app/assets';
+let entryPointPath = `${appPath}/${assetsRelativePath}/javascripts/actions`;
+let outputPath = `${appPath}/public/assets`;
 
 if (!process.env.NODE_ENV) {
   console.error('NODE_ENV variable is not set!');
@@ -16,8 +19,30 @@ if (!process.env.NODE_ENV) {
 }
 
 let plugins = [
-  // Clear output path
-  new WebpackCleanupPlugin({ quiet: true }),
+  // Delete output path
+  new CleanWebpackPlugin([path.relative(appPath, outputPath)], {
+    root: appPath,
+    verbose: true,
+  }),
+
+  new StyleLintPlugin({
+    configFile: `${appPath}/.stylelintrc.yml`,
+    files: ['**/*.s?(a|c)ss'],
+    context: `${appPath}/${assetsRelativePath}`,
+    syntax: 'scss',
+    failOnError: process.env.NODE_ENV === 'production'
+  }),
+
+  new StyleLintPlugin({
+    configFile: `${appPath}/.stylelintrc.yml`,
+    files: ['**/*.vue'],
+    context: `${appPath}/${assetsRelativePath}`,
+    syntax: 'scss',
+    configOverrides: {
+      processors: ["stylelint-processor-arbitrary-tags"]
+    },
+    failOnError: process.env.NODE_ENV === 'production'
+  }),
 
   // Do not allow files with errors to continue the compilation
   new webpack.NoErrorsPlugin(),
@@ -68,7 +93,7 @@ module.exports = {
   output: {
     // This option prefixes all assets sources
     // publicPath: '/assets/',
-    path: `${appPath}/public/assets`,
+    path: outputPath,
     filename: '[name]-[chunkhash].js',
     hashFunction: 'sha256',
     hashDigestLength: 64
@@ -80,70 +105,59 @@ module.exports = {
 
   // Optimize the generation of SourceMaps
   // More info: https://webpack.github.io/docs/build-performance.html
-  devtool: process.env.NODE_ENV == "production" ? 'source-map' : 'cheap-module-source-map',
+  devtool: process.env.NODE_ENV == 'production' ? 'source-map' : 'cheap-module-source-map',
 
   plugins: plugins,
 
   vue: {
     loaders: {
-      css: ExtractTextPlugin.extract("css"),
-      sass: ExtractTextPlugin.extract("css!sass"),
-      scss: ExtractTextPlugin.extract("css!sass")
+      js: 'babel',
+      css: ExtractTextPlugin.extract("css?sourceMap"),
+      sass: ExtractTextPlugin.extract("css!sass?sourceMap"),
+      scss: ExtractTextPlugin.extract("css!sass?sourceMap")
     }
-  },
-
-  // more options in the optional jshint object
-  // Add any jshint option (http://www.jshint.com/docs/options) to .jshintrc
-  jshint: {
-    // jshint interrupt the compilation
-    failOnHint: true,
   },
 
   // options for sass-loader
   sassLoader: {
-    includePaths: [require("bourbon-neat").includePaths, require("bourbon").includePaths]
+    includePaths: [require('bourbon-neat').includePaths, require('bourbon').includePaths]
   },
 
   module: {
-    preLoaders: [
-      {
-        test: /\.js$/, // include .js files
-        exclude: /node_modules/, // exclude any and all files in the node_modules folder
-        loader: "jshint-loader"
-      }
-    ],
     loaders: [
+      // Local JS files
       {
         test: /\.vue$/,
         exclude: /node_modules/,
-        loader: 'vue'
+        loader: 'vue!eslint'
       },
       {
-        test: /\.(js|es6)$/,
+        test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel!eslint',
       },
 
-      // Local files
+      // Local image files
       {
         test: /\.(jpe?g|gif|png|svg|woff2?|ttf|eot)$/,
         exclude: /node_modules/,
-        loader: "file?context=app/assets&name=[path][name]-[sha256:hash:hex:64].[ext]",
+        loader: 'file?context=app/assets&name=[path][name]-[sha256:hash:hex:64].[ext]',
       },
 
-      // Module files
+      // Module image files
       {
         test: /node_modules\/.+\.(jpe?g|gif|png|svg|woff2?|ttf|eot)$/,
-        loader: "file?context=node_modules&name=[path][name]-[sha256:hash:hex:64].[ext]",
+        loader: 'file?context=node_modules&name=[path][name]-[sha256:hash:hex:64].[ext]',
       },
 
+      // Local CSS files
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css')
+        loader: ExtractTextPlugin.extract('css?sourceMap')
       },
       {
         test: /\.s[ac]ss$/,
-        loader: ExtractTextPlugin.extract('css!sass')
+        loader: ExtractTextPlugin.extract('css!sass?sourceMap')
       },
     ]
   }
