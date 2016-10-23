@@ -12,21 +12,3 @@ parserOptions:
 plugins:
   - html
 extends: airbnb-base
-rules:
-  import/no-extraneous-dependencies: off
-  no-extend-native: 2
-  curly: 2
-  eqeqeq: 2
-  no-undef: 2
-  max-params:
-  - 2
-  - 4
-  max-depth:
-  - 2
-  - 2
-  max-statements:
-  - 2
-  - 20
-  complexity:
-  - 2
-  - 5

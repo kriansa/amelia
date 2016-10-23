@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# The `NODE_ENV` var is one of the following, in the order:
+# - NODE_ENV
+# - RAILS_ENV
+# - RACK_ENV
+# - "development"
+
+export NODE_ENV=${NODE_ENV:-${RAILS_ENV:-${RACK_ENV:-development}}}
+export PATH=$(npm bin):$PATH
+gulp $@

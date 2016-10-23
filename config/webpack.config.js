@@ -1,126 +1,94 @@
-let webpack = require('webpack');
-let path = require('path');
-let fs = require('fs');
-let glob = require('glob');
-let ManifestPlugin = require('webpack-manifest-plugin');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
-let CleanWebpackPlugin = require('clean-webpack-plugin');
-var StyleLintPlugin = require('stylelint-webpack-plugin');
-
-// Path settings
-let appPath = path.resolve(__dirname, '..');
-let assetsRelativePath = 'app/assets';
-let entryPointPath = `${appPath}/${assetsRelativePath}/javascripts/actions`;
-let outputPath = `${appPath}/public/assets`;
+const webpack = require('webpack');
+const path = require('path');
+const fs = require('fs');
+const glob = require('glob');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const config = require('./assets.config');
+const Bourbon = require('bourbon');
+const BourbonNeat = require('bourbon-neat');
 
 if (!process.env.NODE_ENV) {
-  console.error('NODE_ENV variable is not set!');
+  console.error('NODE_ENV variable is not set!'); // eslint-disable-line no-console
   process.exit(1);
 }
 
 let plugins = [
-  // Delete output path
-  new CleanWebpackPlugin([path.relative(appPath, outputPath)], {
-    root: appPath,
-    verbose: true,
-  }),
-
-  new StyleLintPlugin({
-    configFile: `${appPath}/.stylelintrc.yml`,
-    files: ['**/*.s?(a|c)ss'],
-    context: `${appPath}/${assetsRelativePath}`,
-    syntax: 'scss',
-    failOnError: process.env.NODE_ENV === 'production'
-  }),
-
-  new StyleLintPlugin({
-    configFile: `${appPath}/.stylelintrc.yml`,
-    files: ['**/*.vue'],
-    context: `${appPath}/${assetsRelativePath}`,
-    syntax: 'scss',
-    configOverrides: {
-      processors: ["stylelint-processor-arbitrary-tags"]
-    },
-    failOnError: process.env.NODE_ENV === 'production'
-  }),
+  // Clean files not created by the current build
+  new WebpackCleanupPlugin({ quiet: true }),
 
   // Do not allow files with errors to continue the compilation
   new webpack.NoErrorsPlugin(),
 
   // Extract CSS
   new ExtractTextPlugin('[name]-[hash].css', {
-    allChunks: true
+    allChunks: true,
   }),
 
   // Create a manifest.json file
   new ManifestPlugin({
-    fileName: 'manifest.json'
+    fileName: 'manifest.json',
   }),
 
   // Set NODE_ENV to every module
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: `"${process.env.NODE_ENV}"`
-    }
-  })
+      NODE_ENV: `'${process.env.NODE_ENV}'`,
+    },
+  }),
 ];
 
 try {
   // Adds environment-specific plugins
-  fs.statSync(`${appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`).isFile();
-  plugins = plugins.concat(require(`${appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`));
-} catch (e) {}
+  fs.statSync(`${config.appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`).isFile();
+  // eslint-disable-next-line global-require, import/no-dynamic-require
+  plugins = plugins.concat(require(`${config.appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`));
+} catch (e) {} // eslint-disable-line no-empty
 
-// Exporting time!
 module.exports = {
-  // Entry point (non-webpack setting)
-  entryPointPath: entryPointPath,
+  // Entry points
+  entry: glob.sync(`${config.appPath}/${config.entryPointsRelativePath}/**/*.*`)
+    .reduce((result, entry) => {
+      const relativeFullPath = path.relative(`${config.appPath}/${config.entryPointsRelativePath}`, entry);
+      const removeExtRegexp = new RegExp(`${path.extname(relativeFullPath)}$`);
+      const relativeBasePath = relativeFullPath.replace(removeExtRegexp, '');
 
-  // Entry points.
-  // We should notice that new added files matching the glob won't be automatically
-  // added while --watch is running. It must be restarted.
-  entry: glob.sync(`${entryPointPath}/**/*.*`).reduce(function(result, entry){
-    let relativeFullPath = path.relative(entryPointPath, entry);
-    let removeExtRegexp = new RegExp(`${path.extname(relativeFullPath)}$`);
-    let relativeBasePath = relativeFullPath.replace(removeExtRegexp, '');
+      result[relativeBasePath] = entry; // eslint-disable-line no-param-reassign
 
-    result[relativeBasePath] = entry;
-
-    return result;
-  }, {}),
+      return result;
+    }, {}),
 
   // Output
   output: {
-    // This option prefixes all assets sources
-    // publicPath: '/assets/',
-    path: outputPath,
+    path: `${config.appPath}/${config.outputRelativePath}`,
     filename: '[name]-[chunkhash].js',
     hashFunction: 'sha256',
-    hashDigestLength: 64
+    hashDigestLength: 64,
   },
 
   resolve: {
-    extensions: ['', '.js', '.es6', '.vue']
+    extensions: ['', '.js', '.vue'],
   },
 
   // Optimize the generation of SourceMaps
   // More info: https://webpack.github.io/docs/build-performance.html
-  devtool: process.env.NODE_ENV == 'production' ? 'source-map' : 'cheap-module-source-map',
+  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-module-source-map',
 
-  plugins: plugins,
+  plugins,
 
   vue: {
     loaders: {
       js: 'babel',
-      css: ExtractTextPlugin.extract("css?sourceMap"),
-      sass: ExtractTextPlugin.extract("css!sass?sourceMap"),
-      scss: ExtractTextPlugin.extract("css!sass?sourceMap")
-    }
+      css: ExtractTextPlugin.extract('css?sourceMap'),
+      sass: ExtractTextPlugin.extract('css!sass?sourceMap'),
+      scss: ExtractTextPlugin.extract('css!sass?sourceMap'),
+    },
   },
 
   // options for sass-loader
   sassLoader: {
-    includePaths: [require('bourbon-neat').includePaths, require('bourbon').includePaths]
+    includePaths: [BourbonNeat.includePaths, Bourbon.includePaths],
   },
 
   module: {
@@ -129,12 +97,12 @@ module.exports = {
       {
         test: /\.vue$/,
         exclude: /node_modules/,
-        loader: 'vue!eslint'
+        loader: 'vue',
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel!eslint',
+        loader: 'babel',
       },
 
       // Local image files
@@ -153,12 +121,12 @@ module.exports = {
       // Local CSS files
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap')
+        loader: ExtractTextPlugin.extract('css?sourceMap'),
       },
       {
         test: /\.s[ac]ss$/,
-        loader: ExtractTextPlugin.extract('css!sass?sourceMap')
+        loader: ExtractTextPlugin.extract('css!sass?sourceMap'),
       },
-    ]
-  }
+    ],
+  },
 };

@@ -1,117 +1,132 @@
-var webpack = require('webpack');
-var chokidar = require('chokidar');
-var decache = require('decache');
-var path = require('path');
-var fs = require('fs');
-var colors = require('colors/safe');
+const webpack = require('webpack');
+const chokidar = require('chokidar');
+const decache = require('decache');
+const fs = require('fs');
 
-let appPath = path.resolve(__dirname, '..');
-let configFile = `${appPath}/config/webpack.config.js`;
-let pathGlob = require(configFile).entryPointPath + '/**/*.*';
-let npmPackageFile = `${appPath}/package.json`;
+function WebpackWatcher(config) {
+  this.webpackConfigFile = config.webpackConfigFile;
+  this.basePath = config.basePath;
+  this.writeErrorFile = config.writeErrorFile;
+  this.watchFolders = config.watchFolders;
+  this.watchFiles = config.watchFiles;
+  this.onCompile = config.onCompile;
 
-var Webpack = {
-  _watching: null,
+  this.webpackWatcher = null;
+  this.chokidarWatcher = null;
+}
 
-  _compiler: function() {
-    decache(configFile);
-    let config = require(configFile);
-    return webpack(config);
-  },
+WebpackWatcher.prototype.start = function start() {
+  this.chokidarWatcher = chokidar.watch([...this.watchFolders, ...this.watchFiles], {
+    cwd: this.basePath,
+    ignored: /[\/]\./,
+    ignoreInitial: true,
+  });
 
-  start: function() {
-    Webpack._watching = Webpack._compiler().watch(undefined, Webpack.onCompile);
-  },
+  // Watches for add/delete files
+  this.chokidarWatcher
+    .on('add', this.restart.bind(this))
+    .on('unlink', this.restart.bind(this))
+    .on('change', (path) => { if (this.watchFiles.findIndex(f => f === path) !== -1) this.restart(); })
+  ;
 
-  stop: function() {
-    return new Promise(function(resolve) {
-      Webpack._watching.close(resolve);
-    });
-  },
+  this.webpackWatcher = this.getCompiler().watch(undefined, this.handleCompiledResponse.bind(this));
+};
 
-  onCompile: function(err, stats) {
-    if (!stats) {
-      return;
-    }
+WebpackWatcher.prototype.stop = function stop() {
+  return new Promise((resolve) => {
+    this.chokidarWatcher.close();
+    this.webpackWatcher.close(resolve);
+  });
+};
 
-    if (stats.hasErrors()) {
-      let errorMessage = stats.toString({
-        context: appPath,
-        hash: false,
-        version: false,
-        timings: false,
-        assets: false,
-        chunks: false,
-        chunkModules: false,
-        modules: false,
-        children: false,
-        cached: false,
-        reasons: false,
-        source: false,
-        errorDetails: true,
-        chunkOrigins: false,
-      });
+WebpackWatcher.prototype.restart = function restart() {
+  console.log('Restarting webpack...'); // eslint-disable-line no-console
+  this.stop().then(this.start.bind(this));
+};
 
-      fs.writeFile(`${appPath}/tmp/webpack-error.txt`, errorMessage);
-      console.error("\033c", errorMessage);
-    }
+WebpackWatcher.prototype.handleCompiledResponse = function handleCompiledResponse(err, stats) {
+  const errorFile = `${this.basePath}/${this.writeErrorFile}`;
+  const output = this.formatOutput(stats, err);
 
-    else {
-      // Delete the webpack-error file if it exist
-      fs.access(`${appPath}/tmp/webpack-error.txt`, fs.constants.F_OK, function (err) {
-        if (!err) { fs.unlink(`${appPath}/tmp/webpack-error.txt`) }
-      });
-    }
+  if (this.onCompile) {
+    this.onCompile(output);
+  }
 
-    if (stats.hasWarnings()) {
-      console.warn(stats.toString('minimal'));
-    }
+  // Dumps errors and warnings to a file
+  if (stats.hasErrors() || stats.hasWarnings()) {
+    fs.writeFile(errorFile, output.messages.join('\n'));
+  } else {
+    // Delete the webpack-error file if it exist
+    fs.access(errorFile, fs.constants.F_OK, (fsErr) => { if (!fsErr) { fs.unlink(errorFile); } });
+  }
 
-    if (!stats.hasErrors() && !stats.hasWarnings()) {
-      console.log("\033c");
-    }
-
-    console.log(colors.bold.white('->'), colors.bold.green('Completed in'), stats.toJson({
-        context: appPath,
-        hash: false,
-        version: false,
-        timings: true,
-        assets: false,
-        chunks: false,
-        chunkModules: false,
-        modules: false,
-        children: false,
-        cached: false,
-        reasons: false,
-        source: false,
-        errorDetails: false,
-        chunkOrigins: false,
-      })['time'] + 'ms')
-  },
-
-  restart: function() {
-    console.log('Restarting webpack...');
-    Webpack.stop().then(Webpack.start);
+  // Exit if it's a fatal error
+  if (err) {
+    process.exit(1);
   }
 };
 
-var watcher = chokidar.watch([pathGlob, configFile, npmPackageFile], {
-  ignored: /[\/]\./,
-  ignoreInitial: true
-});
+WebpackWatcher.prototype.formatOutput = function formatOutput(stats, err) {
+  const resultObject = { messages: [], time: null };
 
-// Signal handler
-process.on('SIGINT', function() {
-  console.log("Stopping webpack watcher...");
-  Webpack.stop();
-  watcher.close();
-  process.exit();
-});
+  if (err) {
+    resultObject.messages = [err.stack || err]; // eslint-disable-line no-console
+    if (err.details) {
+      resultObject.messages.push(err.details); // eslint-disable-line no-console
+    }
 
-// Watches for add/delete files
-watcher.on('add', Webpack.restart).on('unlink', Webpack.restart).on('change', function(path) {
-  if (path === npmPackageFile || path === configFile) { Webpack.restart() }
-});
+    return resultObject;
+  }
 
-// ... then start it
-Webpack.start();
+  resultObject.time = stats.toJson({
+    context: this.basePath,
+    hash: false,
+    version: false,
+    timings: true,
+    assets: false,
+    chunks: false,
+    chunkModules: false,
+    modules: false,
+    children: false,
+    cached: false,
+    reasons: false,
+    source: false,
+    errorDetails: false,
+    chunkOrigins: false,
+  }).time;
+
+  if (stats.hasWarnings()) {
+    resultObject.messages.push(stats.toString('minimal'));
+  }
+
+  if (stats.hasErrors()) {
+    resultObject.messages.push(stats.toString({
+      context: this.basePath,
+      colors: true,
+      hash: false,
+      version: false,
+      timings: false,
+      assets: false,
+      chunks: false,
+      chunkModules: false,
+      modules: false,
+      children: false,
+      cached: false,
+      reasons: false,
+      source: false,
+      errorDetails: false,
+      chunkOrigins: false,
+    }));
+  }
+
+  return resultObject;
+};
+
+WebpackWatcher.prototype.getCompiler = function getCompiler() {
+  const configFile = `${this.basePath}/${this.webpackConfigFile}`;
+  decache(configFile);
+  // eslint-disable-next-line global-require, import/no-dynamic-require
+  return webpack(require(configFile));
+};
+
+module.exports = WebpackWatcher;
