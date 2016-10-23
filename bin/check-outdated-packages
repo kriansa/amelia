@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+npm outdated
+bundle outdated
