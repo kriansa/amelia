@@ -7,6 +7,9 @@ const stylelint = require('stylelint');
 const config = require('./config/assets.config');
 const WebpackWatcher = require('./config/webpack.watcher');
 
+// Change current working dir to root app
+process.chdir(config.appPath);
+
 /**
  * Lint both CSS and JS files
  */
@@ -29,7 +32,10 @@ gulp.task('lint:css', (cb) => {
   stylelint.lint({
     configFile: '.stylelintrc.yml',
     configBasedir: config.appPath,
-    files: `${config.appPath}/**/*.?(vue|scss|css)`,
+    files: [`${config.appPath}/**/*.?(vue|scss|css)`],
+    configOverrides: {
+      ignoreFiles: ['node_modules/**', `${config.outputRelativePath}/**`],
+    },
     syntax: 'scss',
     formatter: 'verbose',
   }).then((lintResult) => {
@@ -58,9 +64,8 @@ gulp.task('lint:css', (cb) => {
  * Uses eslint to lint project's JS files
  */
 gulp.task('lint:js', () =>
-  gulp.src(['**/*.?(js|vue)', '!node_modules/**', `!${config.outputRelativePath}/**`], { cwd: config.appPath })
+  gulp.src(['**/*.?(js|vue)', '!node_modules/**', `!${config.outputRelativePath}/**`])
     .pipe(eslint({
-      cwd: config.appPath,
       configFile: '.eslintrc.yml',
     }))
     .pipe(eslint.format())
