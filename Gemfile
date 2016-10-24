@@ -47,7 +47,6 @@ end
 group :test do
   gem 'database_cleaner', '~> 1.5.3'
   gem 'simplecov', '~> 0.12.0'
-  gem 'coveralls', '~> 0.8.15', require: false
   gem 'codeclimate-test-reporter', '~> 0.6.0', require: false
 
   # Functional testing
