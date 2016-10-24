@@ -3,7 +3,7 @@
 </template>
 
 <style scoped lang="scss">
-  h1 {
+  h1 { // stylelint-disable-line selector-no-type
     font-size: 16px;
     color: #318b22;
   }

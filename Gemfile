@@ -1,12 +1,11 @@
 # frozen_string_literal: true
-
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0.1'
 # Database for Active Record
 gem 'sqlite3', '~> 1.3.12'
-gem 'mysql2', '~> 0.4.4'
+gem 'mysql2', '~> 0.4.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.11'
 
@@ -43,14 +42,14 @@ group :development do
   gem 'spring', '~> 2.0.0'
   gem 'listen', '~> 3.1.5'
   gem 'spring-watcher-listen', '~> 2.0.1'
-
-  # Security enhancement: run bundle-audit
-  gem 'bundler-audit', '~> 0.5.0', require: false
 end
 
 group :test do
   gem 'database_cleaner', '~> 1.5.3'
-  gem 'capybara', '~> 2.10.1'
+  gem 'simplecov', '~> 0.12.0'
+  gem 'coveralls', '~> 0.8.15', require: false
 
-  gem 'selenium-webdriver', '~> 2.53.4'
+  # Functional testing
+  gem 'capybara', '~> 2.10.1'
+  gem 'selenium-webdriver', '~> 3.0.0'
 end

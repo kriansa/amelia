@@ -6,9 +6,12 @@
 </template>
 
 <style scoped lang="scss">
-  h1, h2, h3 {
+  /* stylelint-disable selector-no-type */
+  h1,
+  h2,
+  h3 {
     font-size: 16px;
-    color: blue;
+    color: #ff586f;
   }
 </style>
 
