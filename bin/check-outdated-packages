@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
 
+# Change PWD to app path
+cd $(dirname $0)/..;
+
+echo "== Checking for NPM outdated packages..."
 npm outdated
+
+echo "== Checking for outdated Gem packages..."
 bundle outdated
+
+echo "== Checking for outdated detached Gem packages..."
+bin/bundle outdated

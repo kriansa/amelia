@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'pathname'
 require 'fileutils'
-include FileUtils
+require 'optparse'
 
 # path to your application root.
 APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
@@ -10,18 +10,19 @@ def system!(*args)
   system(*args) || abort("\n== Command #{args} failed ==")
 end
 
-chdir APP_ROOT do
-  # This script is a starting point to setup your application.
-  # Add necessary setup steps to this file.
+# Parses command line options
+without_groups_bundler_argument = ''
+OptionParser.new do |opts|
+  opts.on('-x GROUPS', "--without-gem-groups=GROUPS", "Removes some gem groups from install") do |groups|
+    without_groups_bundler_argument = "--without #{groups}"
+  end
+end.parse!
 
-  puts '== Installing dependencies =='
+FileUtils.chdir APP_ROOT do
+  puts '== Installing Gem dependencies =='
   system! 'gem install bundler --conservative'
-  system('bundle check') || system!('bundle install')
-
-  # puts "\n== Copying sample files =="
-  # unless File.exist?('config/database.yml')
-  #   cp 'config/database.yml.sample', 'config/database.yml'
-  # end
+  system('bin/bundle check') || system!("bin/bundle install #{without_groups_bundler_argument}")
+  system('bin/bundle-detached check') || system!("bin/bundle-detached install #{without_groups_bundler_argument}")
 
   puts "\n== Installing NPM dependencies =="
   system! 'npm install'
@@ -31,7 +32,4 @@ chdir APP_ROOT do
 
   puts "\n== Removing old logs and tempfiles =="
   system! 'bin/rails log:clear tmp:clear'
-
-  puts "\n== Restarting application server =="
-  system! 'bin/rails restart'
 end

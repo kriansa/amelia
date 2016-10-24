@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Change PWD to app path
+cd $(dirname $0)/..
+
+# Error handler
+trap error_handler ERR
+
+function error_handler {
+  EXIT_CODE=$?
+
+  echo
+  echo "An error has occurred!"
+  echo "Exit code: ${EXIT_CODE}"
+  exit 1
+}
+
+# Run the build pipeline
+bin/gulp build
+bin/check-outdated-packages
+brakeman
+bundle-audit
+rubocop
+rspec
