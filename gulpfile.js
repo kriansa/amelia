@@ -18,7 +18,7 @@ gulp.task('lint', ['lint:css', 'lint:js']);
 /**
  * Runs the whole build pipeline
  */
-gulp.task('build', ['clean', 'lint', 'compile']);
+gulp.task('build', ['lint', 'compile']);
 
 /**
  * Default action is build
@@ -106,7 +106,7 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
 /**
  * Compiles all assets
  */
-gulp.task('compile', (cb) => {
+gulp.task('compile', ['clean'], (cb) => {
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const compiler = webpack(require(`${config.appPath}/config/webpack.config.js`));
   compiler.run((err, stats) => {
