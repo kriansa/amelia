@@ -8,11 +8,6 @@ RSpec.configure do |config|
   config.before :suite do
     # Configure warden to work in test mode
     Warden.test_mode!
-
-    # Also, runs the asset compilation before running the suite
-    # so that Capybara can fetch these assets when a JS driver
-    # is required
-    `bundle exec rake assets:precompile`
   end
 
   # Use FactoryGirl helper methods
