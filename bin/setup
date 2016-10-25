@@ -12,9 +12,14 @@ end
 
 # Parses command line options
 without_groups_bundler_argument = ''
+use_npm = false
 OptionParser.new do |opts|
   opts.on('-x GROUPS', "--without-gem-groups=GROUPS", "Removes some gem groups from install") do |groups|
     without_groups_bundler_argument = "--without #{groups}"
+  end
+
+  opts.on("--use-npm", "Uses NPM instead of Yarn") do |groups|
+    use_npm = true
   end
 end.parse!
 
@@ -25,8 +30,12 @@ FileUtils.chdir APP_ROOT do
   system('bin/bundle-detached check') || system!("bin/bundle-detached install #{without_groups_bundler_argument}")
 
   puts "\n== Installing NPM dependencies =="
-  system! 'npm install yarn'
-  system! 'bin/yarn install'
+  if use_npm
+    system! 'npm install'
+  else
+    system! 'npm install yarn'
+    system! 'bin/yarn install'
+  end
 
   puts "\n== Preparing database =="
   system! 'bin/rails db:setup'

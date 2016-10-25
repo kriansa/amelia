@@ -17,7 +17,7 @@ machine:
 
 dependencies:
   override:
-    - bin/setup --without-gem-groups=development
+    - bin/setup --without-gem-groups=development --use-npm
 
 test:
   override:
