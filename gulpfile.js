@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const eslint = require('gulp-eslint');
 const del = require('del');
+const fs = require('fs');
 const webpack = require('webpack');
 const stylelint = require('stylelint');
 const config = require('./config/assets.config');
@@ -75,7 +76,7 @@ gulp.task('lint:js', () =>
 /**
  * Delete all files in the assets output folder
  */
-gulp.task('clean', () => del([`${config.appPath}/${config.outputRelativePath}`]));
+gulp.task('clean', () => del(`${config.appPath}/${config.outputRelativePath}`));
 
 /**
  * Starts webpack in watching mode
@@ -109,6 +110,8 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
 gulp.task('compile', ['clean'], (cb) => {
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const compiler = webpack(require(`${config.appPath}/config/webpack.config.js`));
+  fs.mkdirSync(`${config.appPath}/${config.outputRelativePath}`);
+
   compiler.run((err, stats) => {
     if (err) {
       cb(err.stack || err);

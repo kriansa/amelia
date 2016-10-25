@@ -25,7 +25,8 @@ FileUtils.chdir APP_ROOT do
   system('bin/bundle-detached check') || system!("bin/bundle-detached install #{without_groups_bundler_argument}")
 
   puts "\n== Installing NPM dependencies =="
-  system! 'npm install'
+  system! 'npm install yarn'
+  system! 'bin/yarn install'
 
   puts "\n== Preparing database =="
   system! 'bin/rails db:setup'
