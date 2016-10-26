@@ -1,15 +1,12 @@
 const gulp = require('gulp');
 const gutil = require('gulp-util');
-const eslint = require('gulp-eslint');
 const del = require('del');
 const fs = require('fs');
 const webpack = require('webpack');
 const stylelint = require('stylelint');
+const ESLint = require('eslint');
 const config = require('./config/assets.config');
 const WebpackWatcher = require('./config/webpack.watcher');
-
-// List files for linters to ignore
-const linterIgnorableFiles = ['node_modules/**', `${config.outputRelativePath}/**`, 'vendor/bundle/**'];
 
 // Change current working dir to root app
 process.chdir(config.appPath);
@@ -37,9 +34,6 @@ gulp.task('lint:css', (cb) => {
     configFile: '.stylelintrc.yml',
     configBasedir: config.appPath,
     files: [`${config.appPath}/**/*.?(vue|scss|css)`],
-    configOverrides: {
-      ignoreFiles: linterIgnorableFiles,
-    },
     syntax: 'scss',
     formatter: 'verbose',
   }).then((lintResult) => {
@@ -67,14 +61,26 @@ gulp.task('lint:css', (cb) => {
 /**
  * Uses eslint to lint project's JS files
  */
-gulp.task('lint:js', () =>
-  gulp.src(['**/*.?(js|vue)', ...linterIgnorableFiles.map(p => `!${p}`)])
-    .pipe(eslint({
-      configFile: '.eslintrc.yml',
-    }))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError())
-);
+gulp.task('lint:js', () => {
+  const cli = new ESLint.CLIEngine({
+    extensions: ['.js', '.vue'],
+  });
+
+  const formatter = cli.getFormatter();
+  const output = cli.executeOnFiles(['.']);
+
+  console.log(formatter(output.results)); // eslint-disable-line no-console
+
+  if (output.errorCount >= 1) {
+    const errorWord = output.errorCount === 1 ? 'problem' : 'problems';
+    const error = {
+      showStack: false,
+      toString: () => `Failed with ${gutil.colors.red(output.errorCount)} ${errorWord}`,
+    };
+
+    throw error;
+  }
+});
 
 /**
  * Delete all files in the assets output folder
