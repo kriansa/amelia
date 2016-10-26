@@ -18,7 +18,7 @@ OptionParser.new do |opts|
     without_groups_bundler_argument = "--without #{groups}"
   end
 
-  opts.on("--use-npm", "Uses NPM instead of Yarn") do |groups|
+  opts.on("--use-npm", "Uses NPM instead of Yarn") do
     use_npm = true
   end
 end.parse!
