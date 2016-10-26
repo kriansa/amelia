@@ -37,6 +37,10 @@ FileUtils.chdir APP_ROOT do
     system! 'yarn install'
   end
 
+  # Workaround for node-sass not being properly installed
+  # (https://github.com/sass/node-sass/issues/1579)
+  system! 'npm rebuild node-sass'
+
   puts "\n== Preparing database =="
   system! 'bin/rails db:setup'
 
