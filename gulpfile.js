@@ -8,6 +8,9 @@ const stylelint = require('stylelint');
 const config = require('./config/assets.config');
 const WebpackWatcher = require('./config/webpack.watcher');
 
+// List files for linters to ignore
+const linterIgnorableFiles = ['node_modules/**', `${config.outputRelativePath}/**`, 'vendor/bundle/**'];
+
 // Change current working dir to root app
 process.chdir(config.appPath);
 
@@ -35,7 +38,7 @@ gulp.task('lint:css', (cb) => {
     configBasedir: config.appPath,
     files: [`${config.appPath}/**/*.?(vue|scss|css)`],
     configOverrides: {
-      ignoreFiles: ['node_modules/**', `${config.outputRelativePath}/**`],
+      ignoreFiles: linterIgnorableFiles,
     },
     syntax: 'scss',
     formatter: 'verbose',
@@ -65,7 +68,7 @@ gulp.task('lint:css', (cb) => {
  * Uses eslint to lint project's JS files
  */
 gulp.task('lint:js', () =>
-  gulp.src(['**/*.?(js|vue)', '!node_modules/**', `!${config.outputRelativePath}/**`])
+  gulp.src(['**/*.?(js|vue)', ...linterIgnorableFiles.map(p => `!${p}`)])
     .pipe(eslint({
       configFile: '.eslintrc.yml',
     }))
