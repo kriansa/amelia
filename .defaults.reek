@@ -38,3 +38,7 @@ UnusedParameters:
   TooManyStatements:
     enabled: false
 
+exclude_paths:
+  - vendor/bundle
+  - node_modules
+
