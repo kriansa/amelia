@@ -1,0 +1,63 @@
+{
+  "name": "Amelia",
+  "repository": "https://github.com/kriansa/amelia",
+  "success_url": "/",
+  "env": {
+    "SECRET_KEY_BASE": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret"
+    },
+    "DEVISE_PEPPER": {
+      "description": "A secret key used by Devise.",
+      "generator": "secret"
+    },
+    "BUGSNAG_KEY": {
+      "description": "The secret key used to send logs to devise",
+      "value": ""
+    },
+    "BASE_URL": {
+      "description": "The URL to this app",
+      "value": "http://localhost:3000"
+    },
+    "ASSETS_URL": {
+      "description": "The URL to the assets of this app",
+      "value": "http://localhost:3000"
+    },
+    "SMTP_ADDRESS": {
+      "description": "The SMTP server address",
+      "value": "localhost"
+    },
+    "SMTP_PORT": {
+      "description": "The SMTP port number",
+      "value": "1025"
+    },
+    "SMTP_USERNAME": {
+      "description": "The SMTP authentication username",
+      "value": ""
+    },
+    "SMTP_DOMAIN": {
+      "description": "The SMTP authentication domain",
+      "value": ""
+    },
+    "SMTP_PASSWORD": {
+      "description": "The SMTP authentication password",
+      "value": ""
+    },
+    "SMTP_AUTHENTICATION": {
+      "description": "The SMTP authentication mode",
+      "value": "plain"
+    },
+    "MAIL_FROM": {
+      "description": "The email this app sends from",
+      "value": ""
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 source 'https://rubygems.org'
 
+ruby '2.3.1'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0.1'
 # Database for Active Record
@@ -20,6 +22,9 @@ gem 'bugsnag', '~> 5.0.1'
 gem 'dotenv-rails', '~> 2.1.1'
 # Devise (authentication)
 gem 'devise', '~> 4.2.0'
+
+# Use Passenger as app server
+gem 'passenger', '~> 5.0.30', require: 'phusion_passenger/rack_handler'
 
 # Webpack integration
 gem 'rails_webpack', path: 'vendor/gems'

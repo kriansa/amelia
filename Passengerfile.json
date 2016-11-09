@@ -1,11 +1,12 @@
 {
-  "max_pool_size": 10,
-  "min_instances": 5,
+  "max_pool_size": 5,
+  "min_instances": 2,
   "spawn_method": "smart",
   "daemonize": false,
-  "turbocaching": true,
 
   "nginx_config_template": "config/nginx.conf.erb",
   "log_file": "log/passenger.log",
   "pid_file": "tmp/pids/passenger.pid",
+
+  "max_request_queue_size": 100
 }

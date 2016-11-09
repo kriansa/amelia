@@ -15,5 +15,9 @@ module RailsWebpack
 
     # Define whether we should cache the manifest file (useful in production)
     config.webpack.cache_manifest_file = true
+
+    rake_tasks do
+      load 'tasks/webpack.rake'
+    end
   end
 end

@@ -3,7 +3,6 @@
   "min_instances": 5,
   "spawn_method": "smart",
   "daemonize": true,
-  "turbocaching": true,
 
   "nginx_config_template": "config/nginx.conf.erb",
   "log_file": "log/passenger.log",
@@ -13,6 +12,5 @@
   "ssl_certificate": "config/certs/app-cert.crt",
   "ssl_certificate_key": "config/certs/app-cert.key",
 
-  "max_request_queue_size": 100,
-  "read_timeout": "60000",
+  "max_request_queue_size": 100
 }
