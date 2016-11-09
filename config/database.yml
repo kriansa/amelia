@@ -4,9 +4,21 @@ development: &default
   encoding: utf8
   url: <%= ENV.fetch("DATABASE_URL", "") %>
   pool: <%= Integer(ENV.fetch("DB_POOL", 5)) %>
-  timeout: <%= Integer(ENV.fetch("DB_TIMEOUT", 5000)) %>
-  checkout_timeout: <%= Integer(ENV.fetch("DB_CHECKOUT_TIMEOUT", 5)) %>
   reaping_frequency: <%= Integer(ENV.fetch("DB_REAPING_FREQUENCY", 10)) %>
+
+  # https://github.com/ankane/the-ultimate-guide-to-ruby-timeouts
+  connect_timeout: <%= Integer(ENV.fetch("DB_CONNECT_TIMEOUT", 5)) %>
+  checkout_timeout: <%= Integer(ENV.fetch("DB_CHECKOUT_TIMEOUT", 5)) %>
+  read_timeout: <%= Integer(ENV.fetch("DB_READ_TIMEOUT", 5)) %>
+  write_timeout: <%= Integer(ENV.fetch("DB_WRITE_TIMEOUT", 5)) %>
+
+  # Statement timeouts
+  #
+  # variables:
+  #   # For PostgreSQL
+  #   statement_timeout: 250 # ms
+  #   # For MySQL >= 5.7.8
+  #   max_execution_time: 250 # ms
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

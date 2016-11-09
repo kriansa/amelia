@@ -6,7 +6,6 @@ ruby '2.3.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0.1'
 # Database for Active Record
-gem 'sqlite3', '~> 1.3.12'
 gem 'mysql2', '~> 0.4.5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.11'

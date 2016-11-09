@@ -3,9 +3,33 @@
   "repository": "https://github.com/kriansa/amelia",
   "success_url": "/",
   "env": {
-    "SECRET_KEY_BASE": {
-      "description": "A secret key for verifying the integrity of signed cookies.",
-      "generator": "secret"
+    "DATABASE_URL": {
+      "description": "The database URL",
+      "value": "mysql2://root@localhost:3306/amelia_dev"
+    },
+    "DB_POOL": {
+      "description": "The database connection pool size",
+      "value": "5"
+    },
+    "DB_REAPING_FREQUENCY": {
+      "description": "Frequency in seconds to periodically run the Reaper",
+      "value": "5"
+    },
+    "DB_CONNECT_TIMEOUT": {
+      "description": "Maximum time to open the connection",
+      "value": "5"
+    },
+    "DB_CHECKOUT_TIMEOUT": {
+      "description": "Maximum time to checkout a connection from the pool",
+      "value": "5"
+    },
+    "DB_READ_TIMEOUT": {
+      "description": "Maximum time to receive data after connected",
+      "value": "5"
+    },
+    "DB_WRITE_TIMEOUT": {
+      "description": "Maximum time to send data after connected",
+      "value": "5"
     },
     "DEVISE_PEPPER": {
       "description": "A secret key used by Devise.",
