@@ -81,8 +81,8 @@ module.exports = {
     loaders: {
       js: 'babel',
       css: ExtractTextPlugin.extract('css?sourceMap'),
-      sass: ExtractTextPlugin.extract('css!sass?sourceMap'),
-      scss: ExtractTextPlugin.extract('css!sass?sourceMap'),
+      sass: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
+      scss: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
     },
   },
 
@@ -125,7 +125,7 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/,
-        loader: ExtractTextPlugin.extract('css!sass?sourceMap'),
+        loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
       },
     ],
   },

@@ -3,6 +3,10 @@
 module RailsWebpack
   module ActionView
     module Helpers
+
+      # View helper that adds methods that translates
+      # webpack-compiled files into the Rails views
+      #
       module WebpackHelper
 
         # Adds the Vue application compiled assets (JS and CSS) to this page
@@ -13,7 +17,7 @@ module RailsWebpack
         # * {app_name}.css
         #
         # @param [String] app_name The name of Vue application
-        #
+        # @return [String]
         def frontend_app_asset_tags(app_name)
           assets = []
 
@@ -49,7 +53,7 @@ module RailsWebpack
         # E.g.: index.js => index-6389243j43g423483.js
         #
         def path_to_webpack_asset(source, extname)
-          raise ArgumentError, 'nil is not a valid asset source' if source.nil?
+          raise ArgumentError, 'nil is not a valid asset source' unless source
           raise AssetNotFound, "Asset '#{source}.#{extname}' not found!" unless webpack_asset_exists?(source, extname)
 
           "/assets/#{manifest["#{source}.#{extname}"]}"
@@ -64,8 +68,7 @@ module RailsWebpack
         # Fetch the manifest file in a Hash
         #
         def manifest
-          # TODO: Think about a way to cache this file using:
-          # Rails.configuration.webpack.cache_manifest_file
+          # TODO: Think about a way to cache this file using: Rails.configuration.webpack.cache_manifest_file
           JSON.parse(File.read(Rails.root.join('public/assets/manifest.json')))
 
         rescue Errno::ENOENT

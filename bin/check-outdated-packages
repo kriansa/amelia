@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
+# TODO: Make this output acceptable as a CodeClimate engine
+
 # Change PWD to app path
 cd $(dirname $0)/..;
 
 echo "== Checking for NPM outdated packages..."
-npm outdated
+npm outdated || true
 
 echo "== Checking for outdated Gem packages..."
-bundle outdated
+bin/bundle outdated || true
 
 echo "== Checking for outdated detached Gem packages..."
-bin/bundle outdated
+bin/bundle-detached outdated || true

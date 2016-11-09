@@ -18,7 +18,7 @@ function WebpackWatcher(config) {
 WebpackWatcher.prototype.start = function start() {
   this.chokidarWatcher = chokidar.watch([...this.watchFolders, ...this.watchFiles], {
     cwd: this.basePath,
-    ignored: /[\/]\./,
+    ignored: /[/]\./,
     ignoreInitial: true,
   });
 

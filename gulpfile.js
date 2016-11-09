@@ -96,7 +96,7 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
     webpackConfigFile: 'config/webpack.config.js',
     writeErrorFile: 'tmp/webpack-error.txt',
     watchFolders: [`${config.entryPointsRelativePath}/**/*.*`],
-    watchFiles: ['package.json', 'config/webpack.*.js', 'config/assets.config.js'],
+    watchFiles: ['package.json', 'config/webpack.config.js', 'config/assets.config.js'],
     onCompile: ({ messages, time }) => {
       const totalTime = gutil.colors.magenta(`${time || '?'} ms`);
 

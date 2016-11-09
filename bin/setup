@@ -12,14 +12,9 @@ end
 
 # Parses command line options
 without_groups_bundler_argument = ''
-use_npm = false
 OptionParser.new do |opts|
   opts.on('-x GROUPS', "--without-gem-groups=GROUPS", "Removes some gem groups from install") do |groups|
     without_groups_bundler_argument = "--without #{groups}"
-  end
-
-  opts.on("--use-npm", "Uses NPM instead of Yarn") do
-    use_npm = true
   end
 end.parse!
 
@@ -30,12 +25,8 @@ FileUtils.chdir APP_ROOT do
   system('bin/bundle-detached check') || system!("bin/bundle-detached install #{without_groups_bundler_argument}")
 
   puts "\n== Installing NPM dependencies =="
-  if use_npm
-    system! 'npm install'
-  else
-    system! 'npm install -g yarn'
-    system! 'yarn install'
-  end
+  system('npm list -g yarn') || system!('npm install -g yarn')
+  system! 'yarn install'
 
   # Workaround for node-sass not being properly installed
   # (https://github.com/sass/node-sass/issues/1579)

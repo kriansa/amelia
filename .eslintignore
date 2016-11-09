@@ -3,3 +3,6 @@ vendor/bundle/**
 
 # Output folder, matches with config/assets.config.js
 public/assets
+
+# Test coverage output
+coverage

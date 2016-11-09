@@ -52,16 +52,16 @@ module Amelia
     ActiveSupport.halt_callback_chains_on_return_false = false
 
     # Allow us to change the default generators
-    config.generators do |g|
-      g.orm               :active_record
-      g.template_engine   :erb
-      g.javascript_engine :coffee
-      g.test_framework    :rspec #, fixture: false, :fixture_replacement => :factory_girl
-      g.integration_tool  :rspec #, fixture: false
-      g.stylesheets       false
-      g.javascripts       false
-      g.helper            true
-      g.factory_girl      false
+    config.generators do |gen|
+      gen.orm               :active_record
+      gen.template_engine   :erb
+      gen.javascript_engine :coffee
+      gen.test_framework    :rspec #, fixture: false, :fixture_replacement => :factory_girl
+      gen.integration_tool  :rspec #, fixture: false
+      gen.stylesheets       false
+      gen.javascripts       false
+      gen.helper            true
+      gen.factory_girl      false
     end
 
     # Mailer settings

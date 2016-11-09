@@ -23,3 +23,7 @@ EmptyLinesAroundClassBody:
 
 Rails:
   Enabled: true
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'app/controllers/**/*'

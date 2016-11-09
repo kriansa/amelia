@@ -18,7 +18,13 @@ function error_handler {
 # Run the build pipeline
 bin/gulp build
 bin/check-outdated-packages
-brakeman
-bundle-audit
-rubocop
-rspec
+bin/brakeman
+bin/bundle-audit
+bin/rspec
+bin/rubocop
+bin/reek
+
+# Send coverage report analysis to CodeClimate, if in CI
+if ! [[ -z $CODECLIMATE_REPO_TOKEN ]]; then
+  bin/codeclimate-test-reporter
+fi

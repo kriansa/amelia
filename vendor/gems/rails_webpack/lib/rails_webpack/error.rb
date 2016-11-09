@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module RailsWebpack
+  # Base error class for this lib
   class Error < ::StandardError; end
 
   # Error thrown when a given asset is not found
