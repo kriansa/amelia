@@ -15,8 +15,11 @@ chdir APP_ROOT do
   # Add necessary update steps to this file.
 
   puts '== Installing dependencies =='
-  system! 'gem install bundler --conservative'
-  system('bundle check') || system!('bundle install')
+  system!('bin/bundle install')
+  system!('bin/bundle-detached install')
+
+  puts "\n== Updating NPM packages =="
+  system! 'yarn install'
 
   puts "\n== Updating database =="
   system! 'bin/rails db:migrate'
@@ -24,6 +27,5 @@ chdir APP_ROOT do
   puts "\n== Removing old logs and tempfiles =="
   system! 'bin/rails log:clear tmp:clear'
 
-  puts "\n== Restarting application server =="
-  system! 'bin/rails restart'
+  puts "\nNow restart Rails and gulp watcher!"
 end
