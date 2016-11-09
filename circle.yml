@@ -2,6 +2,7 @@ general:
   branches:
     only:
       - master
+      - staging
       - /(feature|hotfix|release)\/.*/
 
 machine:
