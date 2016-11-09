@@ -23,12 +23,12 @@ test:
   override:
     - bin/test
 
-# deployment:
-#   production:
-#     branch: master
-#     commands:
-#       - ./deploy_prod.sh
-#   staging:
-#     tag: /release\/.*/
-#     commands:
-#       - ./deploy_staging.sh
+deployment:
+  staging:
+    branch: staging
+    heroku:
+      appname: $HEROKU_APP_NAME
+  # production:
+  #   branch: master
+  #   commands:
+  #     - ./deploy_prod.sh
