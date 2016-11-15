@@ -21,8 +21,8 @@ end.parse!
 FileUtils.chdir APP_ROOT do
   puts '== Installing Gem dependencies =='
   system! 'gem install bundler --conservative'
-  system('bin/bundle check') || system!("bin/bundle install #{without_groups_bundler_argument}")
-  system('bin/bundle-detached check') || system!("bin/bundle-detached install #{without_groups_bundler_argument}")
+  system('bin/bundle check') || system!("bin/bundle install -j4 #{without_groups_bundler_argument}")
+  system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 #{without_groups_bundler_argument}")
 
   puts "\n== Installing NPM dependencies =="
   system('npm list -g yarn') || system!('npm install -g yarn')

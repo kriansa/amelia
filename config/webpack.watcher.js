@@ -70,9 +70,9 @@ WebpackWatcher.prototype.formatOutput = function formatOutput(stats, err) {
   const resultObject = { messages: [], time: null };
 
   if (err) {
-    resultObject.messages = [err.stack || err]; // eslint-disable-line no-console
+    resultObject.messages = [err.stack || err];
     if (err.details) {
-      resultObject.messages.push(err.details); // eslint-disable-line no-console
+      resultObject.messages.push(err.details);
     }
 
     return resultObject;

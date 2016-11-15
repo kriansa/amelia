@@ -53,9 +53,9 @@ end
 group :test do
   gem 'database_cleaner', '~> 1.5.3', require: false
   gem 'simplecov', '~> 0.12.0', require: false
-  gem 'codeclimate-test-reporter', '~> 1.0.1', require: false
+  gem 'codeclimate-test-reporter', '~> 1.0.3', require: false
 
   # Functional testing
   gem 'capybara', '~> 2.10.1'
-  gem 'selenium-webdriver', '~> 3.0.0'
+  gem 'selenium-webdriver', '~> 3.0.1'
 end

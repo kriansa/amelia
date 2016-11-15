@@ -74,14 +74,18 @@
     "MAIL_FROM": {
       "description": "The email this app sends from",
       "value": ""
+    },
+    "HEROKU_APP_NAME": {
+      "description": "The application name for heroku deployment",
+      "value": "myappname"
     }
   },
   "buildpacks": [
     {
-      "url": "heroku/ruby"
+      "url": "heroku/nodejs"
     },
     {
-      "url": "heroku/nodejs"
+      "url": "heroku/ruby"
     }
   ]
 }

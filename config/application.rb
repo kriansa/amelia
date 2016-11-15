@@ -55,7 +55,7 @@ module Amelia
     config.generators do |gen|
       gen.orm               :active_record
       gen.template_engine   :erb
-      gen.javascript_engine :coffee
+      gen.javascript_engine :js
       gen.test_framework    :rspec #, fixture: false, :fixture_replacement => :factory_girl
       gen.integration_tool  :rspec #, fixture: false
       gen.stylesheets       false
