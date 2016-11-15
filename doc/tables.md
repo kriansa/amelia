@@ -1,10 +1,15 @@
+# User
+* name
+* email
+* password
+
 # Student
 * name
 * birth_date
 * place_of_birth_city_id
 * place_of_birth_state_id
 * assistance_priority_const
-* status_id
+* student_status_id
 * student_school_id
 
 # Contact
@@ -12,7 +17,7 @@
 * birth_date
 * place_of_birth_city_id
 * place_of_birth_state_id
-* education_level_id
+* education_level_const
 * work_status_const
 * contact_employment_id
 
@@ -93,7 +98,6 @@
 * phone_carrier_id
 
 # ContactEmployment
-* contact_id
 * occupation_id
 * sallary
 
