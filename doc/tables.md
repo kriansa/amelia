@@ -3,7 +3,7 @@
 * birth_date
 * place_of_birth_city_id
 * place_of_birth_state_id
-* assistance_priority_id
+* assistance_priority_const
 * status_id
 * student_school_id
 
@@ -13,7 +13,7 @@
 * place_of_birth_city_id
 * place_of_birth_state_id
 * education_level_id
-* work_status_id
+* work_status_const
 * contact_employment_id
 
 # ContactPhone
@@ -25,19 +25,23 @@
 # ContactAddress
 * contact_id
 * address_id
-* address_type_id
+* type_const (address type)
 
 # StudentContactRelationship
+* student_id
+* contact_id
 * relationship_type_id
+
+# RelationshipType
+* name
 
 # StudentRelationship
 * student_1_id
 * student_2_id
-* student_relationship_type_id
 
 # StudentPhone
 * student_id
-* phone_id
+* phone_number
 * phone_type_id
 * phone_carrier_id
 
@@ -45,15 +49,6 @@
 * name
 
 # PhoneType
-* name
-
-# PhoneNumber
-* phone
-
-# StudentRelationshipType
-* name
-
-# RelationshipType
 * name
 
 # City
@@ -72,48 +67,35 @@
 * state_id
 * city_id
 
-# AddressType
-* name
-
-# AssistancePriority
-* name
-
 # StudentStatus
 * student_id
-* enrollment_status_id
+* enrollment_status_const
 
 # StudentAddress
 * student_id
 * student_address
-* address_type_id
-
-# EnrollmentStatus
-* name
+* type_const (tipo de endereco)
 
 # StudentSchool
 * student_id
 * school_id
-* school_shift_id
-* school_level_id
-
-# SchoolLevel
-* name
-
-# SchoolShift
-* name
+* school_shift_const
+* school_level_const
 
 # School
 * name
 * address_id
-* phone_number_id
 
-# WorkStatus
-* name
+# SchoolPhone
+* school_id
+* phone_number
+* phone_type_id
+* phone_carrier_id
 
 # ContactEmployment
 * contact_id
 * occupation_id
-* income_value
+* sallary
 
 # Occupation
 * name
