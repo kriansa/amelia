@@ -25,7 +25,7 @@ FileUtils.chdir APP_ROOT do
   system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 #{without_groups_bundler_argument}")
 
   puts "\n== Installing NPM dependencies =="
-  system('npm list -g yarn') || system!('npm install -g yarn')
+  system('npm list -g yarn') || system!('npm install -g yarn@0.16.1')
   system! 'yarn install'
 
   # Workaround for node-sass not being properly installed
