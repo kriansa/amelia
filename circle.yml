@@ -9,16 +9,16 @@ machine:
   timezone:
     America/Sao_Paulo
   ruby:
-    version: 2.3.1
+    version: 2.3.3
   node:
-    version: 7.1.0
+    version: 7.2.1
   environment:
     RACK_ENV: test
     NODE_ENV: production
 
 dependencies:
   override:
-    - bin/setup --without-gem-groups=development
+    - NO_DEV_GEMS=1 bin/setup
 
 test:
   override:

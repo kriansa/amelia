@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'pathname'
 require 'fileutils'
-include FileUtils
 
 # path to your application root.
 APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
@@ -10,13 +9,13 @@ def system!(*args)
   system(*args) || abort("\n== Command #{args} failed ==")
 end
 
-chdir APP_ROOT do
-  # This script is a way to update your development environment automatically.
-  # Add necessary update steps to this file.
+# Disable installation of development gems if desired
+no_dev_gems_argument = ENV['NO_DEV_GEMS'] ? '--without development' : ''
 
+FileUtils.chdir APP_ROOT do
   puts '== Installing dependencies =='
-  system!('bin/bundle install')
-  system!('bin/bundle-detached install')
+  system('bin/bundle check') || system!("bin/bundle install -j4 #{no_dev_gems_argument}")
+  system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 #{no_dev_gems_argument}")
 
   puts "\n== Updating NPM packages =="
   system! 'yarn install'
