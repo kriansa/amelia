@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const chokidar = require('chokidar');
-const decache = require('decache');
 const fs = require('fs');
 
 function WebpackWatcher(config) {
@@ -52,12 +51,14 @@ WebpackWatcher.prototype.handleCompiledResponse = function handleCompiledRespons
     this.onCompile(output);
   }
 
-  // Dumps errors and warnings to a file
-  if (stats.hasErrors() || stats.hasWarnings()) {
-    fs.writeFile(errorFile, output.messages.join('\n'));
+  // Dumps errors into a file
+  if (stats.hasErrors()) {
+    fs.writeFileSync(errorFile, [output.errors, output.warnings].join('\n'));
   } else {
     // Delete the webpack-error file if it exist
-    fs.access(errorFile, fs.constants.F_OK, (fsErr) => { if (!fsErr) { fs.unlink(errorFile); } });
+    fs.access(errorFile, fs.constants.F_OK, (fsErr) => {
+      if (!fsErr) { fs.unlinkSync(errorFile); }
+    });
   }
 
   // Exit if it's a fatal error
@@ -67,13 +68,14 @@ WebpackWatcher.prototype.handleCompiledResponse = function handleCompiledRespons
 };
 
 WebpackWatcher.prototype.formatOutput = function formatOutput(stats, err) {
-  const resultObject = { messages: [], time: null };
+  const resultObject = { errors: null, warnings: null, time: null };
 
   if (err) {
-    resultObject.messages = [err.stack || err];
+    const errors = [err.stack || err];
     if (err.details) {
-      resultObject.messages.push(err.details);
+      errors.push(err.details);
     }
+    resultObject.errors = errors.join('\n');
 
     return resultObject;
   }
@@ -96,11 +98,7 @@ WebpackWatcher.prototype.formatOutput = function formatOutput(stats, err) {
   }).time;
 
   if (stats.hasWarnings()) {
-    resultObject.messages.push(stats.toString('minimal'));
-  }
-
-  if (stats.hasErrors()) {
-    resultObject.messages.push(stats.toString({
+    resultObject.warnings = stats.toString({
       context: this.basePath,
       colors: true,
       hash: false,
@@ -116,7 +114,27 @@ WebpackWatcher.prototype.formatOutput = function formatOutput(stats, err) {
       source: false,
       errorDetails: false,
       chunkOrigins: false,
-    }));
+    }).trim();
+  }
+
+  if (stats.hasErrors()) {
+    resultObject.errors = stats.toString({
+      context: this.basePath,
+      colors: true,
+      hash: false,
+      version: false,
+      timings: false,
+      assets: false,
+      chunks: false,
+      chunkModules: false,
+      modules: false,
+      children: false,
+      cached: false,
+      reasons: false,
+      source: false,
+      errorDetails: false,
+      chunkOrigins: false,
+    }).trim();
   }
 
   return resultObject;
@@ -124,9 +142,9 @@ WebpackWatcher.prototype.formatOutput = function formatOutput(stats, err) {
 
 WebpackWatcher.prototype.getCompiler = function getCompiler() {
   const configFile = `${this.basePath}/${this.webpackConfigFile}`;
-  decache(configFile);
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  return webpack(require(configFile));
+  // eslint-disable-next-line no-eval
+  const config = eval(fs.readFileSync(configFile, { encoding: 'utf-8' }));
+  return webpack(config);
 };
 
 module.exports = WebpackWatcher;

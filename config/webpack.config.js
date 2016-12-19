@@ -5,14 +5,40 @@ const glob = require('glob');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const config = require('./assets.config');
 const Bourbon = require('bourbon');
 const BourbonNeat = require('bourbon-neat');
+const config = require('./assets.config');
 
 if (!process.env.NODE_ENV) {
   console.error('NODE_ENV variable is not set!'); // eslint-disable-line no-console
   process.exit(1);
 }
+
+const extractCssLoader = ExtractTextPlugin.extract({
+  loader: {
+    loader: 'css-loader',
+    options: {
+      sourceMap: true,
+    },
+  },
+});
+
+const extractSassLoader = ExtractTextPlugin.extract({
+  loader: [
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: true,
+      },
+    },
+    {
+      loader: 'sass-loader',
+      options: {
+        sourceMap: true,
+      },
+    },
+  ],
+});
 
 let plugins = [
   // Clean files not created by the current build
@@ -22,7 +48,8 @@ let plugins = [
   new webpack.NoErrorsPlugin(),
 
   // Extract CSS
-  new ExtractTextPlugin('[name]-[hash].css', {
+  new ExtractTextPlugin({
+    filename: '[name]-[sha256:contenthash:hex:64].css',
     allChunks: true,
   }),
 
@@ -34,7 +61,19 @@ let plugins = [
   // Set NODE_ENV to every module
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: `'${process.env.NODE_ENV}'`,
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    },
+  }),
+
+  new webpack.LoaderOptionsPlugin({
+    options: {
+      sassLoader: {
+        includePaths: [
+          `${config.appPath}/${config.stylesheetsRelativePath}`,
+          ...BourbonNeat.includePaths,
+          ...Bourbon.includePaths,
+        ],
+      },
     },
   }),
 ];
@@ -47,6 +86,8 @@ try {
 } catch (e) {} // eslint-disable-line no-empty
 
 module.exports = {
+  context: config.appPath,
+
   // Entry points
   entry: glob.sync(`${config.appPath}/${config.entryPointsRelativePath}/**/*.*`)
     .reduce((result, entry) => {
@@ -68,7 +109,11 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['', '.js', '.vue'],
+    extensions: ['.js'],
+  },
+
+  performance: {
+    maxEntrypointSize: 400000,
   },
 
   // Optimize the generation of SourceMaps
@@ -77,55 +122,63 @@ module.exports = {
 
   plugins,
 
-  vue: {
-    loaders: {
-      js: 'babel',
-      css: ExtractTextPlugin.extract('css?sourceMap'),
-      sass: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
-      scss: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
-    },
-  },
-
-  // options for sass-loader
-  sassLoader: {
-    includePaths: [BourbonNeat.includePaths, Bourbon.includePaths],
-  },
-
   module: {
-    loaders: [
-      // Local JS files
+    rules: [
+      /**
+       * Project files
+       */
       {
         test: /\.vue$/,
         exclude: /node_modules/,
-        loader: 'vue',
+        loader: 'vue-loader',
+        options: {
+          loaders: {
+            js: 'babel-loader',
+            css: extractCssLoader,
+            sass: extractSassLoader,
+            scss: extractSassLoader,
+          },
+        },
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'babel',
-      },
-
-      // Local image files
-      {
-        test: /\.(jpe?g|gif|png|svg|woff2?|ttf|eot)$/,
-        exclude: /node_modules/,
-        loader: 'file?context=app/assets&name=[path][name]-[sha256:hash:hex:64].[ext]',
-      },
-
-      // Module image files
-      {
-        test: /node_modules\/.+\.(jpe?g|gif|png|svg|woff2?|ttf|eot)$/,
-        loader: 'file?context=node_modules&name=[path][name]-[sha256:hash:hex:64].[ext]',
-      },
-
-      // Local CSS files
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap'),
+        loader: 'babel-loader',
       },
       {
         test: /\.s[ac]ss$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap'),
+        exclude: /node_modules/,
+        loader: extractSassLoader,
+      },
+      {
+        test: /\.(jpe?g|gif|png|svg|woff2?|ttf|eot)$/,
+        exclude: /node_modules/,
+        loader: 'file-loader',
+        options: {
+          context: 'app/assets',
+          name: '[path][name]-[sha256:hash:hex:64].[ext]',
+        },
+      },
+
+      /**
+       * Both project and vendor CSS are handled in the same way
+       */
+      {
+        test: /\.css$/,
+        loader: extractCssLoader,
+      },
+
+      /**
+       * Handling with vendor assets (node_modules)
+       * They are outputted into `_vendor` folder
+       */
+      {
+        test: /node_modules\/.+\.(jpe?g|gif|png|svg|woff2?|ttf|eot)$/,
+        loader: 'file-loader',
+        options: {
+          context: 'node_modules',
+          name: '_vendor/[path][name]-[sha256:hash:hex:64].[ext]',
+        },
       },
     ],
   },

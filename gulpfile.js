@@ -7,6 +7,8 @@ const stylelint = require('stylelint');
 const ESLint = require('eslint');
 const config = require('./config/assets.config');
 const WebpackWatcher = require('./config/webpack.watcher');
+const spawn = require('child_process').spawn;
+const path = require('path');
 
 // Change current working dir to root app
 process.chdir(config.appPath);
@@ -19,7 +21,7 @@ gulp.task('lint', ['lint:css', 'lint:js']);
 /**
  * Runs the whole build pipeline
  */
-gulp.task('build', ['lint', 'compile']);
+gulp.task('build', ['lint', 'test', 'compile']);
 
 /**
  * Default action is build
@@ -82,7 +84,46 @@ gulp.task('lint:js', () => {
   }
 });
 
-gulp.task('test:unit', () => {
+/**
+ * Run all test suite and coverage
+ */
+gulp.task('test', ['test:suite', 'test:coverage']);
+
+/**
+ * Run the test suite
+ */
+gulp.task('test:suite', (cb) => {
+  const args = [
+    `${path.dirname(require.resolve('mocha'))}/bin/_mocha`,
+    '--recursive',
+    'app/assets/javascripts/tests',
+  ];
+
+  const proc = spawn(process.execPath, args, { stdio: 'inherit' });
+  proc.on('exit', (code, signal) => {
+    // Informs gulp that we've exited
+    cb();
+
+    process.on('exit', () => {
+      if (signal) {
+        process.kill(process.pid, signal);
+      } else {
+        process.exit(code);
+      }
+    });
+  });
+
+  // terminate children.
+  process.on('SIGINT', () => {
+    proc.kill('SIGINT'); // calls runner.abort()
+    proc.kill('SIGTERM'); // if that didn't work, we're probably in an infinite loop, so make it die.
+  });
+});
+
+/**
+ * Run the test coverage
+ */
+gulp.task('test:coverage', () => {
 
 });
 
@@ -101,13 +142,16 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
     writeErrorFile: 'tmp/webpack-error.txt',
     watchFolders: [`${config.entryPointsRelativePath}/**/*.*`],
     watchFiles: ['package.json', 'config/webpack.config.js', 'config/assets.config.js'],
-    onCompile: ({ messages, time }) => {
+    onCompile: ({ errors, warnings, time }) => {
       const totalTime = gutil.colors.magenta(`${time || '?'} ms`);
 
-      if (messages.length) {
-        messages.forEach((m) => { console.log(m); }); // eslint-disable-line no-console
-        const errorWord = messages.length > 1 ? 'errors' : 'error';
-        gutil.log('Compilation failed with', gutil.colors.red(messages.length), errorWord, 'in', totalTime);
+      if (warnings) {
+        console.log(`\n${warnings}\n`); // eslint-disable-line no-console
+      }
+
+      if (errors) {
+        console.log(`\n${errors}\n`); // eslint-disable-line no-console
+        gutil.log('Compilation failed in', totalTime);
       } else {
         gutil.log('Compiled in', totalTime);
       }

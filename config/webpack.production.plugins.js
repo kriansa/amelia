@@ -10,6 +10,7 @@ module.exports = [
     minRatio: 0.8,
   }),
   new webpack.optimize.UglifyJsPlugin({
+    sourceMap: true,
     compress: {
       warnings: false,
       screw_ie8: true,
@@ -17,6 +18,5 @@ module.exports = [
       drop_debugger: true,
     },
   }),
-  new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.optimize.DedupePlugin(),
 ];
