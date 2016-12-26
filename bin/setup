@@ -31,9 +31,9 @@ FileUtils.chdir APP_ROOT do
     end
   end
 
-  puts "\n== Preparing database =="
-  system! 'bin/rails db:setup'
-
   puts "\n== Running bin/update =="
   system! 'bin/update'
+
+  puts "\n== Preparing database =="
+  system! 'bin/rails db:setup'
 end
