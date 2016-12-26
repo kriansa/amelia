@@ -63,6 +63,7 @@ GEM
       ffi (~> 1.0, >= 1.0.11)
     codeclimate-test-reporter (1.0.3)
       simplecov
+    coderay (1.1.1)
     concurrent-ruby (1.0.2)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
@@ -112,9 +113,12 @@ GEM
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     orm_adapter (0.5.0)
-    passenger (5.0.30)
-      rack
-      rake (>= 0.8.1)
+    pry (0.11.0.pre2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+    pry-byebug (3.4.2)
+      byebug (~> 9.0)
+      pry (~> 0.10)
     public_suffix (2.0.4)
     rack (2.0.1)
     rack-test (0.6.3)
@@ -223,7 +227,8 @@ DEPENDENCIES
   listen (~> 3.1.5)
   mysql2 (~> 0.4.5)
   nokogiri (~> 1.6.8.1)
-  passenger (~> 5.0.30)
+  pry (~> 0.11.0.pre2)
+  pry-byebug (~> 3.4.2)
   rails (~> 5.0.0.1)
   rails_webpack!
   rspec-rails (~> 3.5.2)

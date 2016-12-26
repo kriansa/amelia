@@ -11,14 +11,14 @@ machine:
   ruby:
     version: 2.3.3
   node:
-    version: 7.2.1
+    version: 7.3.0
   environment:
     RACK_ENV: test
     NODE_ENV: production
 
 dependencies:
   override:
-    - NO_DEV_GEMS=1 bin/setup
+    - ONLY_CI_GEMS=1 bin/setup
 
 test:
   override:

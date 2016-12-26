@@ -22,9 +22,6 @@ gem 'dotenv-rails', '~> 2.1.1'
 # Devise (authentication)
 gem 'devise', '~> 4.2.0'
 
-# Use Passenger as app server
-gem 'passenger', '~> 5.0.30', require: 'phusion_passenger/rack_handler'
-
 # Webpack integration
 gem 'rails_webpack', path: 'vendor/gems'
 
@@ -40,6 +37,8 @@ end
 group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 9.0.6'
+  gem 'pry', '~> 0.11.0.pre2'
+  gem 'pry-byebug', '~> 3.4.2'
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '~> 3.4.0'

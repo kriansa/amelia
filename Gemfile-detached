@@ -5,6 +5,9 @@ ruby '2.3.3'
 
 group :production do
   gem 'whenever', '~> 0.9.7'
+
+  # Use Passenger as app server
+  gem 'passenger', '~> 5.0.30'
 end
 
 group :development do
