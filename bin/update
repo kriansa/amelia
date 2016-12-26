@@ -18,6 +18,8 @@ no_gems_argument = if ENV['ONLY_CI_GEMS']
                      ''
                    end
 
+disable_migrations = ENV.key?('DISABLE_MIGRATIONS')
+
 FileUtils.chdir APP_ROOT do
   puts '== Installing dependencies =='
   system('bin/bundle check') || system!("bin/bundle install -j4 #{no_gems_argument}")
@@ -26,8 +28,10 @@ FileUtils.chdir APP_ROOT do
   puts "\n== Updating NPM packages =="
   system! 'yarn install'
 
-  puts "\n== Updating database =="
-  system! 'bin/rails db:migrate'
+  unless disable_migrations
+    puts "\n== Updating database =="
+    system! 'bin/rails db:migrate'
+  end
 
   puts "\n== Removing old logs and tempfiles =="
   system! 'bin/rails log:clear tmp:clear'

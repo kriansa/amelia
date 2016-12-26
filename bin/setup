@@ -31,7 +31,7 @@ FileUtils.chdir APP_ROOT do
   end
 
   puts "\n== Running bin/update =="
-  system! 'bin/update'
+  system! 'DISABLE_MIGRATIONS=1 bin/update'
 
   puts "\n== Preparing database =="
   system! 'bin/rails db:setup'
