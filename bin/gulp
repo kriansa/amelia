@@ -7,5 +7,5 @@
 # - "development"
 
 export NODE_ENV=${NODE_ENV:-${RAILS_ENV:-${RACK_ENV:-development}}}
-export PATH=$(npm bin):$PATH
+export PATH=$(npm bin 2> /dev/null):$PATH
 gulp $@
