@@ -9,24 +9,26 @@ module RailsWebpack
       #
       module WebpackHelper
 
-        # Adds the Vue application compiled assets (JS and CSS) to this page
+        # adds the vue application compiled assets (js and css) to this page
         #
-        # The pattern in which webpack is already setup for is:
+        # the pattern in which webpack is already setup for is:
         #
         # * {app_name}.js
         # * {app_name}.css
         #
-        # @param [String] app_name The name of Vue application
+        # @param [String] app_name the name of vue application
         # @return [String]
-        def frontend_app_asset_tags(app_name)
+        def frontend_app_asset_tags(app_name = nil)
           assets = []
+
+          app_name = "#{params[:controller]}/#{params[:action]}" unless app_name
 
           assets = assets.push(webpack_script_tag(app_name)) if webpack_asset_exists?(app_name, :js)
           assets = assets.push(webpack_stylesheet_tag(app_name)) if webpack_asset_exists?(app_name, :css)
 
-          # rubocop:disable Rails/OutputSafety
+          # rubocop:disable rails/outputsafety
           assets.join("\n").html_safe
-          # rubocop:enable Rails/OutputSafety
+          # rubocop:enable rails/outputsafety
         end
 
         # Returns the script tag pointing to the webpack-compiled script

@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= app_title %></title>
-    <%= csrf_meta_tags %>
-    <%= frontend_app_asset_tags "#{params[:controller]}/#{params[:action]}" %>
-  </head>
+  <%= render 'layouts/application/head' %>
 
   <body>
-    <%== flash_messages %>
+    <%= flash_messages %>
 
     <%= yield %>
   </body>
