@@ -22,7 +22,6 @@ FileUtils.chdir APP_ROOT do
 
   puts "\n== Installing Yarn =="
   system('npm list -g yarn') || system!('npm install -g yarn')
-  system('nodenv rehash') unless system('yarn')
   unless system('which yarn')
     if system('which nodenv')
       system!('nodenv rehash')
