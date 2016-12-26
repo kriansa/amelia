@@ -8,6 +8,10 @@
 
 ## Description
 
+## Getting Started
+
+### How to create a new feature
+
 ## Goals
 
 #### Have a high quality software
@@ -27,12 +31,16 @@
   * ESLint
 * SCSS/CSS
   * Stylelint
-  
+
 ### CodeClimate
 
 ### CircleCI
 
 ## Architecture
+
+#### Entity Relationship Model (ERM)
+
+You can access it [here](doc/tables.md)
 
 #### Detached front-end and back-end
 #### Event sourcing architecture
