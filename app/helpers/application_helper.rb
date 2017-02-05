@@ -3,7 +3,7 @@
 module ApplicationHelper
   # Defines the application title
   def app_title
-    "Amelia"
+    'Amelia'
   end
 
   # Adds flash messages to the layout, depending on +flash+ variable
@@ -13,8 +13,8 @@ module ApplicationHelper
       <p class="alert">#{flash[:alert]}</p>
     HTML
 
-    # rubocop:disable rails/outputsafety
+    # rubocop:disable Rails/OutputSafety
     output.html_safe
-    # rubocop:enable rails/outputsafety
+    # rubocop:enable Rails/OutputSafety
   end
 end

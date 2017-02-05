@@ -17,7 +17,6 @@
 
 <script>
   import 'bootstrap/dist/css/bootstrap.css';
-  import Turbolinks from 'turbolinks';
   import Sample from '../../components/sample.vue';
 
   export default {
@@ -26,7 +25,6 @@
         message: 'Hello World!',
       };
     },
-    beforeMount() { Turbolinks.start(); },
     components: { Sample },
   };
 </script>
