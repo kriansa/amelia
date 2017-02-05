@@ -5,9 +5,23 @@ const glob = require('glob');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const Dotenv = require('dotenv');
 const Bourbon = require('bourbon');
 const BourbonNeat = require('bourbon-neat');
 const config = require('./assets.config');
+
+// Load .env settings
+const parsedEnv = (function loadDotEnvFile() {
+  const fileString = fs.readFileSync(`${config.appPath}/.env`, { encoding: 'utf-8' });
+  // Ensure that it works with `export` suffix on variables
+  const parsedObj = Dotenv.parse(fileString.replace(/export\s+/g, ''));
+
+  return Object.entries(parsedObj)
+    .map(([k, v]) => [`process.env.${k}`, JSON.stringify(v)])
+    // eslint-disable-next-line no-param-reassign
+    .reduce((obj, [k, v]) => { obj[k] = v; return obj; }, {})
+  ;
+}());
 
 if (!process.env.NODE_ENV) {
   console.error('NODE_ENV variable is not set!'); // eslint-disable-line no-console
@@ -15,7 +29,7 @@ if (!process.env.NODE_ENV) {
 }
 
 const extractCssLoader = ExtractTextPlugin.extract({
-  loader: {
+  use: {
     loader: 'css-loader',
     options: {
       sourceMap: true,
@@ -24,7 +38,7 @@ const extractCssLoader = ExtractTextPlugin.extract({
 });
 
 const extractSassLoader = ExtractTextPlugin.extract({
-  loader: [
+  use: [
     {
       loader: 'css-loader',
       options: {
@@ -45,7 +59,7 @@ let plugins = [
   new WebpackCleanupPlugin({ quiet: true }),
 
   // Do not allow files with errors to continue the compilation
-  new webpack.NoErrorsPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
 
   // Extract CSS
   new ExtractTextPlugin({
@@ -59,14 +73,13 @@ let plugins = [
   }),
 
   // Set NODE_ENV to every module
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    },
-  }),
+  new webpack.DefinePlugin(Object.assign(parsedEnv, {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+  })),
 
   new webpack.LoaderOptionsPlugin({
     options: {
+      context: config.appPath,
       sassLoader: {
         includePaths: [
           `${config.appPath}/${config.stylesheetsRelativePath}`,

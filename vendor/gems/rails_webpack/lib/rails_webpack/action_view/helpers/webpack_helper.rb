@@ -26,9 +26,9 @@ module RailsWebpack
           assets = assets.push(webpack_script_tag(app_name)) if webpack_asset_exists?(app_name, :js)
           assets = assets.push(webpack_stylesheet_tag(app_name)) if webpack_asset_exists?(app_name, :css)
 
-          # rubocop:disable rails/outputsafety
+          # rubocop:disable Rails/OutputSafety
           assets.join("\n").html_safe
-          # rubocop:enable rails/outputsafety
+          # rubocop:enable Rails/OutputSafety
         end
 
         # Returns the script tag pointing to the webpack-compiled script

@@ -6,6 +6,7 @@
 
 # Ignore bundler gems
 /vendor/bundle
+/.bundle
 
 # Ignore the default SQLite database.
 /db/*.sqlite3
@@ -35,6 +36,3 @@ public/assets
 
 # Code coverage reports
 /coverage
-
-# Vim session file
-Session.vim

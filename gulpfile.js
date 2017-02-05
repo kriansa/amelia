@@ -158,7 +158,13 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
     },
   });
 
-  watcher.start();
+  try {
+    watcher.start();
+  } catch (e) {
+    gutil.log(gutil.colors.red.bold('Error while loading Webpack Watcher:'));
+    console.log(e.toString()); // eslint-disable-line no-console
+    console.log(e.stack); // eslint-disable-line no-console
+  }
 });
 
 /**

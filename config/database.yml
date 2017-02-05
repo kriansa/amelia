@@ -1,8 +1,8 @@
 # Database connection
 #
-development: &default
+default: &default
   encoding: utf8
-  url: <%= ENV.fetch("DATABASE_URL", "") %>
+  url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_unknown
   pool: <%= Integer(ENV.fetch("DB_POOL", 5)) %>
   reaping_frequency: <%= Integer(ENV.fetch("DB_REAPING_FREQUENCY", 10)) %>
 
@@ -20,9 +20,11 @@ development: &default
   #   # For MySQL >= 5.7.8
   #   max_execution_time: 250 # ms
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
+development: *default
+  url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_dev
+
 test: *default
+  url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_test
 
 production: *default
+  url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_prod

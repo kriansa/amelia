@@ -5,7 +5,7 @@
   "env": {
     "DATABASE_URL": {
       "description": "The database URL",
-      "value": "mysql2://root@localhost:3306/amelia_dev"
+      "value": "mysql2://root@localhost:3306/amelia"
     },
     "DB_POOL": {
       "description": "The database connection pool size",

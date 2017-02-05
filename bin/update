@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'pathname'
 require 'fileutils'
 
@@ -22,8 +24,8 @@ disable_migrations = ENV.key?('DISABLE_MIGRATIONS')
 
 FileUtils.chdir APP_ROOT do
   puts '== Installing dependencies =='
-  system('bin/bundle check') || system!("bin/bundle install -j4 #{no_gems_argument}")
-  system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 #{no_gems_argument}")
+  system('bin/bundle check') || system!("bin/bundle install -j4 --quiet --path vendor/bundle #{no_gems_argument}")
+  system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 --quiet --path vendor/bundle #{no_gems_argument}")
 
   puts "\n== Updating NPM packages =="
   system! 'yarn install'
