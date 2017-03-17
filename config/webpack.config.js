@@ -6,8 +6,6 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const Dotenv = require('dotenv');
-const Bourbon = require('bourbon');
-const BourbonNeat = require('bourbon-neat');
 const config = require('./assets.config');
 
 // Load .env settings
@@ -49,6 +47,10 @@ const extractSassLoader = ExtractTextPlugin.extract({
       loader: 'sass-loader',
       options: {
         sourceMap: true,
+        includePaths: [
+          `${config.appPath}/${config.stylesheetsRelativePath}`,
+          ...config.sassIncludePaths,
+        ],
       },
     },
   ],
@@ -77,16 +79,10 @@ let plugins = [
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   })),
 
+  // Keep legacy support to plugins built for Webpack 1
   new webpack.LoaderOptionsPlugin({
     options: {
       context: config.appPath,
-      sassLoader: {
-        includePaths: [
-          `${config.appPath}/${config.stylesheetsRelativePath}`,
-          ...BourbonNeat.includePaths,
-          ...Bourbon.includePaths,
-        ],
-      },
     },
   }),
 ];

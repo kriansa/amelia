@@ -11,7 +11,7 @@ machine:
   ruby:
     version: 2.3.3
   node:
-    version: 7.3.0
+    version: 7.7.3
   environment:
     RACK_ENV: test
     NODE_ENV: production

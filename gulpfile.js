@@ -37,7 +37,7 @@ gulp.task('lint:css', (cb) => {
     configBasedir: config.appPath,
     files: [`${config.appPath}/**/*.?(vue|scss|css)`],
     syntax: 'scss',
-    formatter: 'verbose',
+    formatter: 'string',
   }).then((lintResult) => {
     console.log(lintResult.output); // eslint-disable-line no-console
 

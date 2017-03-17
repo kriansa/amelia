@@ -1,5 +1,12 @@
 ---
-extends: stylelint-config-primer
+extends: stylelint-config-standard
+rules:
+  - indentation: 2
+  - unit-whitelist:
+    - em
+    - rem
+    - %
+    - s
 processors:
   -
     - stylelint-processor-arbitrary-tags
