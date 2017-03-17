@@ -20,11 +20,14 @@ default: &default
   #   # For MySQL >= 5.7.8
   #   max_execution_time: 250 # ms
 
-development: *default
+development:
+  <<: *default
   url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_dev
 
-test: *default
+test:
+  <<: *default
   url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_test
 
-production: *default
+production:
+  <<: *default
   url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_prod
