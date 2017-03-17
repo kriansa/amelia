@@ -4,8 +4,8 @@
  * such as monitoring or analytics tools, and
  * global behaviors such as Turbolinks
  *
- * This should *not* be used to share inforrmation
- * or code among libraries.
+ * This should *not* be used to share information
+ * or code among components.
  */
 import Turbolinks from 'turbolinks';
 import GoogleAnalytics from '../lib/google-analytics';
