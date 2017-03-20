@@ -1,14 +1,11 @@
+/* eslint-disable global-require */
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const del = require('del');
-const fs = require('fs');
-const webpack = require('webpack');
-const stylelint = require('stylelint');
-const ESLint = require('eslint');
+const fs = require('fs.extra');
 const config = require('./config/assets.config');
 const WebpackWatcher = require('./config/webpack.watcher');
 const spawn = require('child_process').spawn;
-const path = require('path');
 
 // Change current working dir to root app
 process.chdir(config.appPath);
@@ -32,6 +29,8 @@ gulp.task('default', ['build']);
  * Uses stylelint to lint project's CSS & SCSS files
  */
 gulp.task('lint:css', (cb) => {
+  const stylelint = require('stylelint');
+
   stylelint.lint({
     configFile: '.stylelintrc.yml',
     configBasedir: config.appPath,
@@ -64,14 +63,24 @@ gulp.task('lint:css', (cb) => {
  * Uses eslint to lint project's JS files
  */
 gulp.task('lint:js', () => {
+  const ESLint = require('eslint');
   const cli = new ESLint.CLIEngine({
     extensions: ['.js', '.vue'],
   });
 
-  const formatter = cli.getFormatter();
+  const consoleFormatter = cli.getFormatter();
+  const htmlFormatter = cli.getFormatter('html');
   const output = cli.executeOnFiles(['.']);
 
-  console.log(formatter(output.results)); // eslint-disable-line no-console
+  // Save HTML report
+  const outputPath = 'report/javascript/eslint.html';
+  if (!fs.existsSync('report/javascript')) {
+    fs.mkdirRecursiveSync('report/javascript');
+  }
+  fs.writeFileSync(outputPath, htmlFormatter(output.results));
+
+  // Output the result
+  console.log(consoleFormatter(output.results)); // eslint-disable-line no-console
 
   if (output.errorCount >= 1) {
     const errorWord = output.errorCount === 1 ? 'problem' : 'problems';
@@ -87,50 +96,72 @@ gulp.task('lint:js', () => {
 /**
  * Run all test suite and coverage
  */
-gulp.task('test', ['test:suite', 'test:coverage']);
+gulp.task('test', ['test:run']);
+
+/**
+ * This function returns a new function to be used as
+ * a gulp callback.
+ */
+function executableRunner(args) {
+  return (cb) => {
+    const proc = spawn(process.execPath, args, { stdio: 'inherit', env: { NODE_ENV: 'test' } });
+    proc.on('exit', (code, signal) => {
+      // Informs gulp that we've exited
+      cb();
+
+      process.on('exit', () => {
+        if (signal) {
+          process.kill(process.pid, signal);
+        } else {
+          process.exit(code);
+        }
+      });
+    });
+
+    // terminate children.
+    process.on('SIGINT', () => {
+      proc.kill('SIGINT'); // calls runner.abort()
+      proc.kill('SIGTERM'); // if that didn't work, we're probably in an infinite loop, so make it die.
+    });
+  };
+}
 
 /**
  * Run the test suite
  */
-gulp.task('test:suite', (cb) => {
-  const args = [
-    `${path.dirname(require.resolve('mocha'))}/bin/_mocha`,
-    '--recursive',
-    'app/assets/javascripts/tests',
-  ];
-
-  const proc = spawn(process.execPath, args, { stdio: 'inherit' });
-  proc.on('exit', (code, signal) => {
-    // Informs gulp that we've exited
-    cb();
-
-    process.on('exit', () => {
-      if (signal) {
-        process.kill(process.pid, signal);
-      } else {
-        process.exit(code);
-      }
-    });
-  });
-
-  // terminate children.
-  process.on('SIGINT', () => {
-    proc.kill('SIGINT'); // calls runner.abort()
-    proc.kill('SIGTERM'); // if that didn't work, we're probably in an infinite loop, so make it die.
-  });
-});
+gulp.task('test:watch', executableRunner([
+  'node_modules/.bin/karma',
+  'start',
+  'config/karma.conf.js',
+]));
 
 /**
  * Run the test coverage
  */
-gulp.task('test:coverage', () => {
+gulp.task('test:run', executableRunner([
+  'node_modules/.bin/karma',
+  'start',
+  'config/karma.conf.js',
+  '--single-run',
+]));
 
-});
+/**
+ * Delete all generated assets and reports
+ */
+gulp.task('clean', ['clean:assets', 'clean:reports']);
 
 /**
  * Delete all files in the assets output folder
  */
-gulp.task('clean', () => del(`${config.appPath}/${config.outputRelativePath}`));
+gulp.task('clean:assets', () => del(`${config.appPath}/${config.outputRelativePath}`));
+
+
+/**
+ * Delete all files in the reports output folder
+ */
+gulp.task('clean:reports', () => {
+  del([`${config.appPath}/report/ruby`, `${config.appPath}/report/javascript`]);
+});
 
 /**
  * Starts webpack in watching mode
@@ -171,6 +202,7 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
  * Compiles all assets
  */
 gulp.task('compile', ['clean'], (cb) => {
+  const webpack = require('webpack');
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const compiler = webpack(require(`${config.appPath}/config/webpack.config.js`));
   fs.mkdirSync(`${config.appPath}/${config.outputRelativePath}`);

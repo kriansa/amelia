@@ -28,6 +28,14 @@ test:
   <<: *default
   url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_test
 
+ci:
+  <<: *default
+  url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_ci
+
+staging:
+  <<: *default
+  url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_stg
+
 production:
   <<: *default
   url: <%= ENV.fetch("DATABASE_URL_PREFIX", "") %>_prod

@@ -10,13 +10,11 @@ module.exports = [
     minRatio: 0.8,
   }),
   new webpack.optimize.UglifyJsPlugin({
-    sourceMap: true,
     compress: {
-      warnings: false,
+      warnings: true,
       screw_ie8: true,
       drop_console: true,
       drop_debugger: true,
     },
   }),
-  new webpack.optimize.DedupePlugin(),
 ];

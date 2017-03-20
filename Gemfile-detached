@@ -7,19 +7,19 @@ group :production do
   gem 'whenever', '~> 0.9.7'
 
   # Use Passenger as app server
-  gem 'passenger', '~> 5.0.30'
+  gem 'passenger', '~> 5.1.2'
 end
 
 group :development do
   gem 'mailcatcher', '~> 0.6.5'
-  gem 'foreman', '~> 0.82.0'
+  gem 'foreman', '~> 0.83.0'
 end
 
 group :development, :ci do
-  gem 'rubocop', '~> 0.45.0'
-  gem 'reek', '~> 4.5.2'
+  gem 'rubocop', '~> 0.47.1'
+  gem 'reek', '~> 4.5.6'
   gem 'bundler-audit', '~> 0.5.0'
-  gem 'brakeman', '~> 3.4.1'
-  gem 'capistrano', '~> 3.6.1'
-  gem 'capistrano-rails', '~> 1.2.0'
+  gem 'brakeman', '~> 3.5.0'
+  gem 'capistrano', '~> 3.8.0'
+  gem 'capistrano-rails', '~> 1.2.3'
 end

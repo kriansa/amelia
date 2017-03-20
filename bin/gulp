@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# The application 'gulp' is installed as part of a npm package
+# and this file is here to facilitate running it.
+#
+
 # The `NODE_ENV` var is one of the following, in the order:
 # - NODE_ENV
 # - RAILS_ENV

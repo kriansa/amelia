@@ -34,5 +34,6 @@ npm-debug.log
 # Assets
 public/assets
 
-# Code coverage reports
-/coverage
+# Project reports
+/report
+!/report/index.html

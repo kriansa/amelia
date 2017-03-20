@@ -3,5 +3,12 @@
     ["es2015", { "modules": false }]
   ],
   "plugins": ["transform-runtime", "transform-class-properties"],
-  "comments": false
+  "comments": false,
+  "env": {
+    "test": {
+      "plugins": [
+        ["istanbul", { "exclude": [ "app/assets/javascripts/tests/**/*.spec.js" ] }]
+      ]
+    }
+  }
 }

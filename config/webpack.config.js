@@ -94,6 +94,17 @@ try {
   plugins = plugins.concat(require(`${config.appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`));
 } catch (e) {} // eslint-disable-line no-empty
 
+// Optimize the generation of SourceMaps
+// More info: https://webpack.github.io/docs/build-performance.html
+let devtool;
+if (process.env.NODE_ENV === 'production') {
+  devtool = 'source-map';
+} else if (process.env.NODE_ENV === 'test') {
+  devtool = 'inline-source-map';
+} else {
+  devtool = 'cheap-module-source-map';
+}
+
 module.exports = {
   context: config.appPath,
 
@@ -125,9 +136,7 @@ module.exports = {
     maxEntrypointSize: 400000,
   },
 
-  // Optimize the generation of SourceMaps
-  // More info: https://webpack.github.io/docs/build-performance.html
-  devtool: process.env.NODE_ENV === 'production' ? 'source-map' : 'cheap-module-source-map',
+  devtool,
 
   plugins,
 

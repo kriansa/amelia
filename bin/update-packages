@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'pathname'
+
+# Path to your application root.
+APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+# Disable installation of some gems if desired
+environment = ENV.fetch('RAILS_ENV', ENV.fetch('RACK_ENV', ENV.fetch('RUBY_ENV', 'development')))
+no_gems_argument =
+  case environment
+  when :production, :staging
+    '--without development test'
+  when :ci
+    '--without development'
+  else
+    ''
+  end
+
+Dir.chdir APP_ROOT do
+  puts "\n== Updating Rubygems =="
+  system! 'gem update --system'
+
+  puts "\n== Updating Bundler =="
+  system! 'gem update bundler'
+
+  puts "\n== Updating Yarn =="
+  system! 'npm update -g yarn'
+
+  puts "\n== Installing dependencies =="
+  system('bin/bundle check') || system!("bin/bundle install -j4 --quiet --path vendor/bundle #{no_gems_argument}")
+  system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 --quiet --path vendor/bundle #{no_gems_argument}")
+
+  puts "\n== Updating NPM packages =="
+  system('yarn check') || system!('yarn install')
+end

@@ -71,11 +71,11 @@ module RailsWebpack
         #
         def manifest
           # TODO: Think about a way to cache this file using: Rails.configuration.webpack.cache_manifest_file
-          JSON.parse(File.read(Rails.root.join('public/assets/manifest.json')))
+          JSON.parse(File.read(Rails.root.join('public', 'assets', 'manifest.json')))
 
         rescue Errno::ENOENT
           # Checks whether there was an error during the assets building
-          if File.exist?(Rails.root.join('tmp/webpack-error.txt'))
+          if File.exist?(Rails.root.join('tmp', 'webpack-error.txt'))
             raise AssetCompilationFailure, 'Error while trying to compile the assets, please check webpack build logs!'
           end
 

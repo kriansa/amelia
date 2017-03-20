@@ -1,40 +1,146 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
+#!/usr/bin/env sh
 
-require 'pathname'
-require 'fileutils'
+# Returns a console-colored red string
+function red {
+  echo "\033[31m$1\033[0m"
+}
 
-# path to your application root.
-APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
+# Returns a console-colored green string
+function green {
+  echo "\033[0;32m$1\033[0m"
+}
 
-def system!(*args)
-  system(*args) || abort("\n== Command #{args} failed ==")
-end
+# Returns a console-colored yellow string
+function yellow {
+  echo "\033[0;33m$1\033[0m"
+}
 
-FileUtils.chdir APP_ROOT do
-  puts '== Installing Bundler =='
-  system! 'gem install bundler --conservative'
-  unless system('which bundle')
-    if system('which rbenv')
-      system!('rbenv rehash')
+# Execute the command and finish with error if it fails
+function execute {
+  $1
+  if [[ $? != 0 ]]; then
+    echo
+    red "Command '${1}' failed!"
+    exit 1
+  fi
+}
+
+# Checks whether a given command is successful or not
+# Returns a string "true" or "false"
+function command_is_valid {
+  $1 > /dev/null 2>&1
+
+  if [[ $? == 0 ]]; then
+    echo "true"
+  else
+    echo "false"
+  fi
+}
+
+# Validates and try to install a dependency
+function validate_dependency {
+  name=$1
+  command=$2
+  version=$3
+  install_command=$4
+
+  app_name=$(echo $name $version | xargs)
+
+  if [[ $version != "" && $($command) =~ $version ]] ||
+    [[ $version == "" && $(command_is_valid "$command") == "true" ]]
+  then
+    green " ✔  ${app_name} is already installed"
+    return 0
+  else
+    if [[ $install_command != "" ]]; then
+      yellow " ➤  ${app_name} is not installed. Installing..."
+
+      $install_command
+
+      if [[ $? == 0 ]]; then
+        green " ✔  ${app_name} successfully installed!"
+        return 0
+      else
+        red " ✖  ${app_name} could not be installed. Please, check the logs."
+      fi
     else
-      raise 'Could not execute `bundle` command after installing bundler gem!'
-    end
-  end
+      red " ✖  ${app_name} is not installed"
+    fi
 
-  puts "\n== Installing Yarn =="
-  system('npm list -g yarn') || system!('npm install -g yarn')
-  unless system('which yarn')
-    if system('which nodenv')
-      system!('nodenv rehash')
-    else
-      raise 'Could not execute `yarn` command after installing yarn npm package!'
-    end
-  end
+    return 1
+  fi
+}
 
-  puts "\n== Running bin/update =="
-  system! 'DISABLE_MIGRATIONS=1 bin/update'
+# Path to your application root.
+APP_ROOT=$(cd $(dirname $0)/..; pwd)
+cd $APP_ROOT
 
-  puts "\n== Preparing database =="
-  system! 'bin/rails db:setup'
-end
+# Checks for system dependencies
+validate_dependency "Ruby" "ruby --version" "$(cat .ruby-version)"
+if [[ $? != 0 ]]; then
+  # Checks whether rbenv is installed
+  if [[ $(command_is_valid "rbenv --version") == "false" ]]; then
+    echo "Ruby is not installed. If you have rbenv and ruby-build, I can install it automatically for you!"
+    echo "Please, check out doc/setup.md for more information."
+    exit 1
+  fi
+
+  # Good, rbenv is installed. Let's check for ruby-build
+  if [[ $(rbenv commands | grep install) == "" ]]; then
+    echo "It seems that you have rbenv but you don't have ruby-build. I can install Ruby for you, if you have ruby-build."
+    echo "Please, check out doc/setup.md for more information."
+    exit 1
+  fi
+
+  execute "rbenv install"
+fi
+
+validate_dependency "NodeJS" "node --version" "$(cat .node-version)"
+if [[ $? != 0 ]]; then
+  # Checks whether nodenv is installed
+  if [[ $(command_is_valid "nodenv --version") == "false" ]]; then
+    echo "NodeJS is not installed. If you have nodenv and node-build, I can install it automatically for you!"
+    echo "Please, check out doc/setup.md for more information."
+    exit 1
+  fi
+
+  # Good, nodenv is installed. Let's check for node-build
+  if [[ $(nodenv commands | grep install) == "" ]]; then
+    echo "It seems that you have nodenv but you don't have nodenv-build. I can install NodeJS for you, if you have node-build."
+    echo "Please, check out doc/setup.md for more information."
+    exit 1
+  fi
+
+  execute "nodenv install"
+fi
+
+# Install bundler
+validate_dependency "Bundler" "bundle --version" "" "gem install --conservative"
+if [[ $(command_is_valid "which bundle") == "false" ]]; then
+  if [[ $(command_is_valid "rbenv") ]]; then
+    execute "rbenv rehash"
+  else
+    red "Could not execute `bundle` command after installing bundler gem!"
+  fi
+fi
+
+# Install yarn
+validate_dependency "Yarn" "yarn --version" "" "npm install -g yarn"
+if [[ $(command_is_valid "which yarn") == "false" ]]; then
+  if [[ $(command_is_valid "nodenv") ]]; then
+    execute "nodenv rehash"
+  else
+    red "Could not execute `yarn` command after installing yarn npm package!"
+  fi
+fi
+
+# Check for PhantomJS
+validate_dependency "PhantomJS" "phantomjs --version" "" "brew install phantomjs"
+
+yellow " ➤  Installing dependencies..."
+execute "bin/update-packages"
+
+yellow " ➤  Preparing the database..."
+execute "bin/rails db:setup"
+
+green " ✔  Setup complete!"

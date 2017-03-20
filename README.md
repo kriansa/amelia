@@ -53,7 +53,17 @@ You can access it [here](doc/tables.md)
 #### Document-driven development
 #### Test-driven development
 
+#### Pre-commit hook
+
+I suggest that you use the command `bin/test` on your pre-commit hook, so that you can check the code quality before commiting.
+
 ## Release/Deployment
+
+## Dependencies
+
+* Ruby
+* NodeJS
+* PhantomJS (for Poltergeist)
 
 #### Continuous Integration / Deployment
 

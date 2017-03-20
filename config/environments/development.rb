@@ -14,6 +14,9 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
+  # Enable serving static files from the `/public` folder
+  config.public_file_server.enabled = true
+
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join('tmp/caching-dev.txt').exist?
     config.action_controller.perform_caching = true
@@ -28,19 +31,14 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
-
-  config.action_mailer.perform_caching = false
-
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
-  # Raises error for missing translations
-  # config.action_view.raise_on_missing_translations = true
+  # Dump schema after migrations.
+  config.active_record.dump_schema_after_migration = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
@@ -49,6 +47,6 @@ Rails.application.configure do
   # Webpack
   #
 
-  # Define which folders the webpack watcher should watch for changes
+  # We don't want to cache manifest file in dev
   config.webpack.cache_manifest_file = false
 end

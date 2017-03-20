@@ -13,12 +13,12 @@ machine:
   node:
     version: 7.7.3
   environment:
-    RACK_ENV: test
-    NODE_ENV: production
+    RACK_ENV: ci
+    NODE_ENV: test
 
 dependencies:
   override:
-    - ONLY_CI_GEMS=1 bin/setup
+    - bin/setup
 
 test:
   override:

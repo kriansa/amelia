@@ -5,6 +5,5 @@ class HomeController < ApplicationController
     head :ok, content_type: 'text/html', layout: false
   end
 
-  def index
-  end
+  def index; end
 end

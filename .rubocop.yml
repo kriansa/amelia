@@ -24,6 +24,9 @@ EmptyLinesAroundClassBody:
 Rails:
   Enabled: true
 
+Bundler/OrderedGems:
+  Enabled: false
+
 Style/ClassAndModuleChildren:
   Exclude:
     - 'app/controllers/**/*'

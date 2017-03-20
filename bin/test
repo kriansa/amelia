@@ -1,30 +1,97 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+# Returns a console-colored red string
+function red {
+  echo "\033[31m$1\033[0m"
+}
+
+# Returns a console-colored green string
+function green {
+  echo "\033[0;32m$1\033[0m"
+}
+
+# Returns a console-colored green string
+function yellow {
+  echo "\033[0;33m$1\033[0m"
+}
+
+# Run a specific component of the test suite
+function run {
+  component=$1
+  description=$2
+  command=$3
+
+  yellow " ➤  Running $component - $description"
+  $command
+
+  if [[ $? != 0 ]]; then
+    red " ✖  '$component' failed! Please, check the logs."
+    exit 1
+  fi
+
+  green " ✔  $component passed!"
+}
+
+function rspec {
+  bin/rspec --format html --out report/ruby/rspec.html > /dev/null
+  bin/rspec
+}
+
+function gulp_build {
+  bin/gulp build
+  status_code=$?
+  bin/gulp clean:assets
+
+  return $status_code
+}
+
+function brakeman {
+  text_report_file=tmp/.brakeman.txt
+  bin/brakeman -o $text_report_file -o report/ruby/brakeman.html
+  status_code=$?
+  cat $text_report_file && rm $text_report_file
+
+  return $status_code
+}
+
+function bundler_audit {
+  bin/bundle-audit update
+
+  echo
+  bin/bundle-audit check --verbose > report/ruby/bundle-audit.txt
+  bin/bundle-audit check --verbose
+}
+
+function rubocop {
+  bin/rubocop -f html -o report/ruby/rubocop.html -f progress
+}
+
+function reek {
+  bin/reek -f html > report/ruby/reek.html
+  bin/reek
+}
+
+function codeclimate_test_reporter {
+  bin/codeclimate-test-reporter report/ruby/coverage/.resultset.json
+}
+
+# Start the suite
 
 # Change PWD to app path
 cd $(dirname $0)/..
 
-# Error handler
-trap error_handler ERR
-
-function error_handler {
-  EXIT_CODE=$?
-
-  echo
-  echo "An error has occurred!"
-  echo "Exit code: ${EXIT_CODE}"
-  exit 1
-}
-
 # Run the build pipeline
-bin/gulp build
-bin/check-outdated-packages
-bin/brakeman
-bin/bundle-audit
-bin/rspec
-bin/rubocop
-bin/reek
+run "gulp build" "Build pipeline (lint, test and compile) for the frontend" "gulp_build"
+run "check-outdated-packages" "Check for outdated packages" "bin/check-outdated-packages"
+run "RSpec" "Ruby test suite" "rspec"
+run "Brakeman" "Static analysis security scanner for Ruby on Rails" "brakeman"
+run "bundler-audit" "Patch-level verification tool for Bundler" "bundler_audit"
+run "Rubocop" "Ruby static code analyzer" "rubocop"
+run "Reek" "Code smell detector for Ruby" "reek"
 
 # Send coverage report analysis to CodeClimate, if in CI
 if ! [[ -z $CODECLIMATE_REPO_TOKEN ]]; then
-  bin/codeclimate-test-reporter
+  run "codeclimate" "Send Ruby test reports to codeclimate" "codeclimate_test_reporter"
 fi
+
+green " ✔  Test suite complete! Reports were generated in 'report' folder."
