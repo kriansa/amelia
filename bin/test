@@ -1,18 +1,18 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Returns a console-colored red string
 function red {
-  echo "\033[31m$1\033[0m"
+  echo -e "\033[31m$1\033[0m"
 }
 
 # Returns a console-colored green string
 function green {
-  echo "\033[0;32m$1\033[0m"
+  echo -e "\033[0;32m$1\033[0m"
 }
 
 # Returns a console-colored green string
 function yellow {
-  echo "\033[0;33m$1\033[0m"
+  echo -e "\033[0;33m$1\033[0m"
 }
 
 # Run a specific component of the test suite
