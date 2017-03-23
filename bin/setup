@@ -115,7 +115,7 @@ if [[ $? != 0 ]]; then
 fi
 
 # Install bundler
-validate_dependency "Bundler" "bundle --version" "" "gem install --conservative"
+validate_dependency "Bundler" "bundle --version" "" "gem install bundler --conservative"
 if [[ $(command_is_valid "which bundle") == "false" ]]; then
   if [[ $(command_is_valid "rbenv") ]]; then
     execute "rbenv rehash"
