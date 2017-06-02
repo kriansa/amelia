@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'support/simple_cov_settings'
 
 # Start gathering info for the coverage report
