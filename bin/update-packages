@@ -37,5 +37,5 @@ Dir.chdir APP_ROOT do
   system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 --quiet --path vendor/bundle #{no_gems_argument}")
 
   puts "\n== Updating NPM packages =="
-  system('yarn check') || system!('yarn install')
+  system('bin/yarn check') || system!('bin/yarn install')
 end
