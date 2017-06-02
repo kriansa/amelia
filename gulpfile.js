@@ -201,11 +201,15 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
 /**
  * Compiles all assets
  */
-gulp.task('compile', ['clean'], (cb) => {
+gulp.task('compile', (cb) => {
   const webpack = require('webpack');
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const compiler = webpack(require(`${config.appPath}/config/webpack.config.js`));
-  fs.mkdirSync(`${config.appPath}/${config.outputRelativePath}`);
+  const outputDir = `${config.appPath}/${config.outputRelativePath}`;
+
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir);
+  }
 
   compiler.run((err, stats) => {
     if (err) {

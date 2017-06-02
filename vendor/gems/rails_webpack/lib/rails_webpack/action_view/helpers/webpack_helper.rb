@@ -9,14 +9,14 @@ module RailsWebpack
       #
       module WebpackHelper
 
-        # adds the vue application compiled assets (js and css) to this page
+        # Adds the application compiled assets (js and css) to this page
         #
-        # the pattern in which webpack is already setup for is:
+        # The pattern in which webpack is already setup for is:
         #
         # * {app_name}.js
         # * {app_name}.css
         #
-        # @param [String] app_name the name of vue application
+        # @param [String] app_name The name of application
         # @return [String]
         def frontend_app_asset_tags(app_name = nil)
           assets = []
@@ -52,19 +52,24 @@ module RailsWebpack
 
         # Retrieves the webpack-compiled asset
         #
-        # E.g.: index.js => index-6389243j43g423483.js
+        # E.g.: index.js => /assets/index-6389243j43g423483.js
         #
-        def path_to_webpack_asset(source, extname)
-          raise ArgumentError, 'nil is not a valid asset source' unless source
-          raise AssetNotFound, "Asset '#{source}.#{extname}' not found!" unless webpack_asset_exists?(source, extname)
+        def path_to_webpack_asset(source, extname = nil)
+          source = "#{source}.#{extname}" if extname
 
-          "/assets/#{manifest["#{source}.#{extname}"]}"
+          raise ArgumentError, 'nil is not a valid asset source' unless source
+          raise AssetNotFound, "Asset '#{source}' not found!" unless webpack_asset_exists?(source)
+
+          config = Rails.configuration
+
+          "#{config.relative_url_root}/#{config.webpack.asset_base_path}/#{manifest[source]}"
         end
 
         # Checks whether a given webpack asset exists or not
         #
-        def webpack_asset_exists?(source, extname)
-          manifest["#{source}.#{extname}"].present?
+        def webpack_asset_exists?(source, extname = nil)
+          source = "#{source}.#{extname}" if extname
+          manifest[source].present?
         end
 
         # Fetch the manifest file in a Hash
@@ -72,7 +77,6 @@ module RailsWebpack
         def manifest
           # TODO: Think about a way to cache this file using: Rails.configuration.webpack.cache_manifest_file
           JSON.parse(File.read(Rails.root.join('public', 'assets', 'manifest.json')))
-
         rescue Errno::ENOENT
           # Checks whether there was an error during the assets building
           if File.exist?(Rails.root.join('tmp', 'webpack-error.txt'))
@@ -81,7 +85,6 @@ module RailsWebpack
 
           raise AssetManifestNotFound, 'Asset manifest file was not found. Please, run the asset build job!'
         end
-
       end
     end
   end

@@ -57,6 +57,15 @@ You can access it [here](doc/tables.md)
 
 I suggest that you use the command `bin/test` on your pre-commit hook, so that you can check the code quality before commiting.
 
+## Startup settings
+
+Rails provides a few settings to be set on runtime, you just need to provide these environment varialbes to configure them:
+
+* RAILS_SERVE_STATIC_FILES - Enable serving assets on folder `/public`
+* RAILS_LOG_TO_STDOUT - Enable logging to stdout
+* RAILS_RELATIVE_URL_ROOT - Enables deploying rails in a subfolder
+* RAILS_ENABLE_DEV_CACHING - On development environment, enable controller caching (default is true only for production).
+
 ## Release/Deployment
 
 ## Dependencies

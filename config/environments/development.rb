@@ -14,16 +14,13 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  # Enable serving static files from the `/public` folder
-  config.public_file_server.enabled = true
-
   # Enable/disable caching. By default caching is disabled.
-  if Rails.root.join('tmp/caching-dev.txt').exist?
+  if ENV['RAILS_ENABLE_DEV_CACHING']
     config.action_controller.perform_caching = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => 'public, max-age=172800'
+      'Cache-Control' => "public, max-age=#{2.days.seconds.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -43,6 +40,9 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Enable serving static files from the `/public` folder
+  config.public_file_server.enabled = true
 
   # Webpack
   #

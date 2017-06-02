@@ -1,5 +1,6 @@
 /**
  * Global script that is loaded on every page.
+ *
  * Here we should have things application-wide
  * such as monitoring or analytics tools, and
  * global behaviors such as Turbolinks

@@ -4,7 +4,6 @@ const fs = require('fs');
 const glob = require('glob');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 const Dotenv = require('dotenv');
 const config = require('./assets.config');
 
@@ -47,19 +46,13 @@ const extractSassLoader = ExtractTextPlugin.extract({
       loader: 'sass-loader',
       options: {
         sourceMap: true,
-        includePaths: [
-          `${config.appPath}/${config.stylesheetsRelativePath}`,
-          ...config.sassIncludePaths,
-        ],
+        includePaths: config.sassIncludePaths,
       },
     },
   ],
 });
 
 let plugins = [
-  // Clean files not created by the current build
-  new WebpackCleanupPlugin({ quiet: true }),
-
   // Do not allow files with errors to continue the compilation
   new webpack.NoEmitOnErrorsPlugin(),
 
@@ -105,20 +98,44 @@ if (process.env.NODE_ENV === 'production') {
   devtool = 'cheap-module-source-map';
 }
 
+/**
+ * Returns a filename based on its basePath without its extension name
+ *
+ * E.g.: the *path* /var/log/myproject/file.log
+ * with a *basePath* /var/log would return:
+ * => myproject/file
+ *
+ * @param {String} path
+ * @param {String} basePath
+ * @return {String}
+ */
+const getRelativeBasePath = function getRelativeBasePath(filePath, basePath) {
+  const relativeFullPath = path.relative(basePath, filePath);
+  const removeExtRegexp = new RegExp(`${path.extname(relativeFullPath)}$`);
+  return relativeFullPath.replace(removeExtRegexp, '');
+};
+
+/**
+ * Returns all entries from the specified entrypath
+ *
+ * @param {String} entryPointPath
+ * @return {Object}
+ */
+const getEntriesFromPath = function getEntriesFromPath(entryPointPath) {
+  return glob.sync(`${config.appPath}/${entryPointPath}/**/*.*`)
+    .reduce((result, entry) => {
+      // eslint-disable-next-line no-param-reassign
+      result[getRelativeBasePath(entry, `${config.appPath}/${entryPointPath}`)] = entry;
+
+      return result;
+    }, {});
+};
+
 module.exports = {
   context: config.appPath,
 
   // Entry points
-  entry: glob.sync(`${config.appPath}/${config.entryPointsRelativePath}/**/*.*`)
-    .reduce((result, entry) => {
-      const relativeFullPath = path.relative(`${config.appPath}/${config.entryPointsRelativePath}`, entry);
-      const removeExtRegexp = new RegExp(`${path.extname(relativeFullPath)}$`);
-      const relativeBasePath = relativeFullPath.replace(removeExtRegexp, '');
-
-      result[relativeBasePath] = entry; // eslint-disable-line no-param-reassign
-
-      return result;
-    }, {}),
+  entry: getEntriesFromPath(config.entryPointsRelativePath),
 
   // Output
   output: {
@@ -126,10 +143,6 @@ module.exports = {
     filename: '[name]-[chunkhash].js',
     hashFunction: 'sha256',
     hashDigestLength: 64,
-  },
-
-  resolve: {
-    extensions: ['.js'],
   },
 
   performance: {
@@ -173,6 +186,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'file-loader',
         options: {
+          publicPath: '/assets/',
           context: 'app/assets',
           name: '[path][name]-[sha256:hash:hex:64].[ext]',
         },
@@ -188,14 +202,15 @@ module.exports = {
 
       /**
        * Handling with vendor assets (node_modules)
-       * They are outputted into `_vendor` folder
+       * They are outputted into `vendor` folder
        */
       {
         test: /node_modules\/.+\.(jpe?g|gif|png|svg|woff2?|ttf|eot)$/,
         loader: 'file-loader',
         options: {
+          publicPath: '/assets/',
           context: 'node_modules',
-          name: '_vendor/[path][name]-[sha256:hash:hex:64].[ext]',
+          name: 'vendor/[path][name]-[sha256:hash:hex:64].[ext]',
         },
       },
     ],

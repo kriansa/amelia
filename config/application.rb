@@ -3,16 +3,16 @@
 require_relative 'boot'
 
 require "rails"
-# Pick the frameworks you want:
-require "active_model/railtie"
-# require "active_job/railtie"
 require "active_record/railtie"
 require "action_controller/railtie"
-require "action_mailer/railtie"
 require "action_view/railtie"
-# require "action_cable/engine"
-# require "sprockets/railtie"
+require "action_mailer/railtie"
 require "rails/test_unit/railtie"
+require "sprockets/railtie"
+
+# Disabled for now
+# require "active_job/railtie"
+# require "action_cable/engine"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -20,6 +20,9 @@ Bundler.require(*Rails.groups)
 
 module Amelia
   class Application < Rails::Application
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.1
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -36,6 +39,11 @@ module Amelia
     # Full error reports are disabled and caching is turned on.
     config.consider_all_requests_local       = false
     config.action_controller.perform_caching = true
+
+    # Attempt to read encrypted secrets from `config/secrets.yml.enc`.
+    # Requires an encryption key in `ENV["RAILS_MASTER_KEY"]` or
+    # `config/secrets.yml.key`.
+    config.read_encrypted_secrets = false
 
     # Disable serving static files from the `/public` folder by default since
     # Apache or NGINX already handles this.
@@ -65,12 +73,15 @@ module Amelia
 
     # Use a real queuing backend for Active Job (and separate queues per environment)
     # config.active_job.queue_adapter     = :resque
-    # config.active_job.queue_name_prefix = "Amelia_#{Rails.env}"
+    # config.active_job.queue_name_prefix = "amelia_#{Rails.env}"
     config.action_mailer.perform_caching = false
 
     # Ignore bad email addresses and do not raise email delivery errors.
     # Set this to true and configure the email server for immediate delivery to raise delivery errors.
     config.action_mailer.raise_delivery_errors = true
+
+    # Raises error for missing translations
+    config.action_view.raise_on_missing_translations = true
 
     # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
     # the I18n.default_locale when a translation cannot be found).
@@ -89,7 +100,7 @@ module Amelia
     if ENV["RAILS_LOG_TO_STDOUT"].present?
       logger           = ActiveSupport::Logger.new(STDOUT)
       logger.formatter = config.log_formatter
-      config.logger = ActiveSupport::TaggedLogging.new(logger)
+      config.logger    = ActiveSupport::TaggedLogging.new(logger)
     end
 
     # Do not dump schema after migrations.
@@ -119,8 +130,8 @@ module Amelia
     # Previous versions had false.
     ActiveSupport.to_time_preserves_timezone = true
 
-    # Do not halt callback chains when a callback returns false. Previous versions had true.
-    ActiveSupport.halt_callback_chains_on_return_false = false
+    # Make `form_with` generate non-remote forms.
+    config.action_view.form_with_generates_remote_forms = false
 
     # Allow us to change the default generators
     config.generators do |gen|
