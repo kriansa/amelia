@@ -12,9 +12,9 @@ gem 'mysql2', '~> 0.4.0'
 gem 'bcrypt', '~> 3.1.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.6.0'
+gem 'jbuilder', '~> 2.7.0'
 # Nokogiri (XML parser)
-gem 'nokogiri', '~> 1.7.0'
+gem 'nokogiri', '~> 1.8.0'
 
 # Bugsnag (error catcher)
 gem 'bugsnag', '~> 5.3.0'
@@ -54,7 +54,6 @@ end
 group :test do
   gem 'database_cleaner', '~> 1.6.0', require: false
   gem 'simplecov', '~> 0.14.0', require: false
-  gem 'codeclimate-test-reporter', '~> 1.0.0', require: false
 
   # Functional testing
   gem 'capybara', '~> 2.14.0'

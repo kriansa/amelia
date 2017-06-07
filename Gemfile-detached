@@ -22,4 +22,5 @@ group :development, :ci do
   gem 'brakeman', '~> 3.6.0'
   gem 'capistrano', '~> 3.8.0'
   gem 'capistrano-rails', '~> 1.2.0'
+  gem 'codeclimate-test-reporter', '~> 1.0.0'
 end
