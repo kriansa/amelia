@@ -47,8 +47,8 @@ run the project.
 Because this app uses a decoupled architecture, you need to run two apps, the
 backend server and the frontend assets compilation runtime.
 
-`$ bin/rails server` - Backend server
-`$ bin/gulp watch` - Frontend app watcher
+* `$ bin/rails server` - Backend server
+* `$ bin/gulp watch` - Frontend app watcher
 
 ## Philosophy
 
