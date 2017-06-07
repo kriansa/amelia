@@ -72,6 +72,8 @@ function reek {
 }
 
 function codeclimate_test_reporter {
+  # Codeclimate will only process one code coverage payload per commit, so
+  # unfortunately we can't send both Ruby and Javascript test reports
   bin/codeclimate-test-reporter report/ruby/coverage/.resultset.json
 }
 
