@@ -1,7 +1,7 @@
 {
   "private": true,
   "dependencies": {
-    "babel-core": "^6.24.0",
+    "babel-core": "^6.25.0",
     "babel-loader": "^7.0.0",
     "babel-plugin-istanbul": "^4.1.0",
     "babel-plugin-transform-class-properties": "^6.24.0",
@@ -15,7 +15,7 @@
     "chokidar": "^1.6.0",
     "compression-webpack-plugin": "^0.4.0",
     "css-loader": "^0.28.0",
-    "del": "^2.2.0",
+    "del": "^3.0.0",
     "domready": "^1.0.0",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
