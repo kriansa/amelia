@@ -12,6 +12,8 @@ engines:
       - javascript
   eslint:
     enabled: true
+  stylelint:
+    enabled: true
   fixme:
     enabled: true
   rubocop:
