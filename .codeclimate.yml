@@ -1,25 +1,31 @@
 ---
 engines:
-  brakeman:
-    enabled: true
-  bundler-audit:
-    enabled: true
+  # General-purpose engines
   duplication:
     enabled: true
     config:
       languages:
       - ruby
       - javascript
+  fixme:
+    enabled: true
+
+  # Frontend-related engines
   eslint:
     enabled: true
   stylelint:
     enabled: true
-  fixme:
+
+  # Backend-related engines
+  brakeman:
+    enabled: true
+  bundler-audit:
     enabled: true
   rubocop:
     enabled: true
   reek:
     enabled: true
+
 ratings:
   paths:
   - Gemfile.lock
@@ -28,8 +34,12 @@ ratings:
   - "**.rb"
   - "**.js"
   - "**.jsx"
+  - "**.css"
+  - "**.sass"
+  - "**.vue"
 exclude_paths:
 - config/
 - db/
 - spec/
-- vendor/
+- vendor/bundle
+- node_modules
