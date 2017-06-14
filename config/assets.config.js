@@ -1,6 +1,4 @@
 const path = require('path');
-const Bourbon = require('bourbon');
-const BourbonNeat = require('bourbon-neat');
 
 // Application base path (Rails.root)
 const appPath = path.resolve(__dirname, '..');
@@ -27,7 +25,5 @@ module.exports = {
     // Add here paths to be used on lookup for Sass/SCSS files on compile-time
     // e.g. 'app/v2/css/mymodule'
     `${appPath}/app/assets/stylesheets`,
-    ...BourbonNeat.includePaths,
-    ...Bourbon.includePaths,
   ],
 };

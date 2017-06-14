@@ -67,6 +67,18 @@ let plugins = [
     fileName: 'manifest.json',
   }),
 
+  // Resolve libraries at compile time for components that depends on libraries
+  // that are not explicitely set as a dependency. Most likely, it will be for
+  // those libraries that expect jQuery or some other plugin to be required in
+  // the browser before it gets loaded.
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    Tether: 'tether',
+    'window.jQuery': 'jquery',
+    'window.Tether': 'tether',
+  }),
+
   // Set NODE_ENV to every module
   new webpack.DefinePlugin(Object.assign(parsedEnv, {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
