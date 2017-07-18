@@ -20,6 +20,17 @@ module.exports = {
    */
   outputRelativePath: 'public/assets',
 
+  /**
+   * This path represents the basepath in which Webpack will try to make
+   * requests when using lazy imports.  Ideally, it should be the same value of
+   * Rails's`config.relative_url_root` and `config.webpack.assets_prefix`
+   *
+   * In some cases, you may want to serve the assets from a CDN. In that case,
+   * you may set this variable below to something like:
+   * https://yourcnd.com/subdir/
+   */
+  publicBasePath: 'assets',
+
   // Additional load paths for Sass
   sassIncludePaths: [
     // Add here paths to be used on lookup for Sass/SCSS files on compile-time
