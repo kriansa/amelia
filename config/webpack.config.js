@@ -46,7 +46,6 @@ const extractSassLoader = ExtractTextPlugin.extract({
       loader: 'sass-loader',
       options: {
         sourceMap: true,
-        includePaths: config.sassIncludePaths,
       },
     },
   ],

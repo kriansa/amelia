@@ -30,11 +30,4 @@ module.exports = {
    * https://yourcnd.com/subdir/
    */
   publicBasePath: 'assets',
-
-  // Additional load paths for Sass
-  sassIncludePaths: [
-    // Add here paths to be used on lookup for Sass/SCSS files on compile-time
-    // e.g. 'app/v2/css/mymodule'
-    `${appPath}/app/assets/stylesheets`,
-  ],
 };
