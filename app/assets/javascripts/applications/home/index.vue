@@ -16,7 +16,6 @@
 </style>
 
 <script>
-  import 'bootstrap/dist/css/bootstrap.css';
   import Sample from '../../components/sample.vue';
 
   export default {
