@@ -3,11 +3,6 @@
 require 'rails'
 require 'rails/railtie'
 
-# Load Rails's tasks beforehand so that we load `yarn.rake` at this point
-# where there's no definition of 'assets:precompile' and hence we disable
-# the yarn install rake task hook on the asset precompilation
-require 'rails/tasks'
-
 module RailsWebpack
   class Railtie < ::Rails::Railtie
     initializer 'rails_webpack.load_helper' do
@@ -21,22 +16,29 @@ module RailsWebpack
     # Define whether we should cache the manifest file (useful in production)
     config.webpack.cache_manifest_file = true
 
-    # Set the default base path to serve assets from. This path will be appended
-    # to Rails's `config.relative_url_root`. No leading/trailing slashes.
+    # Set the default base path to serve assets from. This path will be
+    # appended to Rails's `config.relative_url_root`. No trailing slash.
     #
     # The default value is 'assets', due Rails's public_file_server ability
     # to serve any assets under public folder. However, you may want to change
     # this value in production if you use a different web-server that fetch
     # files from a different path
-    config.webpack.asset_base_path = 'assets'
-
-    # It's not advised to have Rails asset pipeline enabled along with Rails-Webpack.
-    # That's why this gem will set the asset precompile array to a blank value so that
-    # no asset is ever compiled using Sprockets.
     #
-    # However, in many circumstances, you may want to enable it for static assets, such
-    # as images or fonts that you want to serve through your application. They will also
-    # be available for usage with helpers like `image_path`, `font_path` and others.
+    # If you use Sprockets, this setting should be set to the same value as
+    # `config.assets.prefix` for consistency.
+    config.webpack.assets_prefix = '/assets'
+
+    # It's not advised to have Rails asset pipeline enabled along with
+    # Rails-Webpack.  That's why this gem will set the asset precompile array
+    # to a blank value so that no asset is ever compiled using Sprockets.
+    #
+    # However, in many circumstances, you may want to enable it for static
+    # assets, such as images or fonts that you want to serve through your
+    # application. They will also be available for usage with helpers like
+    # `image_path`, `font_path` and others.
+    #
+    # Tip: this is useful to be used on emails. If you're not using emails,
+    # then turning this option off is perfectly safe
     config.webpack.enable_static_asset_pipeline = true
 
     # Select the paths you want to include for the static asset pipeline. All files on
@@ -58,6 +60,7 @@ module RailsWebpack
 
     # Load Webpack compilation tasks
     rake_tasks do
+      require_relative 'ext/kernel_load'
       load 'tasks/webpack.rake'
     end
   end

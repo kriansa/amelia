@@ -23,18 +23,16 @@ module RailsWebpack
 
           app_name = "#{params[:controller]}/#{params[:action]}" unless app_name
 
-          assets = assets.push(webpack_script_tag(app_name)) if webpack_asset_exists?(app_name, :js)
-          assets = assets.push(webpack_stylesheet_tag(app_name)) if webpack_asset_exists?(app_name, :css)
+          assets = assets.push(webpack_script_tag(app_name)) if webpack_asset_exists?("#{app_name}.js")
+          assets = assets.push(webpack_stylesheet_tag(app_name)) if webpack_asset_exists?("#{app_name}.css")
 
-          # rubocop:disable Rails/OutputSafety
-          assets.join("\n").html_safe
-          # rubocop:enable Rails/OutputSafety
+          assets.join("\n").html_safe # rubocop:disable Rails/OutputSafety
         end
 
         # Returns the script tag pointing to the webpack-compiled script
         #
         def webpack_script_tag(source)
-          content_tag(:script, '', src: path_to_webpack_asset(source, :js))
+          content_tag(:script, '', src: path_to_webpack_asset("#{source}.js"))
         end
 
         # Returns the link tag pointing to the webpack-compiled css
@@ -44,7 +42,7 @@ module RailsWebpack
             :link,
             rel: 'stylesheet',
             media: 'all',
-            href: path_to_webpack_asset(source, :css)
+            href: path_to_webpack_asset("#{source}.css")
           )
         end
 
@@ -54,21 +52,18 @@ module RailsWebpack
         #
         # E.g.: index.js => /assets/index-6389243j43g423483.js
         #
-        def path_to_webpack_asset(source, extname = nil)
-          source = "#{source}.#{extname}" if extname
-
+        def path_to_webpack_asset(source)
           raise ArgumentError, 'nil is not a valid asset source' unless source
           raise AssetNotFound, "Asset '#{source}' not found!" unless webpack_asset_exists?(source)
 
           config = Rails.configuration
 
-          "#{config.relative_url_root}/#{config.webpack.asset_base_path}/#{manifest[source]}"
+          "#{config.relative_url_root}#{config.webpack.assets_prefix}/#{manifest[source]}"
         end
 
         # Checks whether a given webpack asset exists or not
         #
-        def webpack_asset_exists?(source, extname = nil)
-          source = "#{source}.#{extname}" if extname
+        def webpack_asset_exists?(source)
           manifest[source].present?
         end
 
@@ -76,7 +71,7 @@ module RailsWebpack
         #
         def manifest
           # TODO: Think about a way to cache this file using: Rails.configuration.webpack.cache_manifest_file
-          JSON.parse(File.read(Rails.root.join('public', 'assets', 'manifest.json')))
+          JSON.parse(File.read(manifest_file))
         rescue Errno::ENOENT
           # Checks whether there was an error during the assets building
           if File.exist?(Rails.root.join('tmp', 'webpack-error.txt'))
@@ -84,6 +79,12 @@ module RailsWebpack
           end
 
           raise AssetManifestNotFound, 'Asset manifest file was not found. Please, run the asset build job!'
+        end
+
+        # Location of the manifest file
+        # TODO: Make it configurable
+        def manifest_file
+          Rails.root.join('public', 'assets', '.manifest-webpack.json')
         end
       end
     end
