@@ -57,7 +57,9 @@ let plugins = [
   new webpack.NoEmitOnErrorsPlugin(),
 
   // Delete old files between compiles
-  new CleanObsoleteChunks(),
+  new CleanObsoleteChunks({
+    verbose: false,
+  }),
 
   // Extract CSS
   new ExtractTextPlugin({
