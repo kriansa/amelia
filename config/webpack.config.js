@@ -76,13 +76,6 @@ let plugins = [
   new webpack.DefinePlugin(Object.assign(parsedEnv, {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
   })),
-
-  // Keep legacy support to plugins built for Webpack 1
-  new webpack.LoaderOptionsPlugin({
-    options: {
-      context: config.appPath,
-    },
-  }),
 ];
 
 try {
