@@ -151,7 +151,9 @@ module.exports = {
   // Output
   output: {
     path: `${config.appPath}/${config.outputRelativePath}`,
+    publicPath: `${config.publicBasePath}/`,
     filename: '[name]-[chunkhash].js',
+    chunkFilename: '[name].chunk-[chunkhash].js',
     hashFunction: 'sha256',
     hashDigestLength: 64,
   },
