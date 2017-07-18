@@ -158,10 +158,6 @@ module.exports = {
     hashDigestLength: 64,
   },
 
-  performance: {
-    maxEntrypointSize: 400000,
-  },
-
   devtool,
 
   plugins,
