@@ -29,5 +29,5 @@ module.exports = {
    * you may set this variable below to something like:
    * https://yourcnd.com/subdir/
    */
-  publicBasePath: 'assets',
+  assetsPrefix: '/assets',
 };
