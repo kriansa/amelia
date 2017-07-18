@@ -55,8 +55,7 @@ gulp.task('lint:css', (cb) => {
     }
 
     return cb();
-  })
-  .catch(cb);
+  }).catch(cb);
 });
 
 /**
@@ -190,6 +189,11 @@ gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
   });
 
   try {
+    const outputDir = `${config.appPath}/${config.outputRelativePath}`;
+    if (!fs.existsSync(outputDir)) {
+      fs.mkdirSync(outputDir);
+    }
+
     watcher.start();
   } catch (e) {
     gutil.log(gutil.colors.red.bold('Error while loading Webpack Watcher:'));
