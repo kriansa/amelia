@@ -9,8 +9,8 @@
  * or code among components.
  */
 import Turbolinks from 'turbolinks';
-import GoogleAnalytics from '../lib/google-analytics';
-import Theme from '../lib/theme';
+import GoogleAnalytics from './google-analytics';
+import Theme from './theme';
 
 // Activate turbolinks
 Turbolinks.start();
