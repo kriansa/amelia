@@ -6,7 +6,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const Dotenv = require('dotenv');
 const config = require('./assets.config');
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 
 // Load .env settings
 const parsedEnv = (function loadDotEnvFile() {
@@ -56,10 +56,8 @@ let plugins = [
   // Do not allow files with errors to continue the compilation
   new webpack.NoEmitOnErrorsPlugin(),
 
-  // Remove old files between compilations
-  new WebpackCleanupPlugin({
-    quiet: true,
-  }),
+  // Delete old files between compiles
+  new CleanObsoleteChunks(),
 
   // Extract CSS
   new ExtractTextPlugin({

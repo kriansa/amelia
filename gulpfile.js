@@ -165,7 +165,7 @@ gulp.task('clean:reports', () => {
 /**
  * Starts webpack in watching mode
  */
-gulp.task('watch', (cb) => { // eslint-disable-line no-unused-vars
+gulp.task('watch', ['clean:assets'], (cb) => { // eslint-disable-line no-unused-vars
   const watcher = new WebpackWatcher({
     basePath: config.appPath,
     webpackConfigFile: 'config/webpack.config.js',
