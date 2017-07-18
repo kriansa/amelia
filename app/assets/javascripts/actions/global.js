@@ -10,9 +10,13 @@
  */
 import Turbolinks from 'turbolinks';
 import GoogleAnalytics from '../lib/google-analytics';
+import Theme from '../lib/theme';
 
 // Activate turbolinks
 Turbolinks.start();
 
 // Starts GA
 GoogleAnalytics.load(process.env.GA_ID);
+
+// Start theme functionality
+Theme.activate();
