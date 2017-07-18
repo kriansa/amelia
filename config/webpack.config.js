@@ -69,7 +69,7 @@ let plugins = [
 
   // Create a manifest.json file
   new ManifestPlugin({
-    fileName: 'manifest.json',
+    fileName: '.manifest-webpack.json',
   }),
 
   // Set NODE_ENV to every module
