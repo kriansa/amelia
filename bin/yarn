@@ -1,12 +1,4 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env sh
 
-VENDOR_PATH = File.expand_path('..', __dir__)
-Dir.chdir(VENDOR_PATH) do
-  begin
-    exec "yarnpkg #{ARGV.join(" ")}"
-  rescue Errno::ENOENT
-    $stderr.puts "Yarn executable was not detected in the system."
-    $stderr.puts "Download Yarn at https://yarnpkg.com/en/docs/install"
-    exit 1
-  end
-end
+# Run global yarn
+$(npm --global --silent bin)/yarn $@
