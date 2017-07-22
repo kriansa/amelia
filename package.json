@@ -17,7 +17,7 @@
     "del": "~3.0.0",
     "domready": "~1.0.0",
     "dotenv": "~4.0.0",
-    "eslint": "~4.2.0",
+    "eslint": "~4.3.0",
     "eslint-config-airbnb-base": "~11.2.0",
     "eslint-plugin-html": "~3.1.0",
     "eslint-plugin-import": "~2.7.0",
@@ -54,6 +54,6 @@
     "vue-template-compiler": "~2.4.0",
     "webpack": "~3.3.0",
     "webpack-clean-obsolete-chunks": "~0.2.0",
-    "webpack-manifest-plugin": "~1.1.0"
+    "webpack-manifest-plugin": "~1.2.0"
   }
 }
