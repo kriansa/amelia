@@ -1,6 +1,6 @@
 {
-  "max_pool_size": 5,
-  "min_instances": 2,
+  "max_pool_size": 4,
+  "min_instances": 1,
   "spawn_method": "smart",
   "daemonize": false,
 
