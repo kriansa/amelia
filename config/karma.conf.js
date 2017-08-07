@@ -38,7 +38,7 @@ module.exports = function karmaConfig(config) {
 
     coverageReporter: {
       dir: 'report/javascript/coverage',
-      includeAllSources: true,  // TODO: This is currently not working. Make it work
+      includeAllSources: true, // TODO: This is currently not working. Make it work
       reporters: [
         { type: 'html', subdir: '.' },
         { type: 'lcovonly', subdir: '.', file: 'lcov.info' },
