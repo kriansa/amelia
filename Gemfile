@@ -56,7 +56,7 @@ group :test do
   gem 'simplecov', '~> 0.14.0', require: false
 
   # Functional testing
-  gem 'capybara', '~> 2.14.0'
+  gem 'capybara', '~> 2.15.0'
   gem 'poltergeist', '~> 1.15.0'
   gem 'selenium-webdriver', '~> 3.4.0'
 end
