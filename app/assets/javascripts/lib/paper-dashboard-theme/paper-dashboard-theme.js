@@ -79,6 +79,7 @@ export default {
    *
    * TODO: Refactor. Ideally, remove jQuery/bootstrap dependency.
    */
+  /* eslint-disable */
   initRightMenu() {
     if (this.state.navbar_initialized) {
       return;
