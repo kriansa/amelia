@@ -1,19 +1,9 @@
 #!/usr/bin/env bash
 
-# Returns a console-colored red string
-function red {
-  echo -e "\033[31m$1\033[0m"
-}
-
-# Returns a console-colored green string
-function green {
-  echo -e "\033[0;32m$1\033[0m"
-}
-
-# Returns a console-colored green string
-function yellow {
-  echo -e "\033[0;33m$1\033[0m"
-}
+# Path to application root.
+APP_ROOT=$(cd "$(dirname "$0")/.." || exit; pwd)
+cd "$APP_ROOT" || return
+source "$APP_ROOT/lib/bash_helpers.sh"
 
 # Run a specific component of the test suite
 function run {

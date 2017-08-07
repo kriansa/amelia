@@ -1,41 +1,23 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
+#!/usr/bin/env sh
 
-require 'pathname'
+# This script update the packages installed for this system. Tipically, run it
+# after updating from the repository.
 
-# Path to your application root.
-APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
+# Path to application root.
+cd "$(dirname "$0")/.." || exit
+source "lib/bash_helpers.sh"
 
-def system!(*args)
-  system(*args) || abort("\n== Command #{args} failed ==")
-end
+status "Installing bundler dependencies"
+if ! bin/bundle check > /dev/null 2>&1; then
+  execute "bin/bundle install"
+fi
 
-# Disable installation of some gems if desired
-environment = ENV.fetch('RAILS_ENV', ENV.fetch('RACK_ENV', ENV.fetch('RUBY_ENV', 'development')))
-no_gems_argument =
-  case environment
-  when :production, :staging
-    '--without development test'
-  when :ci
-    '--without development'
-  else
-    ''
-  end
+status "Installing bundler-detached dependencies"
+if ! bin/bundle-detached check > /dev/null 2>&1; then
+  execute "bin/bundle-detached install"
+fi
 
-Dir.chdir APP_ROOT do
-  puts "\n== Updating Rubygems =="
-  system! 'gem update --system'
-
-  puts "\n== Updating Bundler =="
-  system! 'gem update bundler'
-
-  puts "\n== Updating Yarn =="
-  system! 'npm update -g yarn'
-
-  puts "\n== Installing dependencies =="
-  system('bin/bundle check') || system!("bin/bundle install -j4 --quiet --path vendor/bundle #{no_gems_argument}")
-  system('bin/bundle-detached check') || system!("bin/bundle-detached install -j4 --quiet --path vendor/bundle #{no_gems_argument}")
-
-  puts "\n== Updating NPM packages =="
-  system('bin/yarn check') || system!('bin/yarn install')
-end
+status "Installing yarn dependencies"
+if ! bin/yarn check --prefer-offline > /dev/null 2>&1; then
+  execute "bin/yarn install"
+fi

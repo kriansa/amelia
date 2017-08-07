@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# Change PWD to app path
-cd $(dirname $0)/..
+cd "$(dirname "$0")/.." || exit
 
 BUNDLE_GEMFILE=Gemfile-detached bin/bundle $@

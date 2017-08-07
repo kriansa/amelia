@@ -5,11 +5,11 @@
 # Change PWD to app path
 cd $(dirname $0)/..;
 
-printf "=> [\033[0;32m Javascript \033[0m] Checking for NPM outdated packages...\n"
-npm outdated || true
+printf " ➤ [\033[0;32m Javascript \033[0m] Checking for NPM outdated packages...\n"
+bin/yarn outdated || true
 
-printf "\n=> [\033[0;32m Ruby \033[0m] Checking for outdated Gem packages...\n"
+printf "\n ➤ [\033[0;32m Ruby \033[0m] Checking for outdated Gem packages...\n"
 bin/bundle outdated --porcelain || true
 
-printf "\n=> [\033[0;32m Ruby \033[0m] Checking for outdated detached Gem packages...\n"
+printf "\n ➤ [\033[0;32m Ruby \033[0m] Checking for outdated detached Gem packages...\n"
 bin/bundle-detached outdated --porcelain || true

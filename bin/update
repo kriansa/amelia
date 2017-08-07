@@ -1,25 +1,19 @@
-#!/usr/bin/env ruby
-# frozen_string_literal: true
+#!/usr/bin/env sh
+# This script update the packages installed for this system. Tipically, run it
+# after updating from the repository.
 
-require 'pathname'
-require 'fileutils'
+# Path to application root.
+APP_ROOT=$(cd "$(dirname "$0")/.." || exit; pwd)
+cd "$APP_ROOT" || return
+source "$APP_ROOT/lib/bash_helpers.sh"
 
-# path to your application root.
-APP_ROOT = Pathname.new File.expand_path('../../', __FILE__)
+status 'Installing dependencies'
+execute 'bin/update-packages'
 
-def system!(*args)
-  system(*args) || abort("\n== Command #{args} failed ==")
-end
+status "Migrating database"
+execute 'bin/rails db:migrate'
 
-FileUtils.chdir APP_ROOT do
-  puts '== Installing dependencies =='
-  system! 'bin/update-packages'
+status "Removing old logs and tempfiles"
+execute 'bin/rails log:clear tmp:clear'
 
-  puts "\n== Updating database =="
-  system! 'bin/rails db:migrate'
-
-  puts "\n== Removing old logs and tempfiles =="
-  system! 'bin/rails log:clear tmp:clear'
-
-  puts "\nNow restart Rails and gulp watcher!"
-end
+success "Now restart Rails and gulp watcher!"
