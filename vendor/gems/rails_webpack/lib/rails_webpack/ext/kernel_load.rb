@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-#
+
 # This patches Kernel#load to disable loading Rails's yarn.rake task
 # Rails yarn task uses a very obtrusive way of hooking into a defined task by
 # injecting itself into assets:precompile task. There is no other way to block
@@ -8,7 +8,7 @@
 # If that comforts you, this should only be loaded when the tasks are required,
 # tipically when running a rake task.
 module Kernel
-  alias_method :original_load, :load
+  alias original_load load
 
   def load(filename, wrap = false)
     if filename == 'rails/tasks/yarn.rake'
