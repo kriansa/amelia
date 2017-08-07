@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 
-# Run global yarn
-$(npm --global --silent bin)/yarn $@
+# Executes the first globally available bin
+yarn $@
