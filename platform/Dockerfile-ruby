@@ -1,0 +1,30 @@
+FROM ruby:2.4.1
+MAINTAINER Daniel Pereira
+
+ENV RUBYGEMS_VERSION=2.6.12
+ENV BUNDLER_VERSION=1.15.3
+
+# Update Gem and bundler
+RUN gem update --system $RUBYGEMS_VERSION
+RUN gem uninstall -x -i /usr/local/lib/ruby/gems/2.4.0 bundler
+RUN gem install bundler --version $BUNDLER_VERSION
+
+# Install less (makes debugging with pry easier)
+RUN apt-get update && apt-get install -y man less && rm -rf /var/lib/apt/lists/*
+
+# Create an unprivileged user
+RUN useradd -ms /bin/bash appuser
+
+# Select the unprivilegd user (appuser)
+USER appuser
+ENV HOME /home/appuser
+
+# Create app folder and turns it into a volume
+RUN mkdir $HOME/app
+VOLUME ["$HOME/app"]
+
+# Set the default working dir
+WORKDIR $HOME/app
+
+# By default, runs bash
+CMD /bin/bash

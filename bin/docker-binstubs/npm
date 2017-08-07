@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# This is a binstub for npm pointing directly to the Docker container. If it
+# doesn't exist, it will be created, then npm will be invoked using the
+# settings from `docker-compose.yml`
+#
+# To enable this binstub to be used on all your dynamically-invoked npm
+# scripts, ensure that:
+#
+#   1. This directory is on your $PATH variable
+#   2. Your script starts with "#!/usr/bin/env npm"
+
+# Cd to your application root.
+cd "$(dirname "$0")/.." || exit
+
+docker-compose run --no-deps assets npm $@

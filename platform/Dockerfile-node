@@ -1,0 +1,26 @@
+FROM node:8.2.1
+MAINTAINER Daniel Pereira
+
+ENV NPM_VERSION=5.3.0
+ENV YARN_VERSION=0.27.5
+
+# Update NPM & Yarn
+RUN npm update -g npm@$NPM_VERSION
+RUN npm install -g yarn@$YARN_VERSION
+
+# Create an unprivileged user
+RUN useradd -ms /bin/bash appuser
+
+# Select the unprivilegd user (appuser)
+USER appuser
+ENV HOME /home/appuser
+
+# Create app folder and turns it into a volume
+RUN mkdir $HOME/app
+VOLUME ["$HOME/app"]
+
+# Set the default working dir
+WORKDIR $HOME/app
+
+# By default, runs bash
+CMD /bin/bash

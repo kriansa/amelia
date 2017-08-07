@@ -1,0 +1,132 @@
+#!/usr/bin/env bash
+
+# Cd to application root.
+cd "$(dirname "$0")/.." || exit
+source "lib/bash_helpers.sh"
+
+# Add docker-binstubs to $PATH
+export PATH="$APP_ROOT/bin/docker-binstubs:$PATH"
+
+function get_container_by_service_name {
+  service_name=$1
+  container=$(docker-compose ps | grep -E "^[[:alnum:]]+_${service_name}" \
+    | head -1 | grep -Eo "^[[:alnum:]]+_${service_name}_\d")
+
+  if [[ $container == "" ]]; then
+    echo "Error: no such container: ${service_name}"
+    exit 1
+  fi
+
+  echo $container
+}
+
+case $1 in
+  start)
+    execute "docker-compose up -d"
+    ;;
+
+  stop)
+    execute "docker-compose stop"
+    ;;
+
+  clean)
+    execute "docker-compose down"
+    ;;
+
+  setup)
+    if ! docker --version > /dev/null 2>&1; then
+      fail "Docker is not installed! Please, install it first!"
+    fi
+
+    status "Building docker images..."
+    execute "docker-compose build"
+
+    status "Starting database dependency..."
+    execute "docker-compose up -d database"
+
+    # Add docker-binstubs to $PATH
+    export PATH="$APP_ROOT/bin/docker-binstubs:$PATH"
+
+    # Continue with regular bin/setup
+    execute "bin/setup"
+    ;;
+
+  restart)
+    $0 stop && $0 start
+    ;;
+
+  status)
+    execute "docker-compose ps"
+    ;;
+
+  attach)
+    service_id=$(get_container_by_service_name $2)
+
+    if test $? -eq 1; then
+      echo $service_id
+      exit
+    fi
+
+    docker attach "$service_id"
+    ;;
+
+  logs)
+    extra_args=""
+    if [[ $2 == "-f" ]] || [[ $2 == "--follow" ]]; then
+      extra_args="-f"
+      service_name=$3
+    else
+      service_name=$2
+    fi
+
+    service_id=$(get_container_by_service_name $service_name)
+
+    if test $? -eq 1; then
+      echo $service_id
+      exit
+    fi
+
+    docker logs $extra_args "$service_id"
+  ;;
+
+  *)
+    bold=$(tput bold)
+    normal=$(tput sgr0)
+    blue=$(tput setaf 4)
+    magenta=$(tput setaf 5)
+
+    echo "Usage: ${bold}$0${normal} <command>"
+    echo
+    echo "This tool will setup your development environment with Docker."
+    echo "For that, you will need to install Docker first."
+    echo
+    echo "${bold}${magenta}Commands:${normal}"
+    echo
+    echo "  ${blue}setup${normal}"
+    echo "    Create the infrastructure needed to run the application"
+    echo
+    echo "  ${blue}clean${normal}"
+    echo "    Delete all the infrastructure"
+    echo "    Use it to recreate the services the application run on"
+    echo
+    echo "  ${blue}start${normal}"
+    echo "    Start all the services to run this application"
+    echo
+    echo "  ${blue}stop${normal}"
+    echo "    Stop the running services"
+    echo
+    echo "  ${blue}restart${normal}"
+    echo "    Stop the running services"
+    echo
+    echo "  ${blue}status${normal}"
+    echo "    Check what services are running"
+    echo
+    echo "  ${blue}attach <service_name>${normal}"
+    echo "    Attach your terminal to a running service"
+    echo
+    echo "  ${blue}logs [-f|--force] <service_name>${normal}"
+    echo "    View the logs for the selected service"
+    echo "    Use the flag -f or --follow to follow the logs"
+    exit 1
+    ;;
+esac

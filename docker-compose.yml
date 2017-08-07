@@ -1,0 +1,44 @@
+version: "3.3"
+
+services:
+  appserver:
+    build:
+      context: ./platform
+      dockerfile: Dockerfile-ruby
+    volumes:
+      - .:/home/appuser/app:cached
+    ports:
+      - "3000:3000"
+    tty: true
+    stdin_open: true
+    command: bin/rails server -b 0.0.0.0
+    environment:
+      - BUNDLE_APP_CONFIG=/home/appuser/app/.bundle
+    depends_on:
+      - mailcatcher
+      - assets
+      - database
+
+  assets:
+    build:
+      context: ./platform
+      dockerfile: Dockerfile-node
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/home/appuser/app:cached
+    command: bin/gulp watch
+
+  mailcatcher:
+    image: tophfr/mailcatcher
+    ports:
+      - "1080:80"
+    expose:
+      - "1025"
+
+  database:
+    image: mariadb:10.2
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    ports:
+      - "3306:3306"
