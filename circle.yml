@@ -15,6 +15,7 @@ machine:
   environment:
     RACK_ENV: ci
     NODE_ENV: test
+    BUNDLE_WITHOUT: development
 
 dependencies:
   override:

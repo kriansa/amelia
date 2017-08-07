@@ -25,4 +25,5 @@ When setting up a new CI server, it's important to setup the following variables
 * `CODECLIMATE_REPO_TOKEN` - The token used to upload the test results to CodeClimate service.
 * `RACK_ENV` - **Value**: `ci`
 * `NODE_ENV` - **Value**: `test`
+* `BUNDLE_WITHOUT` - **Value**: `development`
 * `HEROKU_APP_NAME` - This is currently tied to CircleCI vendor (see `circle.yml`) to assign the Heroku application name to be deployed to.
