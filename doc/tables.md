@@ -3,65 +3,41 @@
 * email
 * password
 
-# Student
+# Person
 * name
+* gender_const
 * birth_date
 * place_of_birth_city_id
 * place_of_birth_state_id
 * assistance_priority_const
-* student_status_id
-* student_school_id
-
-# Contact
-* name
-* birth_date
-* place_of_birth_city_id
-* place_of_birth_state_id
+* enrollment_status_const
 * education_level_const
 * work_status_const
-* contact_employment_id
+* person_type_const
+* ocupation_id
+* monthly_income
 
-# ContactPhone
-* contact_id
-* phone_id
-* phone_type_id
-* phone_carrier_id
-
-# ContactAddress
-* contact_id
-* address_id
-* type_const (address type)
-
-# StudentContactRelationship
-* student_id
-* contact_id
-* relationship_type_id
-
-# RelationshipType
-* name
-
-# StudentRelationship
-* student_1_id
-* student_2_id
-
-# StudentPhone
-* student_id
+# PersonPhone
 * phone_number
-* phone_type_id
-* phone_carrier_id
+* person_id
+* phone_type_const
 
-# PhoneCarrier
-* name
+# PersonAddress
+* person_id
+* address_id
+* address_type_const
 
-# PhoneType
-* name
+# PersonRelationship
+* person_1_id
+* relationship_type_const
+* person_2_id
 
 # City
 * name
 
 # State
 * name
-* abbreviation
+* acronym
 
 # Address
 * street_address
@@ -71,15 +47,6 @@
 * zip_code
 * state_id
 * city_id
-
-# StudentStatus
-* student_id
-* enrollment_status_const
-
-# StudentAddress
-* student_id
-* student_address
-* type_const (tipo de endereco)
 
 # StudentSchool
 * student_id
