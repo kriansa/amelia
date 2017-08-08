@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+# Cd to application root.
+cd "$(dirname "$0")/.." || exit
+source "lib/bash_helpers.sh"
+
+case $1 in
+  help|"")
+    bold=$(tput bold)
+    normal=$(tput sgr0)
+    blue=$(tput setaf 4)
+
+    echo "Usage: ${bold}$0${normal} <command> [<args>]"
+    echo
+    echo "Use this helper to run anything under the ${bold}bin${normal} folder in development mode"
+    echo "For instance, let's assume you want to run a Rails task:"
+    echo
+    echo "  ${blue}bin/dev-run rails db:migrate${normal}"
+    echo
+    echo "This will run the binary using the right docker container"
+    ;;
+
+  dev-run|dev-server|docker-binstubs*)
+    echo "You can't do that!"
+    exit 1
+    ;;
+
+  *)
+    # Add docker-binstubs to $PATH
+    export PATH="bin/docker-binstubs:$PATH"
+
+    bin_name=$1
+    shift
+
+    # Execute it!
+    bin/$bin_name $@
+    ;;
+esac

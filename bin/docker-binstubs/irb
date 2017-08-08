@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# This is a binstub for ruby pointing directly to the Docker container. If it
+# doesn't exist, it will be created, then ruby will be invoked using the
+# settings from `docker-compose.yml`
+#
+# To enable this binstub to be used on all your dynamically-invoked ruby
+# scripts, ensure that:
+#
+#   1. This directory is on your $PATH variable
+#   2. Your script calls irb
+
+# Cd to your application root.
+cd "$(dirname "$0")/.." || exit
+
+docker-compose run --no-deps appserver irb $@

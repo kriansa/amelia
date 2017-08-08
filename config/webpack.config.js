@@ -9,16 +9,13 @@ const config = require('./assets.config');
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 
 // Load .env settings
-const parsedEnv = (function loadDotEnvFile() {
+(function loadDotEnvFile() {
   const fileString = fs.readFileSync(`${config.appPath}/.env`, { encoding: 'utf-8' });
   // Ensure that it works with `export` suffix on variables
   const parsedObj = Dotenv.parse(fileString.replace(/export\s+/g, ''));
 
-  return Object.entries(parsedObj)
-    .map(([k, v]) => [`process.env.${k}`, JSON.stringify(v)])
-    // eslint-disable-next-line no-param-reassign
-    .reduce((obj, [k, v]) => { obj[k] = v; return obj; }, {})
-  ;
+  Object.entries(parsedObj)
+    .forEach(([key, value]) => { process.env[key] = value; });
 }());
 
 if (!process.env.NODE_ENV) {
@@ -73,9 +70,9 @@ let plugins = [
   }),
 
   // Set NODE_ENV to every module
-  new webpack.DefinePlugin(Object.assign(parsedEnv, {
+  new webpack.DefinePlugin({
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-  })),
+  }),
 ];
 
 try {

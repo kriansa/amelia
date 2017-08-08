@@ -4,9 +4,6 @@
 cd "$(dirname "$0")/.." || exit
 source "lib/bash_helpers.sh"
 
-# Add docker-binstubs to $PATH
-export PATH="$APP_ROOT/bin/docker-binstubs:$PATH"
-
 function get_container_by_service_name {
   service_name=$1
   container=$(docker-compose ps | grep -E "^[[:alnum:]]+_${service_name}" \
@@ -44,11 +41,8 @@ case $1 in
     status "Starting database dependency..."
     execute "docker-compose up -d database"
 
-    # Add docker-binstubs to $PATH
-    export PATH="$APP_ROOT/bin/docker-binstubs:$PATH"
-
-    # Continue with regular bin/setup
-    execute "bin/setup"
+    # Continue with regular bin/setup through docker by using `bin/dev-run`
+    execute "bin/dev-run setup"
     ;;
 
   restart)
@@ -82,7 +76,7 @@ case $1 in
     service_id=$(get_container_by_service_name $service_name)
 
     if test $? -eq 1; then
-      echo $service_id
+      echo "$service_id"
       exit
     fi
 
@@ -123,6 +117,8 @@ case $1 in
     echo
     echo "  ${blue}attach <service_name>${normal}"
     echo "    Attach your terminal to a running service"
+    echo "    Remember that if you press ${bold}CTRL-C${normal} while attached, you will stop the service"
+    echo "    If you want to dettach from the terminal session, use ${bold}CTRL+P then CTRL+Q${normal}"
     echo
     echo "  ${blue}logs [-f|--force] <service_name>${normal}"
     echo "    View the logs for the selected service"

@@ -1,15 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # The application 'gulp' is installed as part of a npm package
-# and this file is here to facilitate running it.
-#
+# and this file is here to serve as a binstub to it.
 
-# The `NODE_ENV` var is one of the following, in the order:
-# - NODE_ENV
-# - RAILS_ENV
-# - RACK_ENV
-# - "development"
-
-export NODE_ENV=${NODE_ENV:-${RAILS_ENV:-${RACK_ENV:-development}}}
-export PATH=$(npm bin 2> /dev/null):$PATH
-gulp $@
+cd "$(dirname "$0")/.." || exit
+node_modules/.bin/gulp $@
