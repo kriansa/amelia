@@ -5,31 +5,31 @@
 
 # Person
 * name
-* gender_const
+* gender
 * birth_date
 * place_of_birth_city_id
 * place_of_birth_state_id
-* assistance_priority_const
-* enrollment_status_const
-* education_level_const
-* work_status_const
-* person_type_const
+* assistance_priority
+* enrollment_status
+* education_level
+* work_status
+* person_type
 * ocupation_id
 * monthly_income
 
 # PersonPhone
 * phone_number
 * person_id
-* phone_type_const
+* phone_type
 
 # PersonAddress
 * person_id
 * address_id
-* address_type_const
+* address_type
 
 # PersonRelationship
 * person_1_id
-* relationship_type_const
+* relationship_type
 * person_2_id
 
 # City
@@ -48,36 +48,36 @@
 * state_id
 * city_id
 
-# StudentSchool
+# StudentSchool (not created)
 * student_id
 * school_id
-* school_shift_const
-* school_level_const
+* school_shift
+* school_level
 
-# School
+# School (not created)
 * name
 * address_id
 
-# SchoolPhone
+# SchoolPhone (not created)
 * school_id
 * phone_number
 * phone_type_id
 * phone_carrier_id
 
-# ContactEmployment
+# ContactEmployment (not created)
 * occupation_id
 * sallary
 
 # Occupation
 * name
 
-# SocialQuiz
+# SocialQuiz (not created)
 * student_id
 * live_there_since
 * interest_in_vacancy
 * has_social_assistance
 
-# StudentHealth
+# StudentHealth (not created)
 * student_id
 * has_learning_issues
 * learning_issues_desc

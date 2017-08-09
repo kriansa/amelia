@@ -3,7 +3,7 @@ class CreatePersonAddresses < ActiveRecord::Migration[5.1]
     create_table :person_addresses do |t|
       t.references :person, foreign_key: true
       t.references :address, foreign_key: true
-      t.string :address_type_const, limit: 2
+      t.integer :address_type, default: 0
 
       t.timestamps
     end

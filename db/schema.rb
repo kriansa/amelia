@@ -42,15 +42,15 @@ ActiveRecord::Schema.define(version: 20170804001912) do
 
   create_table "people", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
-    t.string "gender_const", limit: 2
+    t.integer "gender", default: 0
     t.date "birth_date"
     t.bigint "place_of_birth_city_id"
     t.bigint "place_of_birth_state_id"
-    t.string "assistance_priority_const", limit: 2
-    t.string "enrollment_status_const", limit: 2
-    t.string "education_level_const", limit: 2
-    t.string "work_status_const", limit: 2
-    t.string "person_type_const", limit: 2
+    t.integer "assistance_priority", default: 0
+    t.integer "enrollment_status", default: 0
+    t.integer "education_level", default: 0
+    t.integer "work_status", default: 0
+    t.integer "person_type", default: 0
     t.bigint "occupation_id"
     t.decimal "monthly_income", precision: 10, scale: 2
     t.datetime "created_at", null: false
@@ -63,7 +63,7 @@ ActiveRecord::Schema.define(version: 20170804001912) do
   create_table "person_addresses", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "person_id"
     t.bigint "address_id"
-    t.string "address_type_const", limit: 2
+    t.integer "address_type", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_person_addresses_on_address_id"
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20170804001912) do
   create_table "person_phones", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "phone_number"
     t.bigint "person_id"
-    t.string "phone_type_const", limit: 2
+    t.integer "phone_type", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_person_phones_on_person_id"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20170804001912) do
 
   create_table "person_relationships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.bigint "person_1_id"
-    t.string "relationship_type_const", limit: 2
+    t.integer "relationship_type", default: 0
     t.bigint "person_2_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
