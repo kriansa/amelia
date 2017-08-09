@@ -57,6 +57,6 @@ group :test do
 
   # Functional testing
   gem 'capybara', '~> 2.15.0'
-  gem 'poltergeist', '~> 1.15.0'
+  gem 'poltergeist', '~> 1.16.0'
   gem 'selenium-webdriver', '~> 3.4.0'
 end
