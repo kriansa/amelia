@@ -46,7 +46,6 @@
     "stylelint": "~8.0.0",
     "stylelint-config-standard": "~17.0.0",
     "stylelint-processor-arbitrary-tags": "git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#feature/filter-file-extensions",
-    "tether": "~1.4.0",
     "turbolinks": "~5.0.0",
     "url-loader": "~0.5.0",
     "vue": "~2.4.0",
