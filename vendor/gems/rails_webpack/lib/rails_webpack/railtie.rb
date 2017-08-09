@@ -4,6 +4,8 @@ require 'rails'
 require 'rails/railtie'
 
 module RailsWebpack
+
+  # This is the entry point of the plugin
   class Railtie < ::Rails::Railtie
     initializer 'rails_webpack.load_helper' do
       ActiveSupport.on_load(:action_view) do

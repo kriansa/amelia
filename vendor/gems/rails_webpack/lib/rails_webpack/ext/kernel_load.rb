@@ -10,6 +10,7 @@
 module Kernel
   alias original_load load
 
+  # This method smells of :reek:BooleanParameter
   def load(filename, wrap = false)
     if filename == 'rails/tasks/yarn.rake'
       # Undo-me

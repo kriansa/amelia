@@ -83,6 +83,7 @@ module RailsWebpack
 
         # Location of the manifest file
         # TODO: Make it configurable
+        # This will smell like a :reek:UtilityFunction
         def manifest_file
           Rails.root.join('public', 'assets', '.manifest-webpack.json')
         end

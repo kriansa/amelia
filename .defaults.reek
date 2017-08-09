@@ -22,6 +22,10 @@ UnusedParameters:
   UtilityFunction:
     enabled: false
 
+"config":
+  IrresponsibleModule:
+    enabled: false
+
 "app/helpers":
   IrresponsibleModule:
     enabled: false
@@ -41,4 +45,3 @@ UnusedParameters:
 exclude_paths:
   - vendor/bundle
   - node_modules
-
