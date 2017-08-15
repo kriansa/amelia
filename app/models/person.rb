@@ -10,5 +10,5 @@ class Person < ApplicationRecord
   enum enrollment_status: %i[created enrolled]
   enum education_level: %i[basic degree]
   enum work_status: %i[working not_working]
-  enum person_type: %i[student parent]
+  enum person_type: %i[student father mother]
 end
