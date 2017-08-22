@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @person.name %>
+</p>
+
+<p>
+  <strong>Gender const:</strong>
+  <%= @person.gender_const %>
+</p>
+
+<p>
+  <strong>Birth date:</strong>
+  <%= @person.birth_date %>
+</p>
+
+<p>
+  <strong>Assistance priority const:</strong>
+  <%= @person.assistance_priority_const %>
+</p>
+
+<p>
+  <strong>Enrollment status const:</strong>
+  <%= @person.enrollment_status_const %>
+</p>
+
+<p>
+  <strong>Education level const:</strong>
+  <%= @person.education_level_const %>
+</p>
+
+<p>
+  <strong>Work status const:</strong>
+  <%= @person.work_status_const %>
+</p>
+
+<p>
+  <strong>Person type const:</strong>
+  <%= @person.person_type_const %>
+</p>
+
+<p>
+  <strong>Monthly income:</strong>
+  <%= @person.monthly_income %>
+</p>
+
+<p>
+  <strong>Occupation:</strong>
+  <%= @person.occupation %>
+</p>
+
+<p>
+  <strong>Place of birth city:</strong>
+  <%= @person.place_of_birth_city %>
+</p>
+
+<p>
+  <strong>Place of birth state:</strong>
+  <%= @person.place_of_birth_state %>
+</p>
+
+<%= link_to 'Edit', edit_person_path(@person) %> |
+<%= link_to 'Back', people_path %>

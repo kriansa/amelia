@@ -37,3 +37,5 @@ public/assets
 # Project reports
 /report
 !/report/index.html
+
+.DS_Store
