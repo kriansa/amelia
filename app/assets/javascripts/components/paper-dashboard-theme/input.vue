@@ -5,6 +5,7 @@
       <input
         :value="value"
         :type="type"
+        :disabled="disabled"
         :placeholder="placeholder"
         class="form-control border-input"
       />
@@ -19,6 +20,11 @@
       type: {
         type: String,
         default: 'text',
+      },
+
+      disabled: {
+        type: Boolean,
+        default: false,
       },
 
       label: {
