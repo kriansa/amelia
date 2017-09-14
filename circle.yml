@@ -11,7 +11,7 @@ machine:
   ruby:
     version: 2.4.1
   node:
-    version: 8.2.1
+    version: 8.5.0
   environment:
     RACK_ENV: ci
     NODE_ENV: test
