@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 ruby '2.4.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.1'
+gem 'rails', '~> 5.1.0'
 # Database for Active Record
 gem 'mysql2', '~> 0.4.0'
 # Use ActiveModel has_secure_password
@@ -37,9 +37,9 @@ end
 
 group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', '~> 9.0.0'
+  gem 'byebug', '~> 9.1.0'
   gem 'pry', '~> 0.11.0.pre2'
-  gem 'pry-byebug', '~> 3.4.0'
+  gem 'pry-byebug', '~> 3.5.0'
 
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '~> 3.5.0'
@@ -52,11 +52,8 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner', '~> 1.6.0', require: false
-  gem 'simplecov', '~> 0.14.0', require: false
+  gem 'simplecov', '~> 0.15.0', require: false
 
   # Functional testing
-  gem 'capybara', '~> 2.15.0'
-  gem 'poltergeist', '~> 1.16.0'
-  gem 'selenium-webdriver', '~> 3.4.0'
+  gem 'selenium-webdriver', '~> 3.5.0'
 end
