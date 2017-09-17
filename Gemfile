@@ -36,6 +36,9 @@ group :development, :test do
   end
 
   gem 'factory_girl_rails', '~> 4.8.0'
+
+  # Web-server
+  gem 'puma', '~> 3.10.0'
 end
 
 group :development do
@@ -58,5 +61,6 @@ group :test do
   gem 'simplecov', '~> 0.15.0', require: false
 
   # Functional testing
+  gem 'capybara', '~> 2.15.0'
   gem 'selenium-webdriver', '~> 3.5.0'
 end
