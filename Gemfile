@@ -31,7 +31,10 @@ gem 'rails_webpack', path: 'vendor/gems'
 
 group :development, :test do
   # RSpec
-  gem 'rspec-rails', '~> 3.6.0'
+  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
+    gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'master'
+  end
+
   gem 'factory_girl_rails', '~> 4.8.0'
 end
 
