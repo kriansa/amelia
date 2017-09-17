@@ -33,6 +33,6 @@ case $1 in
     shift
 
     # Execute it!
-    bin/$bin_name $@
+    "bin/$bin_name" "$@"
     ;;
 esac
