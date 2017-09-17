@@ -134,16 +134,34 @@ module Amelia
     config.action_view.form_with_generates_remote_forms = false
 
     # Allow us to change the default generators
-    config.generators do |gen|
-      gen.orm               :active_record
-      gen.template_engine   :erb
-      gen.javascript_engine :js
-      gen.test_framework    :rspec #, fixture: false, :fixture_replacement => :factory_girl
-      gen.integration_tool  :rspec #, fixture: false
-      gen.stylesheets       false
-      gen.javascripts       false
-      gen.helper            true
-      gen.factory_girl      false
+    config.generators do |g|
+      g.stylesheets       false
+      g.javascripts       false
+      g.helper            false
+      g.jbuilder          true
+      g.template_engine   :erb
+
+      # Setup defaults for ActiveRecord
+      g.orm               :active_record
+      g.active_record     migration: true,
+                          timestamps: true,
+                          indexes: true,
+                          primary_key_type: :integer,
+                          parent: 'ApplicationRecord'
+
+      # RSpec is still not compatible with system tests generation, so we'll
+      # disable it for now.
+      g.system_tests      false
+
+      # Setup defaults for RSpec
+      g.test_framework    :rspec,
+                          fixture: true,
+                          fixture_replacement: :factory_girl,
+                          integration_tool: :rspec,
+                          view_specs: false,
+                          helper_specs: true,
+                          controller_specs: true,
+                          routing_specs: true
     end
 
     # Mailer settings
