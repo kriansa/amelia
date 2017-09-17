@@ -3,18 +3,18 @@ extends: stylelint-config-standard
 processors:
   -
     - stylelint-processor-arbitrary-tags
-    - filterExtensions:
-      - .erb
-      - .handlebars
-      - .hbs
-      - .htm
-      - .html
-      - .mustache
-      - .nunjucks
-      - .php
-      - .tag
-      - .twig
-      - .vue
-      - .we
-      - .xhtml
-      - .xml
+    - fileFilterRegex:
+      - \.erb$
+      - \.handlebars$
+      - \.hbs$
+      - \.htm$
+      - \.html$
+      - \.mustache$
+      - \.nunjucks$
+      - \.php$
+      - \.tag$
+      - \.twig$
+      - \.vue$
+      - \.we$
+      - \.xhtml$
+      - \.xml$

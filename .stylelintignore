@@ -6,3 +6,7 @@ public/assets
 
 # Test coverage output
 coverage
+
+# The style has been taken from another author, which is not using any of
+# our linter settings, so it's better to disable it
+app/assets/stylesheets/paper-dashboard-theme/paper/**/*.scss
