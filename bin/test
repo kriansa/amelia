@@ -3,7 +3,7 @@
 # Path to application root.
 APP_ROOT=$(cd "$(dirname "$0")/.." || exit; pwd)
 cd "$APP_ROOT" || return
-source "$APP_ROOT/lib/bash_helpers.sh"
+source "lib/bash_helpers.sh"
 
 # Run a specific component of the test suite
 function run {
@@ -70,7 +70,7 @@ function codeclimate_test_reporter {
 # Start the suite
 
 # Change PWD to app path
-cd $(dirname $0)/..
+cd "$(dirname "$0")/.." || exit
 
 # Run the build pipeline
 run "gulp build" "Build pipeline (lint, test and compile) for the frontend" "gulp_build"

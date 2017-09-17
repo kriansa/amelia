@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Cd to application root.
 cd "$(dirname "$0")/.." || exit

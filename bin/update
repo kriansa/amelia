@@ -5,7 +5,7 @@
 # Path to application root.
 APP_ROOT=$(cd "$(dirname "$0")/.." || exit; pwd)
 cd "$APP_ROOT" || return
-source "$APP_ROOT/lib/bash_helpers.sh"
+. "lib/bash_helpers.sh"
 
 status 'Installing dependencies'
 execute 'bin/update-packages'

@@ -14,7 +14,7 @@ function get_container_by_service_name {
     exit 1
   fi
 
-  echo $container
+  echo "$container"
 }
 
 case $1 in
@@ -54,10 +54,10 @@ case $1 in
     ;;
 
   attach)
-    service_id=$(get_container_by_service_name $2)
+    service_id=$(get_container_by_service_name "$2")
 
     if test $? -eq 1; then
-      echo $service_id
+      echo "$service_id"
       exit
     fi
 
@@ -73,7 +73,7 @@ case $1 in
       service_name=$2
     fi
 
-    service_id=$(get_container_by_service_name $service_name)
+    service_id=$(get_container_by_service_name "$service_name")
 
     if test $? -eq 1; then
       echo "$service_id"
