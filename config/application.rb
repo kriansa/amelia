@@ -170,5 +170,67 @@ module Amelia
     # what else?
     config.action_mailer.asset_host = ENV['ASSETS_URL'] || ENV['BASE_URL']
     config.action_controller.asset_host = ENV['ASSETS_URL'] || ENV['BASE_URL']
+
+    # Assets settings
+
+    # Enables Sprockets compile environment. If disabled,
+    # Rails.application.assets will be nil to prevent inadvertent compilation
+    # calls. View helpers will depend on assets being precompiled to
+    # public/assets in order to link to them.  Initializers expecting
+    # Rails.application.assets during boot should be accessing the environment
+    # in a config.assets.configure block.
+    config.assets.compile = true
+
+    # Version of your assets, change this if you want to expire all your
+    # assets.
+    config.assets.version = '1.0'
+
+    # Add additional assets to the asset load path.
+    # Rails.application.config.assets.paths << Emoji.images_path Rails includes
+    # app/assets, lib/assets and vendor/assets for you already.  Plugins might
+    # want to add their custom paths to this.  config.assets.paths <<
+    # Rails.root.join('node_modules')
+
+    # Precompile additional assets.  application.js, application.css, and all
+    # non-JS/CSS in the app/assets folder are already added.
+    # config.assets.precompile += %w( admin.js admin.css )
+
+    # When set to a truthy value, a result will be returned even if the
+    # requested asset is not found in the asset pipeline. When set to a falsey
+    # value it will raise an error when no asset is found in the pipeline.
+    config.assets.unknown_asset_fallback = false
+
+    # Changes the directory to compile assets to.
+    config.assets.prefix = "/assets"
+
+    # Suppresses logger output for asset requests. Uses the
+    # config.assets.prefix path to match asset requests.
+    config.assets.quiet = false
+
+    # Enable expanded asset debugging mode. Individual files will be served to
+    # make referencing filenames in the web console easier. This feature will
+    # eventually be deprecated and replaced by Source Maps in Sprockets 3.x.
+    config.assets.debug = false
+
+    # When enabled, fingerprints will be added to asset filenames.
+    config.assets.digest = true
+
+    # Set a limit for cache
+    config.assets.cache_limit = 50.megabytes
+
+    # GZIP the output
+    config.assets.gzip = true
+
+    # When enabled, an exception is raised for missing assets.
+    config.assets.check_precompiled_asset = true
+
+    # A list of :environment and :manifest symbols that defines the order that
+    # we try to find assets: manifest first, environment second?  Manifest
+    # only?
+    #
+    # By default, we check the manifest first if asset digests are enabled and
+    # debug is not enabled, then we check the environment if compiling is
+    # enabled.
+    config.assets.resolve_with = %i[manifest]
   end
 end
