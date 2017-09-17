@@ -28,7 +28,7 @@ fail() {
 
 # Execute the command and finish with error if it fails
 execute() {
-  if $1; then
+  if ! $1; then
     echo
     red "Command '${1}' failed!"
     exit 1
