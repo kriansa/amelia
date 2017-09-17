@@ -34,10 +34,10 @@ export default {
     // eslint-disable-next-line no-undef
     if (typeof Turbolinks !== 'undefined' && Turbolinks.supported) {
       document.addEventListener('page:change', () => {
-        this.track(location.pathname);
+        this.track(window.location.pathname);
       }, true);
     } else {
-      this.track(location.pathname);
+      this.track(window.location.pathname);
     }
   },
 

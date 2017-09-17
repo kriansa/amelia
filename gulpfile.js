@@ -5,7 +5,7 @@ const del = require('del');
 const fs = require('fs.extra');
 const config = require('./config/assets.config');
 const WebpackWatcher = require('./config/webpack.watcher');
-const spawn = require('child_process').spawn;
+const { spawn } = require('child_process');
 
 // Change current working dir to root app
 process.chdir(config.appPath);

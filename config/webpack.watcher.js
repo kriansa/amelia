@@ -25,8 +25,7 @@ WebpackWatcher.prototype.start = function start() {
   this.chokidarWatcher
     .on('add', this.restart.bind(this))
     .on('unlink', this.restart.bind(this))
-    .on('change', (path) => { if (this.watchFiles.findIndex(f => f === path) !== -1) this.restart(); })
-  ;
+    .on('change', (path) => { if (this.watchFiles.findIndex(f => f === path) !== -1) this.restart(); });
 
   this.webpackWatcher = this.getCompiler().watch(undefined, this.handleCompiledResponse.bind(this));
 };
