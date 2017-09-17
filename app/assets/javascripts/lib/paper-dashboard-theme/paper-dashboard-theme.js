@@ -42,8 +42,10 @@ export default {
      * webpack.
      *
      * Webpack has `import()` already implemented, but because it hasn't been
-     * accepted as a spec, ESLint doesn't parse it properly. So in order to
-     * avoid these issues, we will stick with webpack's `require.ensure`
+     * accepted as a spec, ESLint doesn't parse it properly, unless we use
+     * eslint-babel as the ESLint parser - and that's just much for what we
+     * want right now. So in order to avoid these issues, we will stick with
+     * webpack's `require.ensure`
      *
      * When this syntax gets implemented, we just need to add a new plugin to
      * Babel on .babelrc: "syntax-dynamic-import"
