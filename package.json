@@ -45,7 +45,7 @@
     "sinon": "~3.2.0",
     "stylelint": "~8.1.0",
     "stylelint-config-standard": "~17.0.0",
-    "stylelint-processor-arbitrary-tags": "git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#feature/filter-file-extensions",
+    "stylelint-processor-arbitrary-tags": "git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#custom-patches",
     "turbolinks": "~5.0.0",
     "url-loader": "~0.5.0",
     "vue": "~2.4.0",

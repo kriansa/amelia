@@ -5693,9 +5693,9 @@ stylelint-config-standard@~17.0.0:
   dependencies:
     stylelint-config-recommended "^1.0.0"
 
-"stylelint-processor-arbitrary-tags@git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#feature/filter-file-extensions":
+"stylelint-processor-arbitrary-tags@git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#custom-patches":
   version "0.1.1"
-  resolved "git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#bb165814d3128c78e2d5ca47699690c4a4456e42"
+  resolved "git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#89ff9892b9c3f2cc2897db3e6e0b218d70980dff"
   dependencies:
     execall "^1.0.0"
     split-lines "^1.1.0"
