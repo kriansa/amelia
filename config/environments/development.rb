@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'socket'
-require 'ipaddr'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -47,14 +45,7 @@ Rails.application.configure do
   config.public_file_server.enabled = true
 
   # Webpack
-  #
 
   # We don't want to cache manifest file in dev
   config.webpack.cache_manifest_file = false
-
-  # Whitelist all IPs that are considered local when running on Docker
-  # Source: https://stackoverflow.com/a/42142563/2622966
-  config.web_console.whitelisted_ips = Socket.ip_address_list.reduce([]) do |res, addrinfo|
-    addrinfo.ipv4? ? res << IPAddr.new(addrinfo.ip_address).mask(24) : res
-  end
 end

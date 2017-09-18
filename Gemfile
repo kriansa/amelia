@@ -18,8 +18,6 @@ gem 'nokogiri', '~> 1.8.0'
 
 # Bugsnag (error catcher)
 gem 'bugsnag', '~> 5.3.0'
-# Dotenv
-gem 'dotenv-rails', '~> 2.2.0'
 # Devise (authentication)
 gem 'devise', '~> 4.3.0'
 
@@ -35,20 +33,19 @@ group :development, :test do
     gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'master'
   end
 
+  # FactoryGirl replaces ActiveRecord's fixtures
   gem 'factory_girl_rails', '~> 4.8.0'
 
-  # Web-server
-  gem 'puma', '~> 3.10.0'
-end
+  # Dotenv
+  gem 'dotenv-rails', '~> 2.2.0'
 
-group :development do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 9.1.0'
   gem 'pry', '~> 0.11.0.pre2'
   gem 'pry-byebug', '~> 3.5.0'
 
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console', '~> 3.5.0'
+  # Web-server
+  gem 'puma', '~> 3.10.0'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring', '~> 2.0.0'
