@@ -1,0 +1,26 @@
+{
+  "extends": "stylelint-config-standard",
+  "processors": [
+    [
+      "@mapbox/stylelint-processor-arbitrary-tags",
+      {
+        "fileFilterRegex": [
+          "\\.erb$",
+          "\\.handlebars$",
+          "\\.hbs$",
+          "\\.htm$",
+          "\\.html$",
+          "\\.mustache$",
+          "\\.nunjucks$",
+          "\\.php$",
+          "\\.tag$",
+          "\\.twig$",
+          "\\.vue$",
+          "\\.we$",
+          "\\.xhtml$",
+          "\\.xml$"
+        ]
+      }
+    ]
+  ]
+}
