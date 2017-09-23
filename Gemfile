@@ -25,7 +25,7 @@ gem 'rails_webpack', path: 'vendor/gems'
 # ============================
 # Testing and development gems
 
-group :development, :test do
+group :development, :test, :ci do
   # RSpec
   %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
     gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'master'
@@ -52,7 +52,7 @@ group :development, :test do
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
 
-group :test do
+group :test, :ci do
   gem 'simplecov', '~> 0.15.0', require: false
 
   # Functional testing
