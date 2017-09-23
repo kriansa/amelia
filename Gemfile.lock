@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/rspec/rspec-expectations.git
-  revision: 430cf59249ebe0291bcfec88d76b1c914a52ad11
+  revision: 4f611817858efbcfdb66783648e8dbbb4400666b
   branch: master
   specs:
     rspec-expectations (3.7.0.pre)
@@ -149,15 +149,15 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_mime (0.1.4)
-    mini_portile2 (2.2.0)
+    mini_portile2 (2.3.0)
     minitest (5.10.3)
     multi_json (1.12.2)
     mysql2 (0.4.9)
     nio4r (2.1.0)
-    nokogiri (1.8.0)
-      mini_portile2 (~> 2.2.0)
+    nokogiri (1.8.1)
+      mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
-    pry (0.11.0.pre2)
+    pry (0.11.0)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
     pry-byebug (3.5.0)
@@ -249,7 +249,7 @@ DEPENDENCIES
   listen (~> 3.1.0)
   mysql2 (~> 0.4.0)
   nokogiri (~> 1.8.0)
-  pry (~> 0.11.0.pre2)
+  pry (~> 0.11.0)
   pry-byebug (~> 3.5.0)
   puma (~> 3.10.0)
   rails (~> 5.1.0)

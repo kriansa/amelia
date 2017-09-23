@@ -11,7 +11,7 @@ gem 'whenever', '~> 0.9.0'
 gem 'passenger', '~> 5.1.0'
 
 group :development, :ci do
-  gem 'rubocop', '~> 0.49.0'
+  gem 'rubocop', '~> 0.50.0'
   gem 'reek', '~> 4.7.0'
   gem 'bundler-audit', '~> 0.6.0'
   gem 'brakeman', '~> 3.7.0'
