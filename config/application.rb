@@ -146,7 +146,6 @@ module Amelia
       gen.active_record     migration: true,
                             timestamps: true,
                             indexes: true,
-                            primary_key_type: :integer,
                             parent: 'ApplicationRecord'
 
       # RSpec is still not compatible with system tests generation, so we'll
