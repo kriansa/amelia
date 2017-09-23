@@ -6,14 +6,8 @@ general:
       - /(feature|hotfix|release)\/.*/
 
 machine:
-  timezone:
-    America/Sao_Paulo
-  ruby:
-    version: 2.4.2
-  node:
-    version: 8.5.0
   environment:
-    RACK_ENV: ci
+    RAILS_ENV: ci
     NODE_ENV: test
     BUNDLE_WITHOUT: development
 
@@ -28,8 +22,8 @@ test:
 deployment:
   staging:
     branch: staging
-    commands:
-      - git push git@heroku.com:$HEROKU_APP_NAME.git $CIRCLE_SHA1:refs/heads/master
+    heroku:
+      appname: $HEROKU_APP_NAME
 
   # production:
   #   branch: master
