@@ -21,7 +21,7 @@ module RailsWebpack
         def frontend_app_asset_tags(app_name = nil)
           assets = []
 
-          app_name = "#{params[:controller]}/#{params[:action]}" unless app_name
+          app_name ||= "#{params[:controller]}/#{params[:action]}"
 
           assets = assets.push(webpack_script_tag(app_name)) if webpack_asset_exists?("#{app_name}.js")
           assets = assets.push(webpack_stylesheet_tag(app_name)) if webpack_asset_exists?("#{app_name}.css")
