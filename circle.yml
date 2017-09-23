@@ -1,4 +1,6 @@
 general:
+  artifacts:
+    - report
   branches:
     ignore:
       - gh-pages
