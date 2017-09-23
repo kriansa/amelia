@@ -6,6 +6,10 @@ general:
       - /(feature|hotfix|release)\/.*/
 
 machine:
+  ruby:
+    version: 2.4.2
+  node:
+    version: 8.5.0
   environment:
     RAILS_ENV: ci
     NODE_ENV: test
