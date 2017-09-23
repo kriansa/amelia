@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@mapbox/stylelint-processor-arbitrary-tags@~0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/stylelint-processor-arbitrary-tags/-/stylelint-processor-arbitrary-tags-0.2.0.tgz#4c2b50711bd9033a6c4f7f19e418b5f43f1a1e51"
+  dependencies:
+    execall "^1.0.0"
+    split-lines "^1.1.0"
+
 abbrev@1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.0.tgz#d0554c2256636e2f56e7c2e5ad183f859428d81f"
@@ -5692,13 +5699,6 @@ stylelint-config-standard@~17.0.0:
   resolved "https://registry.yarnpkg.com/stylelint-config-standard/-/stylelint-config-standard-17.0.0.tgz#42103a090054ee2a3dde9ecaed55e5d4d9d059fc"
   dependencies:
     stylelint-config-recommended "^1.0.0"
-
-"stylelint-processor-arbitrary-tags@git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#custom-patches":
-  version "0.1.1"
-  resolved "git://github.com/kriansa/stylelint-processor-arbitrary-tags.git#89ff9892b9c3f2cc2897db3e6e0b218d70980dff"
-  dependencies:
-    execall "^1.0.0"
-    split-lines "^1.1.0"
 
 stylelint@~8.1.0:
   version "8.1.1"
