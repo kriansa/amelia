@@ -1,5 +1,7 @@
 # Amelia
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kriansa/amelia.svg)](https://greenkeeper.io/)
+
 [![CircleCI](https://img.shields.io/circleci/project/github/kriansa/amelia.svg)](https://circleci.com/gh/kriansa/amelia)
 [![Code Climate](https://codeclimate.com/github/kriansa/amelia/badges/gpa.svg)](https://codeclimate.com/github/kriansa/amelia)
 [![Test Coverage](https://codeclimate.com/github/kriansa/amelia/badges/coverage.svg)](https://codeclimate.com/github/kriansa/amelia/coverage)
