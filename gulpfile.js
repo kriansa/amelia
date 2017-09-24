@@ -32,7 +32,7 @@ gulp.task('lint:css', (cb) => {
   const stylelint = require('stylelint');
 
   stylelint.lint({
-    configFile: '.stylelintrc.yml',
+    configFile: '.stylelintrc',
     configBasedir: config.appPath,
     files: [`${config.appPath}/**/*.?(vue|scss|css)`],
     syntax: 'scss',
