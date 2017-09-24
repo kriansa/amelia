@@ -1,10 +1,11 @@
 # Amelia
 
 [![CircleCI](https://img.shields.io/circleci/project/github/kriansa/amelia.svg)](https://circleci.com/gh/kriansa/amelia)
-[![Code Climate](https://codeclimate.com/github/kriansa/amelia/badges/gpa.svg)](https://codeclimate.com/github/kriansa/amelia)
+[![bitHound Dependencies](https://www.bithound.io/github/kriansa/amelia/badges/dependencies.svg)](https://www.bithound.io/github/kriansa/amelia/master/dependencies/npm)
 [![Test Coverage](https://codeclimate.com/github/kriansa/amelia/badges/coverage.svg)](https://codeclimate.com/github/kriansa/amelia/coverage)
-[![Dev Dependency Status](https://david-dm.org/kriansa/amelia/status.svg)](https://david-dm.org/kriansa/amelia#info=dependencies&view=list)
 [![Inch CI](https://inch-ci.org/github/kriansa/amelia.svg?branch=master)](https://inch-ci.org/github/kriansa/amelia)
+[![Code Climate](https://codeclimate.com/github/kriansa/amelia/badges/gpa.svg)](https://codeclimate.com/github/kriansa/amelia)
+[![bitHound Overall Score](https://www.bithound.io/github/kriansa/amelia/badges/score.svg)](https://www.bithound.io/github/kriansa/amelia)
 
 ## Description
 
