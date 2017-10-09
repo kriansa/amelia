@@ -1,0 +1,6 @@
+{
+  "reporterEnabled": "spec,mocha-simple-html-reporter",
+  "mochaSimpleHtmlReporterReporterOptions": {
+    "output": "report/javascript/mocha.html"
+  }
+}

@@ -133,19 +133,24 @@ function executableRunner(args) {
  * Run the test suite
  */
 gulp.task('test:watch', executableRunner([
-  'node_modules/.bin/karma',
-  'start',
-  'config/karma.conf.js',
+  'node_modules/.bin/mocha-webpack',
+  '--watch',
+  '--interactive=false',
+  '--webpack-config=config/webpack.config.js',
+  '--opts=app/assets/javascripts/tests/mocha.opts',
+  'app/assets/javascripts/tests/**/*.spec.js',
 ]));
 
 /**
- * Run the test coverage
+ * Run the test with coverage report
  */
 gulp.task('test:run', executableRunner([
-  'node_modules/.bin/karma',
-  'start',
-  'config/karma.conf.js',
-  '--single-run',
+  'node_modules/.bin/nyc',
+  'node_modules/.bin/mocha-webpack',
+  '--interactive=false',
+  '--webpack-config=config/webpack.config.js',
+  '--opts=app/assets/javascripts/tests/mocha.opts',
+  'app/assets/javascripts/tests/**/*.spec.js',
 ]));
 
 /**

@@ -2,11 +2,13 @@
   "presets": [
     ["env"]
   ],
-  "plugins": ["transform-runtime"],
+  "plugins": [
+    "transform-runtime"
+  ],
   "env": {
     "test": {
       "plugins": [
-        ["istanbul", { "exclude": [ "app/assets/javascripts/tests/**/*.spec.js" ] }]
+        ["istanbul", { "exclude": ["**/*.spec.js", "app/assets/javascripts/tests/helpers/**"] }]
       ]
     }
   }

@@ -1,0 +1,9 @@
+{
+  "sourceMap": false,
+  "instrument": false,
+  "report-dir": "report/javascript/coverage",
+  "reporter": [
+    "html",
+    "lcov"
+  ]
+}

@@ -1,0 +1,4 @@
+# Import common global code into our tests
+--require app/assets/javascripts/tests/helpers/common
+--reporter mocha-multi-reporters
+--reporter-options configFile=app/assets/javascripts/tests/mocha-reporters.json
