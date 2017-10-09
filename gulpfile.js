@@ -103,18 +103,22 @@ gulp.task('test', ['test:run']);
  */
 function executableRunner(args) {
   return (cb) => {
-    const proc = spawn(process.execPath, args, { stdio: 'inherit', env: { NODE_ENV: 'test' } });
+    const proc = spawn(process.execPath, args, { stdio: 'inherit', env: { NODE_ENV: 'test', FORCE_COLOR: 1 } });
     proc.on('exit', (code, signal) => {
-      // Informs gulp that we've exited
-      cb();
+      let callbackReturn;
 
-      process.on('exit', () => {
-        if (signal) {
-          process.kill(process.pid, signal);
-        } else {
-          process.exit(code);
-        }
-      });
+      if (code === 0 || code === null) {
+        callbackReturn = null;
+      } else {
+        // Object which gulp interprets as an error
+        callbackReturn = {
+          showStack: false,
+          toString: () => `Failed with a ${signal} signal. Please, check the logs above.`,
+        };
+      }
+
+      // Informs gulp that we've exited
+      cb(callbackReturn);
     });
 
     // terminate children.
