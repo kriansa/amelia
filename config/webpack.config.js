@@ -4,19 +4,8 @@ const fs = require('fs');
 const glob = require('glob');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const Dotenv = require('dotenv');
-const config = require('./assets.config');
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
-
-// Load .env settings
-(function loadDotEnvFile() {
-  const fileString = fs.readFileSync(`${config.appPath}/.env`, { encoding: 'utf-8' });
-  // Ensure that it works with `export` suffix on variables
-  const parsedObj = Dotenv.parse(fileString.replace(/export\s+/g, ''));
-
-  Object.entries(parsedObj)
-    .forEach(([key, value]) => { process.env[key] = value; });
-}());
+const config = require('./assets.config');
 
 if (!process.env.NODE_ENV) {
   console.error('NODE_ENV variable is not set!'); // eslint-disable-line no-console
@@ -48,50 +37,6 @@ const extractSassLoader = ExtractTextPlugin.extract({
     },
   ],
 });
-
-let plugins = [
-  // Do not allow files with errors to continue the compilation
-  new webpack.NoEmitOnErrorsPlugin(),
-
-  // Delete old files between compiles
-  new CleanObsoleteChunks({
-    verbose: false,
-  }),
-
-  // Extract CSS
-  new ExtractTextPlugin({
-    filename: '[name]-[sha256:contenthash:hex:64].css',
-    allChunks: true,
-  }),
-
-  // Create a manifest.json file
-  new ManifestPlugin({
-    fileName: '.manifest-webpack.json',
-  }),
-
-  // Set NODE_ENV to every module
-  new webpack.DefinePlugin({
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-  }),
-];
-
-try {
-  // Adds environment-specific plugins
-  fs.statSync(`${config.appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`).isFile();
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  plugins = plugins.concat(require(`${config.appPath}/config/webpack.${process.env.NODE_ENV}.plugins.js`));
-} catch (e) {} // eslint-disable-line no-empty
-
-// Optimize the generation of SourceMaps
-// More info: https://webpack.github.io/docs/build-performance.html
-let devtool;
-if (process.env.NODE_ENV === 'production') {
-  devtool = 'source-map';
-} else if (process.env.NODE_ENV === 'test') {
-  devtool = 'inline-source-map';
-} else {
-  devtool = 'cheap-module-source-map';
-}
 
 /**
  * Returns a filename based on its basePath without its extension name
@@ -126,7 +71,7 @@ const getEntriesFromPath = function getEntriesFromPath(entryPointPath) {
     }, {});
 };
 
-module.exports = {
+const webpackConfig = {
   context: config.appPath,
 
   // Entry points
@@ -142,9 +87,31 @@ module.exports = {
     hashDigestLength: 64,
   },
 
-  devtool,
+  plugins: [
+    // Do not allow files with errors to continue the compilation
+    new webpack.NoEmitOnErrorsPlugin(),
 
-  plugins,
+    // Delete old files between compiles
+    new CleanObsoleteChunks({
+      verbose: false,
+    }),
+
+    // Extract CSS
+    new ExtractTextPlugin({
+      filename: '[name]-[sha256:contenthash:hex:64].css',
+      allChunks: true,
+    }),
+
+    // Create a manifest.json file
+    new ManifestPlugin({
+      fileName: '.manifest-webpack.json',
+    }),
+
+    // Set NODE_ENV to every module
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+  ],
 
   module: {
     rules: [
@@ -209,3 +176,17 @@ module.exports = {
     ],
   },
 };
+
+try {
+  // Loads environment-specific settings
+  fs.statSync(`${config.appPath}/config/webpack.${process.env.NODE_ENV}.config.js`).isFile();
+
+  // eslint-disable-next-line global-require, import/no-dynamic-require
+  const additionalWebpackConfig = require(`${config.appPath}/config/webpack.${process.env.NODE_ENV}.config.js`)(webpackConfig);
+
+  // Merge settings into webpackConfig
+  Object.assign(webpackConfig, additionalWebpackConfig);
+} catch (e) {} // eslint-disable-line no-empty
+
+// Return the webpack settings
+module.exports = webpackConfig;
