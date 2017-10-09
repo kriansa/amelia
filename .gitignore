@@ -37,3 +37,6 @@ public/assets
 # Project reports
 /report
 !/report/index.html
+
+# NYC output
+/.nyc_output
