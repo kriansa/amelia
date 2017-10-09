@@ -31,42 +31,26 @@ export default {
 
   start() {
     /**
-     * The whole point of using `require.ensure` is to add a lazy-loaded
-      * dependency. This way, webpack will split that dependency into a
-      * different chunk and load it at runtime, dynamically, which makes the
-      * asset precompilation faster and enables a better performance on the
-      * client-side, given that we will be leveraging parallel downloads on the
-      * browser, instead a huge file chunk.
-      *
-     * import() is going to supersed this function, which is specific to
-     * webpack.
-     *
-     * Webpack has `import()` already implemented, but because it hasn't been
-     * accepted as a spec, ESLint doesn't parse it properly, unless we use
-     * eslint-babel as the ESLint parser - and that's just much for what we
-     * want right now. So in order to avoid these issues, we will stick with
-     * webpack's `require.ensure`
-     *
-     * When this syntax gets implemented, we just need to add a new plugin to
-     * Babel on .babelrc: "syntax-dynamic-import"
+     * Eventually, function-like `import` will be accepted as a JS feature. For
+     * now, it's still in stage-3 of the TC39 process. If we wanted to use it,
+     * we would just need to turn it on Babel and make ESLint aware of it by
+     * using eslint-babel plugin. That's too much overhead for now, IMHO.
+     * Webpack provides us a good short-term solution for that, which is
+     * `System.import` and it will suit us until we have `import`.
      *
      * https://github.com/tc39/proposal-dynamic-import
      * https://webpack.js.org/api/module-methods/#require-ensure
      * https://webpack.js.org/api/module-methods/#import-
      */
-    return new Promise((resolve, reject) => {
-      require.ensure('jquery', (require) => {
-        $ = require('jquery');
+    return System.import('jquery').then((jquery) => {
+      $ = jquery;
 
-        // Activate automatic right-menu show
-        $(document).ready(this.activateRightMenuWhenForSmallScreens.bind(this));
-        $(window).resize(this.activateRightMenuWhenForSmallScreens.bind(this));
+      // Activate automatic right-menu show
+      $(document).ready(this.activateRightMenuWhenForSmallScreens.bind(this));
+      $(window).resize(this.activateRightMenuWhenForSmallScreens.bind(this));
 
-        // Enable bootstrap dropdown JS
-        Dropdown($);
-
-        resolve();
-      }, reject, 'jquery');
+      // Enable bootstrap dropdown JS
+      Dropdown($);
     });
   },
 

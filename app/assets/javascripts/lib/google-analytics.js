@@ -14,10 +14,10 @@ export default {
     /* eslint-disable */
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        m=s.getElementsByTagName('head')[0];a.async=1;a.src=g;m.appendChild(a)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', analyticsId, 'auto');
+    window.ga('create', analyticsId, 'auto');
     /* eslint-enable */
 
     this.listenPageView();
@@ -47,7 +47,7 @@ export default {
   track: function track(url) {
     if (!this.isLocalRequest()) {
       // eslint-disable-next-line no-undef
-      ga('send', 'pageview', url);
+      window.ga('send', 'pageview', url);
     } else {
       console.log(`[GA] Sending pageview from URL "${url}"`); // eslint-disable-line no-console
     }
