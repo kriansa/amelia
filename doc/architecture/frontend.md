@@ -43,6 +43,18 @@ which the source file is going to be will depend on its content:
   this folder should be named as `.spec.js` suffix, otherwise they will not be
   loaded by the test package.
 
+## Documentation
+
+* [Paper-dashboard theme (dashboard)](../paper-dashboard-theme/dashboard.html)
+* [Paper-dashboard theme (docs)](../paper-dashboard-theme/documentation/documentation.html)
+* [Themify icons](../themify-icons/index.html)
+
+## Style Guides
+
+* [BEM](http://getbem.com/) for CSS naming convention
+* [Airbnb JS Styleguide](https://github.com/airbnb/javascript/)
+* [Stylelint config standard](https://github.com/stylelint/stylelint-config-standard)
+
 ## Testing
 
 Testing is an extremely important step of the development process. Test file
@@ -96,9 +108,3 @@ Because `Sinon` provides us its own assertions, we'd love not to mess with our
 defaults, provided by `chai`. So we also use an integration library called
 [Sinon-Chai](https://github.com/domenic/sinon-chai) to provides us a few useful
 assertions in order to keep consistency with `chai`.
-
-## Style Guides
-
-* [BEM](http://getbem.com/) for CSS naming convention
-* [Airbnb JS Styleguide](https://github.com/airbnb/javascript/)
-* [Stylelint config standard](https://github.com/stylelint/stylelint-config-standard)
