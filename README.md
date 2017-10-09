@@ -31,7 +31,6 @@ having the route as its entry-point.
 
 * Ruby (or rbenv)
 * NodeJS (or nodenv)
-* PhantomJS (for Poltergeist)
 * MySQL
 
 ## Installation
