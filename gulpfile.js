@@ -101,9 +101,9 @@ gulp.task('test', ['test:run']);
  * This function returns a new function to be used as
  * a gulp callback.
  */
-function executableRunner(args) {
+function executableRunner(args, envVariables) {
   return (cb) => {
-    const proc = spawn(process.execPath, args, { stdio: 'inherit', env: { NODE_ENV: 'test', FORCE_COLOR: 1 } });
+    const proc = spawn(process.execPath, args, { stdio: 'inherit', env: envVariables });
     proc.on('exit', (code, signal) => {
       let callbackReturn;
 
@@ -139,7 +139,7 @@ gulp.task('test:watch', executableRunner([
   '--webpack-config=config/webpack.config.js',
   '--opts=app/assets/javascripts/tests/mocha.opts',
   'app/assets/javascripts/tests/**/*.spec.js',
-]));
+], { NODE_ENV: 'test', FORCE_COLOR: 1 }));
 
 /**
  * Run the test with coverage report
@@ -151,7 +151,7 @@ gulp.task('test:run', executableRunner([
   '--webpack-config=config/webpack.config.js',
   '--opts=app/assets/javascripts/tests/mocha.opts',
   'app/assets/javascripts/tests/**/*.spec.js',
-]));
+], { NODE_ENV: 'test', FORCE_COLOR: 1 }));
 
 /**
  * Delete all generated assets and reports
