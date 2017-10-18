@@ -7,9 +7,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CleanObsoleteChunks = require('webpack-clean-obsolete-chunks');
 const config = require('./assets.config');
 
+// Default NODE_ENV should be 'development'
 if (!process.env.NODE_ENV) {
-  console.error('NODE_ENV variable is not set!'); // eslint-disable-line no-console
-  process.exit(1);
+  process.env.NODE_ENV = 'development';
 }
 
 const extractCssLoader = ExtractTextPlugin.extract({
