@@ -49,5 +49,8 @@ module.exports = function globalJsDOM(html, options) {
   // Set the document.domain, since JSDOM.url doesn't
   document.domain = `${window.location.protocol}://${window.location.host}`;
 
+  // Add circular reference to have `window` as an alias to the `global` object
+  window = global;
+
   return cleanup;
 };
