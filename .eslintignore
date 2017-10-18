@@ -6,3 +6,7 @@ public/assets
 
 # Test coverage output
 coverage
+
+# The following JS files have been taken from another author, which is not
+# using any of our linter settings, so it's better to disable it
+doc/paper-dashboard-theme
