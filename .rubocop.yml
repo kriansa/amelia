@@ -15,6 +15,9 @@ Metrics/LineLength:
 Documentation:
   Enabled: false
 
+Layout/IndentArray:
+  EnforcedStyle: consistent
+
 EmptyLinesAroundModuleBody:
   Enabled: false
 
