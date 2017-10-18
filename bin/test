@@ -67,6 +67,11 @@ function codeclimate_test_reporter {
   bin/codeclimate-test-reporter report/ruby/coverage/.resultset.json
 }
 
+function codecov_coverage_report {
+  # Sends the JS coverage. Ruby coverage is already being sent on Rspec run
+  node_modules/.bin/codecov --disable=gcov --file=report/javascript/coverage/lcov.info
+}
+
 # Start the suite
 
 # Change PWD to app path
@@ -83,7 +88,12 @@ run "Reek" "Code smell detector for Ruby" "reek"
 
 # Send coverage report analysis to CodeClimate, if in CI
 if ! [[ -z $CODECLIMATE_REPO_TOKEN ]]; then
-  run "codeclimate" "Send Ruby test reports to codeclimate" "codeclimate_test_reporter"
+  run "codeclimate" "Send Ruby code coverage report to CodeClimate" "codeclimate_test_reporter"
+fi
+
+# Send coverage report analysis to CodeCov, if in CI
+if ! [[ -z $CODECOV_TOKEN ]]; then
+  run "codecov" "Sends JS code coverage reports to CodeCov" "codecov_coverage_report"
 fi
 
 green " ✔  Test suite complete! Reports were generated in 'report' folder."

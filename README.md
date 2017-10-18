@@ -2,7 +2,7 @@
 
 [![CircleCI](https://img.shields.io/circleci/project/github/kriansa/amelia.svg)](https://circleci.com/gh/kriansa/amelia)
 [![bitHound Dependencies](https://www.bithound.io/github/kriansa/amelia/badges/dependencies.svg)](https://www.bithound.io/github/kriansa/amelia/master/dependencies/npm)
-[![Test Coverage](https://codeclimate.com/github/kriansa/amelia/badges/coverage.svg)](https://codeclimate.com/github/kriansa/amelia/coverage)
+[![codecov](https://codecov.io/gh/kriansa/amelia/branch/master/graph/badge.svg)](https://codecov.io/gh/kriansa/amelia)
 [![Inch CI](https://inch-ci.org/github/kriansa/amelia.svg?branch=master)](https://inch-ci.org/github/kriansa/amelia)
 [![Code Climate](https://codeclimate.com/github/kriansa/amelia/badges/gpa.svg)](https://codeclimate.com/github/kriansa/amelia)
 [![bitHound Overall Score](https://www.bithound.io/github/kriansa/amelia/badges/score.svg)](https://www.bithound.io/github/kriansa/amelia)

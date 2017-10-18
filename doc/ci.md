@@ -22,7 +22,8 @@ This is actually recommended to be setup as a git pre-commit hook.
 
 When setting up a new CI server, it's important to setup the following variables:
 
-* `CODECLIMATE_REPO_TOKEN` - The token used to upload the test results to CodeClimate service.
+* `CODECLIMATE_REPO_TOKEN` - **(secret)**: The token used to upload the test results to CodeClimate service.
+* `CODECOV_TOKEN` - **(secret)**: The token used to upload test coverage to CodeCov service.
 * `RACK_ENV` - **Value**: `ci`
 * `NODE_ENV` - **Value**: `test`
 * `BUNDLE_WITHOUT` - **Value**: `development`

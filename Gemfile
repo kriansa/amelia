@@ -54,6 +54,7 @@ end
 
 group :test, :ci do
   gem 'simplecov', '~> 0.15.0', require: false
+  gem 'codecov', '~> 0.1.0', require: false
 
   # Functional testing
   gem 'capybara', '~> 2.15.0'
