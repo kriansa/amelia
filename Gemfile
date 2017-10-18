@@ -15,7 +15,7 @@ gem 'jbuilder', '~> 2.7.0'
 gem 'nokogiri', '~> 1.8.0'
 
 # Bugsnag (error catcher)
-gem 'bugsnag', '~> 5.3.0'
+gem 'bugsnag', '~> 5.4.0'
 # Devise (authentication)
 gem 'devise', '~> 4.3.0'
 
@@ -58,5 +58,5 @@ group :test, :ci do
 
   # Functional testing
   gem 'capybara', '~> 2.15.0'
-  gem 'selenium-webdriver', '~> 3.5.0'
+  gem 'selenium-webdriver', '~> 3.6.0'
 end
