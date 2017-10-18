@@ -56,6 +56,27 @@ code.
 
 You can access it [here](../tables.md)
 
+## Database
+
+Because we use a relational database, it's important that we leverage the ACID
+features on it. It means that although it's nice that Rails support many 
+validations built-in, we need to enforce that at a database level. In practice,
+when creating and editing models, keep in mind the following:
+
+* Always create a `unique` index for `uniqueness` validator;
+* Always create a `unique` index for a `has_one` related table;
+* Always create a `not null` constraint for a `presence` validator;
+* Always create a `foreign key` constraing for a table connected to another 
+  through a `belongs_to`, `has_many` or a `has_one` relation. Keep in mind to
+  do it on `has_one :through` join tables as well.
+
+Such validations should be done automatically through some tools such as
+[consistency fail](https://github.com/trptcolin/consistency_fail) and
+[nullalign](https://github.com/tcopeland/nullalign). In the meantime, we need
+to double-check our ERM in order to avoid issues such as [race-conditions and
+inconsistencies](https://8thlight.com/blog/colin-jones/2011/06/10/winning-at-consistency.html)
+on our database.
+
 ## Rails startup settings
 
 Rails provides a few settings to be set on runtime, you just need to provide
