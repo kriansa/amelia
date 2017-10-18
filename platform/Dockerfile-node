@@ -1,8 +1,8 @@
-FROM node:8.6.0
+FROM node:8.7.0
 MAINTAINER Daniel Pereira
 
-ENV NPM_VERSION=5.4.2
-ENV YARN_VERSION=1.1.0
+ENV NPM_VERSION=5.5.1
+ENV YARN_VERSION=1.2.1
 
 # Update NPM & Yarn
 RUN npm update -g npm@$NPM_VERSION
